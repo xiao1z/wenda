@@ -6,6 +6,7 @@ import java.util.Map;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -20,7 +21,8 @@ import freemarker.template.utility.XmlEscape;
 
 @Configuration
 @EnableWebMvc
-@ComponentScan(basePackages={"aspect","controller"})
+@EnableAspectJAutoProxy
+@ComponentScan(basePackages={"controller","aspect"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	@Bean
@@ -28,6 +30,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	{
 		FreeMarkerViewResolver resolver=new FreeMarkerViewResolver();
 		resolver.setViewClass(FreeMarkerView.class);
+		resolver.setContentType("text/html;charset=utf-8");
 		resolver.setSuffix(".ftl");
 		resolver.setOrder(0);
 		return resolver;
@@ -38,6 +41,8 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	{
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 		configurer.setTemplateLoaderPath("/WEB-INF/templates/");
+		configurer.setDefaultEncoding("UTF-8");
+	
 		Map<String, Object> map= new HashMap<String,Object>();
 		map.put("xml_escape",new XmlEscape());
 		configurer.setFreemarkerVariables(map);

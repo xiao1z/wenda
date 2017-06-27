@@ -69,7 +69,7 @@
 						<div class="checkbox">
 							 
 							<label>
-								<input type="checkbox"> 记住我
+								<input type="checkbox"> 记住登录
 							</label>
 						</div>
 					</div>
