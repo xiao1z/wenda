@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 public class LoginAspect {
 	private static final Logger logger = LoggerFactory.getLogger(LoginAspect.class);
 	
-	@Before(value="execution(* controller.*.*(..))")
+	@Before(value="execution(* controller.LoginController.*(..))")
 	public void beforeMethod(){
 		logger.info("Before Method");
 	}
-	@After(value="execution(* controller.*.*(..))")
+	@After(value="execution(* controller.LoginController.*(..))")
 	public void afterMethod(){
 		logger.info("After Method");
 	}
