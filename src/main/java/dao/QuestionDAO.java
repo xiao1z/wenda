@@ -9,7 +9,7 @@ import model.Question;
 public interface QuestionDAO {
 	String TABLE_NAME=" question ";
 	String INSERT_FIELDS = " title,content,created_date,user_id,comment_count ";
-	String SELECT_FIELDS = " id "+INSERT_FIELDS;
+	String SELECT_FIELDS = " id,"+INSERT_FIELDS;
 	
 	List<Question> selectLatestQuestions(@Param("userId") int userId,
 			@Param("offset") int offset,@Param("limit") int limit);

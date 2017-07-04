@@ -28,6 +28,7 @@
     </environment>
   </environments>
   <mappers>
+  	<mapper class="dao.LoginTicketDAO"/>
   	<mapper class="dao.UserDAO"/>
   	<mapper resource="dao/QuestionMapper.xml"/>
   </mappers>

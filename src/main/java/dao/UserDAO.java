@@ -8,17 +8,16 @@ import model.User;
 
 public interface UserDAO {
 	String TABLE_NAME=" user ";
-	String INSERT_FIELDS = " name,password,salt,head_url ";
-	String SELECT_FIELDS = " id "+INSERT_FIELDS;
+	String INSERT_FIELDS = " username,password,salt,head_url ";
+	String SELECT_FIELDS = " id,"+INSERT_FIELDS;
 	
-	@Select({"SELECT * FROM ",TABLE_NAME, "WHERE id = #{id}"})
+	@Select({"SELECT ",SELECT_FIELDS," FROM ",TABLE_NAME, "WHERE id = #{id}"})
 	User selectUserById(int id);
 	
-	@Select({"SELECT * FROM ",TABLE_NAME, " WHERE name = #{name}"})
-	User selectUserByUsername(String  name);
+	@Select({"SELECT ",SELECT_FIELDS," FROM ",TABLE_NAME, " WHERE username = #{username}"})
+	User selectUserByUsername(String  username);
 	
-	@Insert({"Insert into ",TABLE_NAME,"(",INSERT_FIELDS,") values(#{name},#{password},#{salt},#{headUrl})"})
+	@Insert({"Insert into ",TABLE_NAME,"(",INSERT_FIELDS,") values(#{username},#{password},#{salt},#{headUrl})"})
 	int addUser(User user);
-	
 	
 }

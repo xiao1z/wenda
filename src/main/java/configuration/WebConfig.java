@@ -3,6 +3,7 @@ package configuration;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
@@ -10,6 +11,7 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
+import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -18,12 +20,16 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import freemarker.template.utility.XmlEscape;
+import intercepter.PassportIntercepter;
 
 @Configuration
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages={"controller","aspect"})
+@ComponentScan(basePackages={"controller","aspect","service","intercepter"})
 public class WebConfig extends WebMvcConfigurerAdapter{
+	
+	@Autowired
+	PassportIntercepter passportIntercepter;
 	
 	@Bean
 	public ViewResolver freeMarkerViewResolver()
@@ -72,6 +78,14 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
+		//registry.addResourceHandler("user/static/**").addResourceLocations("/WEB-INF/static/");
+	}
+
+	@Override
+	public void addInterceptors(InterceptorRegistry registry) {
+		// TODO Auto-generated method stub
+		registry.addInterceptor(passportIntercepter);
+		super.addInterceptors(registry);
 	}
 	
 	

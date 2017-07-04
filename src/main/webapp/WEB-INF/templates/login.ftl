@@ -10,8 +10,8 @@
     <meta name="description" content="Source code generated using layoutit.com">
     <meta name="author" content="LayoutIt!">
 
-    <link href="static/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/css/style.css" rel="stylesheet">
+    <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/wenda/static/css/style.css" rel="stylesheet">
 
 	<style>
 	body 
@@ -22,7 +22,6 @@
 	</style>
   </head>
   <body>
-
     <div class="container-fluid">
 	<br>
 	<br>
@@ -45,15 +44,26 @@
 		<div class="col-md-4">
 		</div>
 		<div class="col-md-4">
-			<form class="form-horizontal" role="form">
+			<form class="form-horizontal" role="form" method="post" id="regloginForm">
+			
+				
+				<#if error??>
+				<div class="form-group">
+				<label for="regloginForm" class="col-sm-6 control-label">
+					<font color="red">${error}</font>
+				</label>
+				</div>
+				</#if>
+				
 				<div class="form-group">
 					 
 					<label for="inputEmail3" class="col-sm-2 control-label">
-						用户名
+						邮箱
 					</label>
 					<div class="col-sm-10">
-						<input type="email" class="form-control" id="inputEmail3">
+						<input type="email" class="form-control" id="username" name="username">
 					</div>
+					
 				</div>
 				<div class="form-group">
 					 
@@ -61,15 +71,16 @@
 						密码
 					</label>
 					<div class="col-sm-10">
-						<input type="password" class="form-control" id="inputPassword3">
+						<input type="password" class="form-control" id="password" name="password">
 					</div>
+					
 				</div>
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						<div class="checkbox">
 							 
 							<label>
-								<input type="checkbox"> 记住登录
+								<input type="checkbox" name="rememberMe"> 记住登录
 							</label>
 						</div>
 					</div>
@@ -77,11 +88,11 @@
 				<div class="form-group">
 					<div class="col-sm-offset-2 col-sm-10">
 						 
-						<button type="submit" class="btn btn-default">
+						<button type="submit" class="btn btn-default" onclick="form=document.getElementById('regloginForm');form.action='/wenda/login/'">
 							登录
 						</button>
 						&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-						<button type="submit" class="btn btn-default">
+						<button type="submit" class="btn btn-default" onclick="form=document.getElementById('regloginForm');form.action='/wenda/reg/'">
 							注册
 						</button>
 					</div>
