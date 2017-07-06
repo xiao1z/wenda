@@ -26,10 +26,6 @@ public class UserService {
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
 	
-	public User getDefaultUser()
-	{
-		return User.getDEFAULT_USER();
-	}
 	
 	public Map<String,String> login(String username,String password)
 	{

@@ -46,7 +46,9 @@
 		<div class="col-md-4">
 			<form class="form-horizontal" role="form" method="post" id="regloginForm">
 			
-				
+				<#if next??>
+				<input type="hidden" name="next" value="${next}">
+				</#if>
 				<#if error??>
 				<div class="form-group">
 				<label for="regloginForm" class="col-sm-6 control-label">

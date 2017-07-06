@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import service.UserService;
+import util.URIUtil;
 
 
 
@@ -33,6 +34,7 @@ public class LoginAndRegisterController {
 			,@RequestParam("username") String username
 			,@RequestParam("password") String password
 			,@RequestParam(value = "rememberMe",defaultValue = "false") boolean rememberMe
+			,@RequestParam(value = "next",required = false) String next
 			,HttpServletResponse response){
 		
 		try
@@ -43,15 +45,18 @@ public class LoginAndRegisterController {
 				Cookie cookie = new Cookie("ticket",map.get("ticket"));
 				cookie.setPath("/");
 				response.addCookie(cookie);
-				return "redirect:/";
+				if(next!=null)
+					return "redirect:"+next;
+				else
+					return "redirect:/";
 			}
 			else if(map.containsKey("error"))
 			{
 				model.addAttribute("error", map.get("error"));
 				return "login";
 			}
-			
-			return "redirect:/";
+			else 
+				return "redirect:/";
 		}catch(Exception e)
 		{
 			logger.error("注册错误 "+e.getMessage());
@@ -60,8 +65,9 @@ public class LoginAndRegisterController {
 	}
 	
 	@RequestMapping(path = {"/reglogin"}, method = RequestMethod.GET)
-	public String reglogin()
+	public String reglogin(Model model,@RequestParam(value = "next",required = false) String next)
 	{
+		model.addAttribute("next",URIUtil.deleteURIContext(next));
 		return "login";
 	}
 	
@@ -77,6 +83,7 @@ public class LoginAndRegisterController {
 			,@RequestParam("username") String username
 			,@RequestParam("password") String password
 			,@RequestParam(value = "rememberMe",defaultValue = "false") boolean rememberMe
+			,@RequestParam(value = "next",required = false) String next
 			,HttpServletResponse response){
 		
 		try
@@ -87,7 +94,10 @@ public class LoginAndRegisterController {
 				Cookie cookie = new Cookie("ticket",map.get("ticket"));
 				cookie.setPath("/");
 				response.addCookie(cookie);
-				return "redirect:/";
+				if(next!=null)
+					return "redirect:"+next;
+				else
+					return "redirect:/";
 				
 			}
 			else if(map.containsKey("error"))

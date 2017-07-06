@@ -20,6 +20,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerView;
 import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 
 import freemarker.template.utility.XmlEscape;
+import intercepter.LoginRequiredIntercepter;
 import intercepter.PassportIntercepter;
 
 @Configuration
@@ -30,6 +31,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	@Autowired
 	PassportIntercepter passportIntercepter;
+	
+	@Autowired
+	LoginRequiredIntercepter loginRequiredIntercepter;
 	
 	@Bean
 	public ViewResolver freeMarkerViewResolver()
@@ -85,6 +89,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public void addInterceptors(InterceptorRegistry registry) {
 		// TODO Auto-generated method stub
 		registry.addInterceptor(passportIntercepter);
+		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/user/*");
 		super.addInterceptors(registry);
 	}
 	

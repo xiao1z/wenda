@@ -35,7 +35,7 @@ public class IndexController {
 	@RequestMapping(path = {"/user/{userId}"},method = RequestMethod.GET)
 	public String userIndex(Model model,@PathVariable("userId") int userId)
 	{
-		model.addAttribute("voList", getQuestions(0,0,10));
+		model.addAttribute("voList", getQuestions(userId,0,10));
 		return "index";
 	}
 	
@@ -48,19 +48,29 @@ public class IndexController {
 	
 	private List<ViewObject> getQuestions(int userId,int offset,int limit)
 	{
-		List<Question> questionList=questionService.getLatestQuestion(0, 0, 10);
+		List<Question> questionList=questionService.getLatestQuestion(userId, 0, 10);
 		List<ViewObject> voList=new ArrayList<ViewObject>();
 		for(Question question: questionList)
 		{
 			ViewObject vo=new ViewObject();
 			vo.set("question", question);
 			User user = userService.getUser(question.getUserId());
-			if(user==null)
-				vo.set("user",userService.getDefaultUser());
-			else vo.set("user",user);
+			vo.set("user",user);
 			assert(vo.get("user")!=null);
 			voList.add(vo);
 		}
 		return voList;
+	}
+	
+	@RequestMapping(path = {"/test/header/{id}"},method = RequestMethod.GET)
+	public String testHeader(@PathVariable("id") int id)
+	{
+		return "headerTest"+id;
+	}
+	
+	@RequestMapping(path = {"/test/body/{id}"},method = RequestMethod.GET)
+	public String testBody(@PathVariable("id") int id)
+	{
+		return "bodyTest"+id;
 	}
 }

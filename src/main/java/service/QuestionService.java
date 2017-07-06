@@ -26,7 +26,7 @@ public class QuestionService{
 			session.commit();
 		}catch(Exception e)
 		{
-			logger.error(e.getMessage());
+			logger.error("获取最近问题错误 "+e.getMessage());
 		}finally
 		{
 			if(session!=null)
@@ -37,6 +37,32 @@ public class QuestionService{
 		return list;
 	}
 
+	/*
+	 * 返回值：添加成功返回0,否则返回-1
+	 */
+	public int addQuestion(Question question)
+	{
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		QuestionDAO questionDAO;
+		try{
+			questionDAO = session.getMapper(QuestionDAO.class);
+			
+			//敏感词过滤
+			questionDAO.addQuestion(question);
+			session.commit();
+		}catch(Exception e)
+		{
+			logger.error("添加问题错误  "+e.getMessage());
+			return -1;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return 0;
+	}
 	
 	
 }

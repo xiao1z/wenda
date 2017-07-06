@@ -14,6 +14,7 @@ import configuration.WendaWebAppInitializer;
 import dao.MybatisSqlSessionFactory;
 import dao.QuestionDAO;
 import model.Question;
+import util.DateUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WendaWebAppInitializer.class)
@@ -21,7 +22,7 @@ public class QuestionDAOTest {
 
 	
 	
-	//@Test
+	@Test
 	public void addQuestionTest()
 	{
 		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
@@ -30,18 +31,20 @@ public class QuestionDAOTest {
 		Question question=new Question();
 		question.setCommentCount(1);
 		question.setContent("test content");
-		question.setCreatedDate(new Date());
+		question.setCreatedDate(DateUtil.getBeijinTime());
 		question.setTitle("test title");
 		question.setUserId(111);
-		mapper.addQuestion(question);
+		question.setId(8);
+		int id = mapper.addQuestion(question);
 		session.commit();
 		//session.flushStatements();
+		System.out.println(id);
 		session.close();
 	}
 	
 	
 	
-	@Test
+	//@Test
 	public void selectLatestQuestionsTest()
 	{
 		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
