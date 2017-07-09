@@ -28,4 +28,12 @@ public class DateUtil {
 	public static Date getBeijinTime() {  
 		return  changeTimeZone(new Date(), TimeZone.getTimeZone("UTC"),TimeZone.getTimeZone("Asia/Shanghai"));
 	}
+	
+	/** 
+	 * 获取北京时间
+	 * 北京时间=UTC+8=GMT+8
+	 */  
+	public static Date getUTCTime(Date date) {  
+		return  changeTimeZone(date,TimeZone.getTimeZone("Asia/Shanghai"), TimeZone.getTimeZone("UTC"));
+	}
 }

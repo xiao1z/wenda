@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
+
 import model.Question;
 
 public interface QuestionDAO {
@@ -21,4 +23,6 @@ public interface QuestionDAO {
 	int addQuestion(Question question);
 	
 
+	@Select({"select",SELECT_FIELDS," from",TABLE_NAME,"where id=#{id}"})
+	Question selectQuestion(int id);
 }

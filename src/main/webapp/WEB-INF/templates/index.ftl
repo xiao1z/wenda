@@ -17,29 +17,36 @@
     margin-top: 20px;
 	}	
     </style>
+    <script src="/wenda/static/js/jquery.min.js"></script>
   </head>
   
   <body>
 
     <div class="container-fluid">
     <#include "header.ftl">
-     <#list voList as vo>
+    <#list voList as vo>
 	<div class="row row-margin-top">
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-10">
-			<div class="pull-left" style="margin-right:20px">
-					<img alt="用户头像" class="img-rounded" src="${vo.user.headUrl}" style="width:70px;height:70px">
+		<div class="col-md-1">
+			<div class="text-center">
+					<img alt="用户头像" class="img-rounded headimgSize" src="${vo.user.headUrl}">
 			</div>
+			<div class="text-center">		
+					<span class="badge badgeCss">100</span>
+			</div>
+			
+		</div>
+		<div class="col-md-9">
 			<h4>
 				${vo.question.title}
 			</h4>
 			<a href="/wenda/user/${vo.user.id}">${vo.user.username}</a>
-			<p style="width:80%">
+			<p style="word-break:break-all;word-wrap:break-word;">
 				${vo.question.content}
 			</p>
 			<p>
-				<a class="btn" href="#">View details »</a>
+				<a class="btn" href="/wenda/question/${vo.question.id}">查看全部 »</a>
 			</p>
 			<div>
 				<hr>
@@ -87,7 +94,7 @@
 	</div>
 </div>
 
-    <script src="/wenda/static/js/jquery.min.js"></script>
+    
     <script src="/wenda/static/js/bootstrap.min.js"></script>
     <script src="/wenda/static/js/scripts.js"></script>
   </body>

@@ -24,6 +24,8 @@ public class IndexController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
+	private static final int QUESTION_COUNT_EVERY_PAGE = 5;
+	
 	@Autowired
 	QuestionService questionService;
 	
@@ -35,20 +37,20 @@ public class IndexController {
 	@RequestMapping(path = {"/user/{userId}"},method = RequestMethod.GET)
 	public String userIndex(Model model,@PathVariable("userId") int userId)
 	{
-		model.addAttribute("voList", getQuestions(userId,0,10));
+		model.addAttribute("voList", getQuestions(userId,0,QUESTION_COUNT_EVERY_PAGE));
 		return "index";
 	}
 	
 	@RequestMapping(path = {"/","/index"},method = RequestMethod.GET)
 	public String index(Model model)
 	{
-		model.addAttribute("voList", getQuestions(0,0,10));
+		model.addAttribute("voList", getQuestions(0,0,QUESTION_COUNT_EVERY_PAGE));
 		return "index";
 	}
 	
 	private List<ViewObject> getQuestions(int userId,int offset,int limit)
 	{
-		List<Question> questionList=questionService.getLatestQuestion(userId, 0, 10);
+		List<Question> questionList=questionService.getLatestQuestion(userId, 0, QUESTION_COUNT_EVERY_PAGE);
 		List<ViewObject> voList=new ArrayList<ViewObject>();
 		for(Question question: questionList)
 		{

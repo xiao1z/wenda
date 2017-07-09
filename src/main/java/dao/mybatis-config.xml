@@ -30,6 +30,7 @@
   <mappers>
   	<mapper class="dao.LoginTicketDAO"/>
   	<mapper class="dao.UserDAO"/>
+  	<mapper class="dao.CommentDAO"/>
   	<mapper resource="dao/QuestionMapper.xml"/>
   </mappers>
 </configuration>
