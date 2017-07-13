@@ -4,17 +4,19 @@
 		<div class="col-md-12">
 			<ul class="nav nav-tabs">
 				<li style=" top:0px;">
-					<a href="#">
+					<a href="/wenda/">
             		<img src="/wenda/static/images/log_icon.jpg" class="img-rounded img-responsive" 
                  	alt="喵问答">
         			</a>
 				</li>
-				<li class="active" style=" top:6px;">
-					<a href="#">主页</a>
-				</li>
 				<li style=" top:6px;">
-					<a href="#">Profile</a>
+					<a href="/wenda/">首页</a>
 				</li>
+				<#if user??>
+				<li style=" top:6px;">
+					<a href="/wenda/user/${user.id}">我的主页</a>
+				</li>
+				</#if>
 				<li class="disabled" style=" top:6px;">
 					<a href="#">Messages</a>
 				</li>
@@ -133,9 +135,7 @@
 			    '">登录</a></p>'
 			}); 
           }
-          
 		});
-	
 	 $("#regloginButton").click(function(){
 	 	window.location.replace(loginReturnPath);
 	 });
@@ -146,13 +146,18 @@
           	$("#questionSubmit").fadeIn();
           	$("#requireQuestion").attr("data-target","#QuestionModal");
           	$("#requireQuestion").attr("data-toggle","modal");
-          	$("#title").val("");
-          	$("#content").val("");
+          	if(!isSubmitSuccess);
+          	else
+          	{
+	          	$("#title").val("");
+	          	$("#content").val("");
+	        }
         }
     });
 	
 	$('#QuestionModal').on('hide.bs.modal', function () {
-  		window.location.replace("/wenda/");
+		if(!isSubmitSuccess&&loginStatus.code!=999);
+  		else window.location.replace("/wenda/");
 	})
 	
 	$("#questionSubmit").click(function(){
@@ -171,6 +176,7 @@
                     {
                     	$("#submitSuccess").fadeIn();
                     	$("#questionSubmit").fadeOut();
+                    	isSubmitSuccess=true;
                     }else if(loginStatus.code==999)
                     {
                    		$("#submitUnlogin").fadeIn();
@@ -179,6 +185,7 @@
                 }  
             });  
 		});
+		
 	</script>
 	
 	

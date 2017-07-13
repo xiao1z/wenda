@@ -19,12 +19,12 @@ import util.DateUtil;
 @ContextConfiguration(classes = WendaWebAppInitializer.class)
 public class CommentDAOTest {
 	
-	//@Test
+	@Test
 	public void addComment()
 	{
 		Comment comment = new Comment();
 		comment.setContent("test content");
-		comment.setCreateDate(DateUtil.getBeijinTime());
+		comment.setCreateDate(new Date());
 		comment.setEntityId(0);
 		comment.setEntityType(1);
 		comment.setStatus(0);
@@ -36,7 +36,7 @@ public class CommentDAOTest {
 		session.commit();
 	}
 	
-	@Test
+	//@Test
 	public void getComment()
 	{
 		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();

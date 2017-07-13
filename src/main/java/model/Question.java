@@ -2,10 +2,13 @@ package model;
 
 import java.util.Date;
 
+import com.alibaba.fastjson.annotation.JSONField;
+
 public class Question {
 	private int id;
     private String title;
     private String content;
+    @JSONField (format="yyyy年MM月dd日  HH:mm:ss")  
     private Date createdDate;
     private int userId;
     private int commentCount;

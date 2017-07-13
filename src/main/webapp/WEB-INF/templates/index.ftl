@@ -7,9 +7,7 @@
 
     <title>主页</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
-
+  
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     <style>
@@ -24,6 +22,7 @@
 
     <div class="container-fluid">
     <#include "header.ftl">
+    <#if voList??>
     <#list voList as vo>
 	<div class="row row-margin-top">
 		<div class="col-md-1">
@@ -41,7 +40,7 @@
 			<h4>
 				${vo.question.title}
 			</h4>
-			<a href="/wenda/user/${vo.user.id}">${vo.user.username}</a>
+			<a href="/wenda/user/${vo.user.id}/answers">${vo.user.username}</a>
 			<p style="word-break:break-all;word-wrap:break-word;">
 				${vo.question.content}
 			</p>
@@ -56,6 +55,14 @@
 		</div>
 	</div>
 	</#list>
+	<#else>
+		<div>
+			<hr>
+			<p>
+				还没有人提问!
+			<p>
+		</div>
+	</#if>
 	<div class="row">
 		<div class="col-md-1">
 		</div>

@@ -85,4 +85,25 @@ public class CommentService {
 		}
 		return commentList;
 	}
+	
+	public List<Comment> getQuestionCommentsOfUserId(int userId)
+	{
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		CommentDAO commentDAO;
+		List<Comment> commentList = null;
+		try{
+			commentDAO = session.getMapper(CommentDAO.class);
+			commentList = commentDAO.getCommentsByUserIdAndEntityType(userId,Comment.QUESTION_COMMENT_TYPE);
+		}catch(Exception e)
+		{
+			logger.error("根据用户名获取评论错误 "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return commentList;
+	}
 }

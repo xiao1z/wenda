@@ -9,3 +9,40 @@ img.commentUserimgSize{
 span.badgeCss{
 	margin-top:5px;color:white;background-color:#0080FF;
 }
+
+.chat-headbox {
+    position: relative;
+    float: left;
+    z-index: 2;
+}
+
+.msg-num {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: #e84a4a;
+    color: #FFF;
+    font-size:2em;
+    border-radius: 50px;
+    line-height: 22px;
+    min-height: 22px;
+    outline: medium none;
+    padding: 0 7px;
+    text-align: center;
+    z-index: 10;
+}
+
+.list-head {
+    display: block;
+    float: left;
+    width: 70px;
+    height: 70px;
+    overflow: hidden;
+    border: 1px solid #ededed;
+    border-radius: 50px;
+}
+
+.word{
+	word-break:break-all;
+	word-wrap:break-word;
+}

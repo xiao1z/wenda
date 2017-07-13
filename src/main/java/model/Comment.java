@@ -19,7 +19,7 @@ public class Comment {
 	public static final int QUESTION_COMMENT_TYPE = 0;
 	public static final int COMMENT_COMMENT_TYPE = 1;
 	
-	public static final int DELETED_STATUS = 1;
+	public static final int DELETED_STATUS = -1;
 	public static final int NORMAL_STATUS = 0;
 	
 	public int getId() {

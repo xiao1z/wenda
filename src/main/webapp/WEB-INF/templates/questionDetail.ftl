@@ -7,8 +7,7 @@
 
     <title>${question.title}</title>
 
-    <meta name="description" content="Source code generated using layoutit.com">
-    <meta name="author" content="LayoutIt!">
+   
 
 	
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
@@ -157,34 +156,34 @@
 		
 		<div class="row" style="_height:100px; min-height:0px ">
 			<div class="col-md-1">
-				</div>
+			</div>
+			<div class="col-md-1">
+			</div>
+			<div class="col-md-9">
 				<div class="col-md-1">
 				</div>
-				<div class="col-md-9">
-					<div class="col-md-1">
-					</div>
-					<div class="col-md-9" style="background-color:#E0EEE0;opacity:0.7;width:70%;line-height:1.5">
-						<br>
-						<#if vo.subVoList??>
-						<#list vo.subVoList as subVo>
-						<span style="color:gray"> 28人赞同 </span>
-						<span style="color:gray"> &nbsp发布于：${subVo.subComment.createDate?string('dd日MM月yyyy年 HH:mm:ss')}</span>
-						<br>
-						<p><a href="/wenda/user/${subVo.subUser.id}">${subVo.subUser.username}：</a>${subVo.subComment.content}</p>
-						<br>
-						</#list>
-						</#if>
-						<span class="hidden" id="commentId_${vo.comment.id}">${vo.comment.id}</span>
-						<textarea  type="text" id="subCommentContent_${vo.comment.id}" name="content" class="form-control" style="overflow-x:visible;overflow-y:visible;" placeholder="请输入您的观点" rows="1"></textarea>
-						<br>
-						<div id="submitUnlogin_comment_inComment" class="alert alert-danger" style="display:none;margin-top:10px">发布评论需要登录，请先登录！</div>
-						<button type="button" id="subCommentCommit_${vo.comment.id}" class="btn btn-primary pull-right">回复</button>
-						<hr>
-					</div>
-				</div>
-				<div class="col-md-1">
+				<div class="col-md-9" style="background-color:#E0EEE0;opacity:0.7;width:70%;line-height:1.5">
+					<br>
+					<#if vo.subVoList??>
+					<#list vo.subVoList as subVo>
+					<span style="color:gray"> 28人赞同 </span>
+					<span style="color:gray"> &nbsp发布于：${subVo.subComment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
+					<br>
+					<p><a href="/wenda/user/${subVo.subUser.id}">${subVo.subUser.username}：</a>${subVo.subComment.content}</p>
+					<br>
+					</#list>
+					</#if>
+					<span class="hidden" id="commentId_${vo.comment.id}">${vo.comment.id}</span>
+					<textarea  type="text" id="subCommentContent_${vo.comment.id}" name="content" class="form-control" style="overflow-x:visible;overflow-y:visible;" placeholder="请输入您的观点" rows="1"></textarea>
+					<br>
+					<div id="submitUnlogin_comment_inComment" class="alert alert-danger" style="display:none;margin-top:10px">发布评论需要登录，请先登录！</div>
+					<button type="button" id="subCommentCommit_${vo.comment.id}" class="btn btn-primary pull-right">回复</button>
+					<hr>
 				</div>
 			</div>
+			<div class="col-md-1">
+			</div>
+		</div>
 	</#list>
 	<#else>
 	<div class="row" style="margin-top:10px">
