@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.Comment;
+import model.EntityType;
 import model.HostHolder;
 import service.CommentService;
 import util.DateUtil;
@@ -30,10 +31,10 @@ public class CommentController {
 	{
 		if(hostHolder.getUser()==null)
 		{
-			return JSONUtil.getJSONString(999);
+			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
 		}else if(StringUtils.isEmpty(content))
 		{
-			return JSONUtil.getJSONString(2,"内容为空");
+			return JSONUtil.getJSONString(JSONUtil.EMPTY_CONTENT,"内容为空");
 		}
 		else
 		{
@@ -41,7 +42,7 @@ public class CommentController {
 			comment.setContent(content);
 			comment.setCreateDate(DateUtil.getBeijinTime());
 			comment.setEntityId(id);
-			comment.setEntityType(Comment.QUESTION_COMMENT_TYPE);
+			comment.setEntityType(EntityType.QUESTION);
 			comment.setStatus(Comment.NORMAL_STATUS);
 			comment.setUserId(hostHolder.getUser().getId());
 			
@@ -49,10 +50,10 @@ public class CommentController {
 			//失败
 			if(res<0)
 			{
-				return JSONUtil.getJSONString(1, "添加失败");
+				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
-				return JSONUtil.getJSONString(0);
+				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
 		}
 	}
@@ -63,10 +64,10 @@ public class CommentController {
 	{
 		if(hostHolder.getUser()==null)
 		{
-			return JSONUtil.getJSONString(999);
+			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
 		}else if(StringUtils.isEmpty(content))
 		{
-			return JSONUtil.getJSONString(2,"内容为空");
+			return JSONUtil.getJSONString(JSONUtil.EMPTY_CONTENT,"内容为空");
 		}
 		else
 		{
@@ -74,7 +75,7 @@ public class CommentController {
 			comment.setContent(content);
 			comment.setCreateDate(DateUtil.getBeijinTime());
 			comment.setEntityId(id);
-			comment.setEntityType(Comment.COMMENT_COMMENT_TYPE);
+			comment.setEntityType(EntityType.COMMENT);
 			comment.setStatus(Comment.NORMAL_STATUS);
 			comment.setUserId(hostHolder.getUser().getId());
 			
@@ -82,10 +83,10 @@ public class CommentController {
 			//失败
 			if(res<0)
 			{
-				return JSONUtil.getJSONString(1, "添加失败");
+				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
-				return JSONUtil.getJSONString(0);
+				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
 		}
 	}

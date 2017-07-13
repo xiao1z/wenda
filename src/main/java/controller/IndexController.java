@@ -58,11 +58,11 @@ public class IndexController {
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 		{
 			model.addAttribute("canSendMessage","true");
-			model.addAttribute("discribe","他的回答");
+			model.addAttribute("discribe","他的");
 		}
 		else
 		{
-			model.addAttribute("discribe","我的回答");
+			model.addAttribute("discribe","我的");
 		}
 		User owner = userService.getUser(userId);
 		model.addAttribute("owner", owner);
@@ -73,7 +73,9 @@ public class IndexController {
 			for(Comment comment:commentList)
 			{
 				ViewObject vo = new ViewObject();
+
 				Question question = questionService.getQuestion(comment.getEntityId());
+		
 				vo.set("question", question);
 				vo.set("comment", comment);
 				voList.add(vo);

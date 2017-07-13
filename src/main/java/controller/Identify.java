@@ -21,10 +21,10 @@ public class Identify {
 	{
 		if(hostHolder.getUser()==null)
 		{
-			return JSONUtil.getJSONString(999);
+			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
 		}else
 		{
-			return JSONUtil.getJSONString(0);
+			return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 		}
 			
 	}

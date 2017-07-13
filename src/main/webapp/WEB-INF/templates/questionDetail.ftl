@@ -123,9 +123,25 @@
 	<#if voList??>
 	<#list voList as vo>
 		<div class="row" style="_height:100px; min-height:100px ">
+
 			<div class="col-md-1">
 			</div>
 			<div class="col-md-1">
+				
+				<div class="row">
+				<a id="like_${vo.comment.id}" class="<#if vo.isLike == "yes">btn-info <#else>btn-default </#if> btn btn-sm pull-right" style="margin-top:25px">
+					<span class="glyphicon glyphicon glyphicon-thumbs-up"></span>
+					<br>
+					<small id="likeCount_${vo.comment.id}">${vo.likeCount}</small>
+				</a>
+				</div>
+				<div class="row">
+				<a id="dislike_${vo.comment.id}" class="<#if vo.isLike == "no">btn-info <#else>btn-default </#if>btn btn-sm pull-right" style="margin-top:5px">
+					<span class="glyphicon 	glyphicon glyphicon-thumbs-down"></span>
+					<br>
+					<small></small>
+				</a>
+				</div>
 			</div>
 			<div class="col-md-9">
 				<hr>
@@ -141,8 +157,7 @@
 					</div>
 				</div>
 				<div class="col-md-8">
-					<span style="color:gray"> 28人赞同 </span>
-					<span style="color:gray"> &nbsp发布于2017年7月</span>
+					<span style="color:gray">发布于${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
 					
 					<p style="word-break: break-all;word-wrap: break-word; font-size:2em;">
 						${vo.comment.content}
@@ -166,7 +181,6 @@
 					<br>
 					<#if vo.subVoList??>
 					<#list vo.subVoList as subVo>
-					<span style="color:gray"> 28人赞同 </span>
 					<span style="color:gray"> &nbsp发布于：${subVo.subComment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
 					<br>
 					<p><a href="/wenda/user/${subVo.subUser.id}">${subVo.subUser.username}：</a>${subVo.subComment.content}</p>
@@ -176,7 +190,7 @@
 					<span class="hidden" id="commentId_${vo.comment.id}">${vo.comment.id}</span>
 					<textarea  type="text" id="subCommentContent_${vo.comment.id}" name="content" class="form-control" style="overflow-x:visible;overflow-y:visible;" placeholder="请输入您的观点" rows="1"></textarea>
 					<br>
-					<div id="submitUnlogin_comment_inComment" class="alert alert-danger" style="display:none;margin-top:10px">发布评论需要登录，请先登录！</div>
+					<div id="submitUnlogin_comment_inComment_${vo.comment.id}" class="alert alert-danger" style="display:none;margin-top:10px">发布评论需要登录，请先登录！</div>
 					<button type="button" id="subCommentCommit_${vo.comment.id}" class="btn btn-primary pull-right">回复</button>
 					<hr>
 				</div>
@@ -239,15 +253,15 @@
         var E = window.wangEditor;
         var editor = new E('#editor');
         editor.customConfig.uploadImgShowBase64 = true;
-         editor.customConfig.zIndex = 0
+        editor.customConfig.zIndex = 0
         editor.create();
         
         //id属性以subCommentCommit开始的所有button标签 
         $("button[id^='subCommentCommit_']").click(function(){
         	 var commentId = $(this).attr("id").substr(17);
         	 var textAreaId = "subCommentContent_"+commentId;
-        	 var content = $("#"+textAreaId).val();
-        	 if(content==""||loginStatus.code==999);
+        	 var content_ = $("#"+textAreaId).val();
+        	 if(content_==""||loginStatus.code==999);
 	   		 else
 	   		 {
 			   	 $.ajax({  
@@ -269,11 +283,83 @@
             	location.reload(true);  
             }else if(loginStatus.code==999)
             {
-           		$("#submitUnlogin_comment_inComment").fadeIn();
+           		$("#submitUnlogin_comment_inComment_"+commentId).fadeIn();
             }
 			
 		});
         
+        //id属性以like开始的所有a标签 
+        $("a[id^='like_']").click(function(){
+        	 if($(this).hasClass("btn-info"));
+        	 else
+        	 {
+	        	 var commentId = $(this).attr("id").substr(5);
+	        	 
+	        	 if(loginStatus.code==999);
+		   		 else
+		   		 {
+				   	 $.ajax({  
+			                type: "POST",  
+			                url:"/wenda/like/comment/"+commentId,  
+			                dataType:"json",
+			                async: false,  
+			                error: function() {  
+			                    alert("网络异常");  
+			                },
+			                success: function(json) {  
+			                    loginStatus = eval(json);
+			                }
+			           });
+			    }
+			    
+			    if(loginStatus.code==0)
+	            {
+	            	$("#likeCount_"+commentId).text(loginStatus.msg); 
+	            	$(this).addClass("btn-info");
+	            	$("#dislike_"+commentId).removeClass("btn-info");
+	            }else if(loginStatus.code==999)
+	            {
+	           		alert("登录后才能赞踩哦");
+	            }
+	        }
+			
+		});
+		
+		 $("a[id^='dislike_']").click(function(){
+		 	 if($(this).hasClass("btn-info"));
+        	 else
+        	 {
+	        	 var commentId = $(this).attr("id").substr(8);
+	        	 
+	        	 if(loginStatus.code==999);
+		   		 else
+		   		 {
+				   	 $.ajax({  
+			                type: "POST",  
+			                url:"/wenda/dislike/comment/"+commentId,  
+			                dataType:"json",
+			                async: false,  
+			                error: function() {  
+			                    alert("网络异常");  
+			                },
+			                success: function(json) {  
+			                    loginStatus = eval(json);
+			                }
+			           });
+			    }
+			    
+			    if(loginStatus.code==0)
+	            {
+	            	$("#likeCount_"+commentId).text(loginStatus.msg); 
+	            	$("#like_"+commentId).removeClass("btn-info");
+	            	$(this).addClass("btn-info");
+	            }else if(loginStatus.code==999)
+	            {
+	           		alert("登录后才能赞踩哦");
+	            }
+	        }
+			
+		});
 
 	    $("#commentSubmit").click(function(){
 	   		 var questionId = $("#questionId").text();

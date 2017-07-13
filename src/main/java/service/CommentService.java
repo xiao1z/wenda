@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import dao.CommentDAO;
 import dao.MybatisSqlSessionFactory;
 import model.Comment;
+import model.EntityType;
 
 @Service
 public class CommentService {
@@ -50,7 +51,7 @@ public class CommentService {
 		List<Comment> commentList = null;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			commentList = commentDAO.getCommentsByEntity(questionId,Comment.QUESTION_COMMENT_TYPE);
+			commentList = commentDAO.getCommentsByEntity(questionId,EntityType.QUESTION );
 		}catch(Exception e)
 		{
 			logger.error("根据问题获取评论错误 "+e.getMessage());
@@ -72,7 +73,7 @@ public class CommentService {
 		List<Comment> commentList = null;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			commentList = commentDAO.getCommentsByEntity(CommentId,Comment.COMMENT_COMMENT_TYPE);
+			commentList = commentDAO.getCommentsByEntity(CommentId,EntityType.COMMENT );
 		}catch(Exception e)
 		{
 			logger.error("根据评论获取评论错误 "+e.getMessage());
@@ -93,7 +94,7 @@ public class CommentService {
 		List<Comment> commentList = null;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			commentList = commentDAO.getCommentsByUserIdAndEntityType(userId,Comment.QUESTION_COMMENT_TYPE);
+			commentList = commentDAO.getCommentsByUserIdAndEntityType(userId,EntityType.QUESTION);
 		}catch(Exception e)
 		{
 			logger.error("根据用户名获取评论错误 "+e.getMessage());

@@ -135,7 +135,7 @@
 						</p>
 					</div>
 					<div class="tab-pane active"  id="answers">
-					<p style="margin-top:15px"><strong>${discribe}</strong></p>
+					<p style="margin-top:15px"><strong>${discribe}回答</strong></p>
 						<#if voList??>
 						<#list voList as vo>
 						<hr>

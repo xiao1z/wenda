@@ -105,10 +105,10 @@ public class MessageController {
 	{
 		if(hostHolder.getUser()==null)
 		{
-			return JSONUtil.getJSONString(999);
+			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
 		}else if(StringUtils.isEmpty(content))
 		{
-			return JSONUtil.getJSONString(2,"内容为空");
+			return JSONUtil.getJSONString(JSONUtil.EMPTY_CONTENT,"内容为空");
 		}
 		else
 		{
@@ -122,10 +122,10 @@ public class MessageController {
 			//失败
 			if(res<0)
 			{
-				return JSONUtil.getJSONString(1, "添加失败");
+				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
-				return JSONUtil.getJSONString(0);
+				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
 		}
 	}

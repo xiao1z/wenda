@@ -2,9 +2,6 @@ package model;
 
 import java.util.Date;
 
-/*
- * 
- */
 
 
 public class Comment {
@@ -16,8 +13,7 @@ public class Comment {
 	private Date createDate;
 	private int status;
 	
-	public static final int QUESTION_COMMENT_TYPE = 0;
-	public static final int COMMENT_COMMENT_TYPE = 1;
+
 	
 	public static final int DELETED_STATUS = -1;
 	public static final int NORMAL_STATUS = 0;

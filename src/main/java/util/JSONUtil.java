@@ -1,12 +1,8 @@
 package util;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import org.apache.commons.lang.time.DateUtils;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
@@ -16,6 +12,11 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import model.Question;
 
 public class JSONUtil {
+	public static final int UNLOGIN = 999;
+	public static final int SUCCESS = 0;
+	public static final int FAIL = 1;
+	public static final int EMPTY_CONTENT = 2;
+	
 	
 	public static String getJSONString(int code,String msg)
 	{
