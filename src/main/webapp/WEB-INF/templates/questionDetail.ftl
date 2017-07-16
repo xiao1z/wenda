@@ -13,9 +13,7 @@
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     
-    <script src="/wenda/static/js/jquery.min.js"></script>
-    <script src="/wenda/static/js/bootstrap.min.js"></script>
-    <script src="/wenda/static/js/scripts.js"></script>
+   
   </head>
   <body style="font-size:100%;">
   	
@@ -28,7 +26,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			 <span class="label label-info">Label</span>
 			 <span class="label label-info">Label</span>
 			 <span class="label label-info">Label</span>
@@ -49,7 +47,7 @@
 					<span class="badge badgeCss">100</span>
 			</div>
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<h2>
 				<strong>${question.title}</strong>
 			</h2>
@@ -65,11 +63,21 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
-			 
-			<button type="button" class="btn btn-primary">
-				关注
-			</button>
+		<div class="col-md-8">
+			<#if user.id == question.userId>
+			<#else>
+				<#if followTableId??>
+					<span class="hidden" id="followTableId">${followTableId}</span>
+					<button id="collectToggle" type="button" class="btn btn-primary">
+						取消收藏
+					</button>
+				<#else>
+					<span class="hidden" id="followTableId"></span>
+					<button id="collectToggle" type="button" class="btn btn-primary">
+						收藏
+					</button>
+				</#if>
+			</#if>	
 			<div class="btn-group">
 				 
 				<button class="btn btn-default">
@@ -101,7 +109,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<span><strong style="color:#0080FF">9</strong>人关注该问题</span>
 		</div>
 		<div class="col-md-1">
@@ -112,7 +120,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
 			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
 			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
@@ -143,7 +151,7 @@
 				</a>
 				</div>
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<hr>
 				<div class="col-md-1">
 					<div class="text-center" style="border:0px">
@@ -174,10 +182,10 @@
 			</div>
 			<div class="col-md-1">
 			</div>
-			<div class="col-md-9">
+			<div class="col-md-8">
 				<div class="col-md-1">
 				</div>
-				<div class="col-md-9" style="background-color:#E0EEE0;opacity:0.7;width:70%;line-height:1.5">
+				<div class="col-md-10" style="background-color:rgba(224,238,224,0.6);line-height:1.5">
 					<br>
 					<#if vo.subVoList??>
 					<#list vo.subVoList as subVo>
@@ -205,7 +213,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<hr>
 			<p style="word-break: break-all;word-wrap: break-word;">
 				暂时还没有回答，赶紧抢沙发吧！
@@ -221,7 +229,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9">
+		<div class="col-md-8">
 			<hr>
 			<div id="editor">
 			</div>
@@ -239,7 +247,7 @@
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-9" style="margin-top:30px">
+		<div class="col-md-8" style="margin-top:30px">
 		
 			<hr>
 			<hr>
@@ -248,148 +256,11 @@
 		</div>
 	</div>
 </div>
+ 	<script src="/wenda/static/js/jquery.min.js"></script>
+    <script src="/wenda/static/js/bootstrap.min.js"></script>
+    <script src="/wenda/static/js/header.js"></script>
 	<script type="text/javascript" src="/wenda/static/js/wangEditor.min.js"></script>
-    <script type="text/javascript">
-        var E = window.wangEditor;
-        var editor = new E('#editor');
-        editor.customConfig.uploadImgShowBase64 = true;
-        editor.customConfig.zIndex = 0
-        editor.create();
-        
-        //id属性以subCommentCommit开始的所有button标签 
-        $("button[id^='subCommentCommit_']").click(function(){
-        	 var commentId = $(this).attr("id").substr(17);
-        	 var textAreaId = "subCommentContent_"+commentId;
-        	 var content_ = $("#"+textAreaId).val();
-        	 if(content_==""||loginStatus.code==999);
-	   		 else
-	   		 {
-			   	 $.ajax({  
-		                type: "POST",  
-		                url:"/wenda/comment/comment/"+commentId,  
-		                dataType:"json",
-		                data:{"content":content},
-		                async: false,  
-		                error: function() {  
-		                    alert("网络异常");  
-		                },
-		                success: function(json) {  
-		                    loginStatus = eval(json);
-		                }
-		           });
-		    }
-		    if(loginStatus.code==0)
-            {
-            	location.reload(true);  
-            }else if(loginStatus.code==999)
-            {
-           		$("#submitUnlogin_comment_inComment_"+commentId).fadeIn();
-            }
-			
-		});
-        
-        //id属性以like开始的所有a标签 
-        $("a[id^='like_']").click(function(){
-        	 if($(this).hasClass("btn-info"));
-        	 else
-        	 {
-	        	 var commentId = $(this).attr("id").substr(5);
-	        	 
-	        	 if(loginStatus.code==999);
-		   		 else
-		   		 {
-				   	 $.ajax({  
-			                type: "POST",  
-			                url:"/wenda/like/comment/"+commentId,  
-			                dataType:"json",
-			                async: false,  
-			                error: function() {  
-			                    alert("网络异常");  
-			                },
-			                success: function(json) {  
-			                    loginStatus = eval(json);
-			                }
-			           });
-			    }
-			    
-			    if(loginStatus.code==0)
-	            {
-	            	$("#likeCount_"+commentId).text(loginStatus.msg); 
-	            	$(this).addClass("btn-info");
-	            	$("#dislike_"+commentId).removeClass("btn-info");
-	            }else if(loginStatus.code==999)
-	            {
-	           		alert("登录后才能赞踩哦");
-	            }
-	        }
-			
-		});
-		
-		 $("a[id^='dislike_']").click(function(){
-		 	 if($(this).hasClass("btn-info"));
-        	 else
-        	 {
-	        	 var commentId = $(this).attr("id").substr(8);
-	        	 
-	        	 if(loginStatus.code==999);
-		   		 else
-		   		 {
-				   	 $.ajax({  
-			                type: "POST",  
-			                url:"/wenda/dislike/comment/"+commentId,  
-			                dataType:"json",
-			                async: false,  
-			                error: function() {  
-			                    alert("网络异常");  
-			                },
-			                success: function(json) {  
-			                    loginStatus = eval(json);
-			                }
-			           });
-			    }
-			    
-			    if(loginStatus.code==0)
-	            {
-	            	$("#likeCount_"+commentId).text(loginStatus.msg); 
-	            	$("#like_"+commentId).removeClass("btn-info");
-	            	$(this).addClass("btn-info");
-	            }else if(loginStatus.code==999)
-	            {
-	           		alert("登录后才能赞踩哦");
-	            }
-	        }
-			
-		});
-
-	    $("#commentSubmit").click(function(){
-	   		 var questionId = $("#questionId").text();
-	   		 var content = editor.txt.text();
-	   		 if(content==""||loginStatus.code==999);
-	   		 else
-	   		 {
-			   	 $.ajax({  
-		                type: "POST",  
-		                url:"/wenda/comment/question/"+questionId,  
-		                dataType:"json",
-		                data:{"content":content},
-		                async: false,  
-		                error: function() {  
-		                    alert("网络异常");  
-		                },
-		                success: function(json) {  
-		                    loginStatus = eval(json);
-		                }
-		           });
-		    }
-		    if(loginStatus.code==0)
-            {
-            	location.reload(true);  
-            }else if(loginStatus.code==999)
-            {
-           		$("#submitUnlogin_comment").fadeIn();
-            }
-			
-		});
-    </script>
+	<script src="/wenda/static/js/questionDetail.js"></script>
+    
   </body>
 </html>

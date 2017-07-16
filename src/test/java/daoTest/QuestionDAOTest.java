@@ -31,7 +31,7 @@ public class QuestionDAOTest {
 		Question question=new Question();
 		question.setCommentCount(1);
 		question.setContent("test content");
-		question.setCreatedDate(DateUtil.getBeijinTime());
+		question.setCreatedDate(DateUtil.now());
 		question.setTitle("test title");
 		question.setUserId(111);
 		question.setId(8);

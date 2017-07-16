@@ -60,6 +60,13 @@ public class MessageController {
 				}
 				vo.set("message", message);
 				vo.set("interlocutor", interlocutor);
+				if(interlocutor.getId()==User.SYSTEM_USER_ID)
+				{
+					vo.set("isSystem", true);
+				}else
+				{
+					vo.set("isSystem", false);
+				}
 				voList.add(vo);
 			}
 			model.addAttribute("voList",voList);
@@ -92,6 +99,13 @@ public class MessageController {
 				}
 				vo.set("message", message);
 				vo.set("interlocutor", interlocutor);
+				if(interlocutor.getId()==User.SYSTEM_USER_ID)
+				{
+					vo.set("isSystem", true);
+				}else
+				{
+					vo.set("isSystem", false);
+				}
 				voList.add(vo);
 			}
 			model.addAttribute("voList",voList);
@@ -114,10 +128,10 @@ public class MessageController {
 		{
 			Message message = new Message();
 			message.setContent(content);
-			message.setCreateDate(DateUtil.getBeijinTime());
+			message.setCreateDate(DateUtil.now());
 			message.setFromId(hostHolder.getUser().getId());
 			message.setToId(id);
-			message.setStatus(Message.NOT_READ);
+			message.setStatus(Message.NOT_READ_STATUS);
 			int res = messageService.addMessage(message);
 			//失败
 			if(res<0)

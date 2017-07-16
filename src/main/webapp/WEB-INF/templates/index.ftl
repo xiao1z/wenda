@@ -12,10 +12,9 @@
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     <style>
     .row-margin-top {
-    margin-top: 20px;
+    margin-top: 10px;
 	}	
     </style>
-    <script src="/wenda/static/js/jquery.min.js"></script>
   </head>
   
   <body>
@@ -29,29 +28,30 @@
 		</div>
 		<div class="col-md-1">
 			<div class="text-center">
+				<a href="/wenda/user/${vo.user.id}">
 					<img alt="用户头像" class="img-rounded headimgSize" src="${vo.user.headUrl}">
+				</a>
 			</div>
 			<div class="text-center">		
 					<span class="badge badgeCss">100</span>
 			</div>
 			
 		</div>
-		<div class="col-md-9">
-			<h4>
+		<div class="col-md-8 well" style="background-color:rgba(0,0,0,0.0);">
+			<h4><strong>
 				${vo.question.title}
-			</h4>
+			</strong></h4>
+			<hr>
 			<a href="/wenda/user/${vo.user.id}/answers">${vo.user.username}</a>
 			<p style="word-break:break-all;word-wrap:break-word;">
 				${vo.question.content}
 			</p>
-			<p>
+			<p class="text-right">
 				<a class="btn" href="/wenda/question/${vo.question.id}">查看全部 »</a>
 			</p>
-			<div>
-				<hr>
-			</div>
+			
 		</div>
-		<div class="col-md-1">
+		<div class="col-md-2">
 		</div>
 	</div>
 	</#list>
@@ -101,8 +101,8 @@
 	</div>
 </div>
 
-    
+    <script src="/wenda/static/js/jquery.min.js"></script>
     <script src="/wenda/static/js/bootstrap.min.js"></script>
-    <script src="/wenda/static/js/scripts.js"></script>
+    <script src="/wenda/static/js/header.js"></script>
   </body>
 </html>

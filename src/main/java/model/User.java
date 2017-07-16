@@ -9,6 +9,10 @@ public class User {
 	private String password;
 	private String salt;
 	private String headUrl;
+	
+	//系统用户的初始化在async包的EventConsumer类中，因为只有事件处理会用到系统用户
+	public static final int SYSTEM_USER_ID = 1;
+	
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -49,7 +50,7 @@ public class IndexController {
 	public String getUserQuestions(@PathVariable("userId") int userId)
 	{
 		List<Question> questionList = questionService.getLatestQuestion(userId, 0, 10);
-		return JSONUtil.getJSONStringOfQuestions(questionList);
+		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}
 	
 	@RequestMapping(path = {"/user/{userId}/answers","/user/{userId}"},method = RequestMethod.GET)

@@ -8,8 +8,10 @@ import java.util.UUID;
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.util.HtmlUtils;
 
 import dao.LoginTicketDAO;
 import dao.MybatisSqlSessionFactory;
@@ -20,6 +22,9 @@ import util.MD5Util;
 
 @Service
 public class UserService {
+	
+	@Autowired
+	SensitiveWordsService sensitiveWordsService;
 	
 	private static int MIN_PASSWORD_LENGTH = 2;
 	
@@ -101,7 +106,7 @@ public class UserService {
 			map.put("error", "用户名已经被注册");
 			return map;
 		}
-		
+		username = HtmlUtils.htmlEscape(username);
 		user = new User();
 		user.setUsername(username);
 		user.setSalt(UUID.randomUUID().toString().substring(0,5));

@@ -9,10 +9,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import async.EventProducer;
+import async.EventType;
+import async.StandardEvent;
 import model.Comment;
 import model.EntityType;
 import model.HostHolder;
 import service.CommentService;
+import service.QuestionService;
 import util.DateUtil;
 import util.JSONUtil;
 
@@ -24,6 +28,12 @@ public class CommentController {
 	
 	@Autowired
 	CommentService commentService;
+	
+	@Autowired
+	EventProducer eventProducer;
+	
+	@Autowired
+	QuestionService questionService;
 	
 	@RequestMapping(value = "/comment/question/{id}" ,method = RequestMethod.POST)
 	@ResponseBody
@@ -40,7 +50,7 @@ public class CommentController {
 		{
 			Comment comment = new Comment();
 			comment.setContent(content);
-			comment.setCreateDate(DateUtil.getBeijinTime());
+			comment.setCreateDate(DateUtil.now());
 			comment.setEntityId(id);
 			comment.setEntityType(EntityType.QUESTION);
 			comment.setStatus(Comment.NORMAL_STATUS);
@@ -53,6 +63,17 @@ public class CommentController {
 				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
+				int questionOwnerId = questionService.getQuestion(id).getUserId();
+				if(questionOwnerId==hostHolder.getUser().getId());
+				else
+				{
+					eventProducer.fireEvent(new StandardEvent()
+							.setActorId(hostHolder.getUser().getId())
+							.setEntityId(id)
+							.setEntityOwnerId(questionOwnerId)
+							.setEntityType(EntityType.QUESTION)
+							.setType(EventType.COMMENT));
+				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
 		}
@@ -73,7 +94,7 @@ public class CommentController {
 		{
 			Comment comment = new Comment();
 			comment.setContent(content);
-			comment.setCreateDate(DateUtil.getBeijinTime());
+			comment.setCreateDate(DateUtil.now());
 			comment.setEntityId(id);
 			comment.setEntityType(EntityType.COMMENT);
 			comment.setStatus(Comment.NORMAL_STATUS);
@@ -86,6 +107,17 @@ public class CommentController {
 				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
+				int commentOwnerId = commentService.getCommentById(id).getUserId();
+				if(commentOwnerId==hostHolder.getUser().getId());
+				else
+				{
+					eventProducer.fireEvent(new StandardEvent()
+							.setActorId(hostHolder.getUser().getId())
+							.setEntityId(id)
+							.setEntityOwnerId(commentOwnerId)
+							.setEntityType(EntityType.COMMENT)
+							.setType(EventType.COMMENT));
+				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
 		}

@@ -19,6 +19,7 @@ import model.Question;
 import model.User;
 import model.ViewObject;
 import service.CommentService;
+import service.FollowService;
 import service.LikeService;
 import service.QuestionService;
 import service.UserService;
@@ -43,6 +44,9 @@ public class QuestionController {
 	@Autowired
 	LikeService likeService;
 	
+	@Autowired
+	FollowService followService;
+	
 	@RequestMapping(value = "/question/add" ,method = RequestMethod.POST)
 	@ResponseBody
 	public String addQuestion(@RequestParam("title") String title,@RequestParam("content") String content)
@@ -60,7 +64,7 @@ public class QuestionController {
 			question.setCommentCount(0);
 			question.setContent(content);
 			question.setTitle(title);
-			question.setCreatedDate(DateUtil.getBeijinTime());
+			question.setCreatedDate(DateUtil.now());
 			question.setUserId(hostHolder.getUser().getId());
 			int res = questionService.addQuestion(question);
 			//失败
@@ -78,6 +82,14 @@ public class QuestionController {
 	public String getQuestionDetails(Model model,@PathVariable("id") int id)
 	{
 		Question question = questionService.getQuestion(id);
+		if(hostHolder.getUser()!=null)
+		{
+			String followTableId = null;
+			if((followTableId=followService.isFollowQuestion(hostHolder.getUser().getId(),id))!=null)
+			{
+				model.addAttribute("followTableId",followTableId);
+			}
+		}
 		User asker = userService.getUser(question.getUserId());
 		List<Comment> commentList = commentService.getCommentsOfQusetion(question.getId());
 		//System.out.println(commentList.size()+"　"+question.getId());
@@ -88,7 +100,7 @@ public class QuestionController {
 			{
 				ViewObject vo = new ViewObject();
 				User user = userService.getUser(comment.getUserId());
-				comment.setCreateDate(DateUtil.getUTCTime(comment.getCreateDate()));
+				comment.setCreateDate(comment.getCreateDate());
 				if(hostHolder.getUser()!=null)
 				{
 					if(likeService.isLikeComment(hostHolder.getUser().getId(), comment.getId()))
@@ -115,7 +127,7 @@ public class QuestionController {
 					List<ViewObject> subVoList=new ArrayList<ViewObject>();
 					for(Comment subComment:subComments)
 					{
-						subComment.setCreateDate(DateUtil.getUTCTime(subComment.getCreateDate()));
+						subComment.setCreateDate(subComment.getCreateDate());
 						ViewObject subVo = new ViewObject();
 						User subUser = userService.getUser(subComment.getUserId());
 						subVo.set("subUser", subUser);

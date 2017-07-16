@@ -17,9 +17,7 @@
     margin-top: 20px;
 	}	
     </style>
-    <script src="/wenda/static/js/jquery.min.js"></script>
-    <script src="/wenda/static/js/bootstrap.min.js"></script>
-    <script src="/wenda/static/js/scripts.js"></script>
+   
   </head>
   
   <body style="font-size:100%;">
@@ -34,8 +32,8 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-9">
-			<div class="col-md-2 text-center">
-				<div class="text-center">
+			<div class="col-md-2">
+				<div>
 					<img alt="用户头像" class="img-rounded" src="${owner.headUrl}">
 				</div>
 				<br>
@@ -114,158 +112,120 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-9">
-			
-			<div class="tabbable" id="tabs" style="margin-left:10px;font-size:2em">
-				<hr>
-				<ul class="nav nav-tabs" >
-					<li>
-						<a href="#activities" data-toggle="tab">动态</a>
-					</li>
-					<li class="active">
-						<a id="requireAnswers" href="#answers" data-toggle="tab">回答</a>
-					</li>
-					<li>
-						<a id="requireQustions" href="#questions" data-toggle="tab">问题</a>
-					</li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane" id="activities">
-						<p>
-							activity
-						</p>
-					</div>
-					<div class="tab-pane active"  id="answers">
-					<p style="margin-top:15px"><strong>${discribe}回答</strong></p>
-						<#if voList??>
-						<#list voList as vo>
-						<hr>
-						<p>
-							<a href="/wenda/question/${vo.question.id}" style="color:black"><em><h2>${vo.question.title}</h2></em></a>
-						</p>
-						<div class="row">
-							<div class="col-md-1">
-								<div class="text-center" style="border:0px">
-									<img alt="用户头像" class="img-rounded commentUserimgSize" src="${owner.headUrl}">	
-									<br>
-									<div style="margin-top:10px" >
-										<a href="/wenda/user/${owner.id}/answers"><span style="word-break: break-all;word-wrap: break-word;">
-										${owner.username}
-										</span></a>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-8">
-								<span style="color:gray"> 28人赞同 </span>
-								<span style="color:gray"> &nbsp发布于:${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
-								
-								<p style="word-break: break-all;word-wrap: break-word; font-size:1em;">
-									${vo.comment.content}
+			<div class="row">
+				<div class="col-md-8 well" style="background-color:rgba(224,238,224,0.0);">
+					<div class="tabbable" id="tabs" style="margin-left:10px;font-size:2em">
+						
+						<ul class="nav nav-tabs" >
+							<li>
+								<a href="#activities" data-toggle="tab">动态</a>
+							</li>
+							<li class="active">
+								<a id="requireAnswers" href="#answers" data-toggle="tab">回答</a>
+							</li>
+							<li>
+								<a id="requireQustions" href="#questions" data-toggle="tab">问题</a>
+							</li>
+							<li>
+								<a id="requireCollections" href="#collections" data-toggle="tab">收藏</a>
+							</li>
+							<li>
+								<a id="requireFollows" href="#follows" data-toggle="tab">关注</a>
+							</li>
+							<li>
+								<a id="requireFollower" href="#followers" data-toggle="tab">粉丝</a>
+							</li>
+						</ul>
+						<div class="tab-content">
+							<div class="tab-pane" id="activities">
+								<p>
+									activity
 								</p>
 							</div>
-						
+							<div class="tab-pane active"  id="answers">
+								<p style="margin-top:15px"><strong>${discribe}回答</strong></p>
+								<#if voList??>
+								<#list voList as vo>
+								<hr>
+								<p>
+									<a href="/wenda/question/${vo.question.id}" style="color:black"><em><h3>${vo.question.title}</h3></em></a>
+								</p>
+								<div class="row">
+									<div class="col-md-1">
+										<div class="text-center" style="border:0px">
+											<img alt="用户头像" class="img-rounded commentUserimgSize" src="${owner.headUrl}">	
+											<br>
+											<div style="margin-top:10px" >
+												<a href="/wenda/user/${owner.id}/answers"><span style="word-break: break-all;word-wrap: break-word;">
+												${owner.username}
+												</span></a>
+											</div>
+										</div>
+									</div>
+									<div class="col-md-8">
+										<span style="color:gray"> 28人赞同 </span>
+										<span style="color:gray"> &nbsp发布于:${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
+										
+										<p style="word-break: break-all;word-wrap: break-word;">
+											${vo.comment.content}
+										</p>
+									</div>
+								
+								</div>
+								</#list>
+								<#else>
+									<p>
+									<hr>
+									该用户还没有回答过问题
+									</p>
+								</#if>
+								
+							</div>
+							<div class="tab-pane" id="questions">
+								<p style="margin-top:15px"><strong>${discribe}提问</strong></p>
+								<hr>
+								<div id="questionsContent">
+								</div>
+							</div>
+							<div class="tab-pane" id="collections">
+								<p style="margin-top:15px"><strong>${discribe}收藏</strong></p>
+								<hr>
+								<div id="collectionsContent">
+								</div>
+							</div>
+							<div class="tab-pane" id="follows">
+								<p style="margin-top:15px"><strong>${discribe}关注</strong></p>
+								<hr>
+								<div id="followsContent">
+								</div>
+							</div>
+							<div class="tab-pane" id="followers">
+								<p style="margin-top:15px"><strong>${discribe}粉丝</strong></p>
+								<hr>
+								<div id="followersContent">
+								</div>
+							</div>
+							
+							
 						</div>
-						</#list>
-						<#else>
-							<p>
-							<hr>
-							该用户还没有回答过问题
-							</p>
-						</#if>
-						
 					</div>
-					<div class="tab-pane" id="questions">
-						<p style="margin-top:15px"><strong>${discribe}提问</strong></p>
-						<hr>
-					</div>
+				</div>
+
+				<div class="col-md-3 well" style="background-color:rgba(224,238,224,0.0);margin-left:6px;">
+					
+					<span style="color:blue;font-size:2em">共同关注</span>
 					
 				</div>
+				
 			</div>
 		</div>
 		<div class="col-md-1">
 		</div>
 	</div>
-
-    <script>
-    	var lastClick;
-    	var ownerId = $("#ownerId").text();
-    	
+ 	<script src="/wenda/static/js/jquery.min.js"></script>
+    <script src="/wenda/static/js/bootstrap.min.js"></script>
+    <script src="/wenda/static/js/header.js"></script>
+    <script src="/wenda/static/js/userIndex.js"></script>
     
-    	
-    	
-    	$("#sendMessageRequire").click(function(){
-	    	 
-	        if(loginStatus.code==0)
-	        {  
-	        	$("#sendMessageSuccess").attr("style","display:none");
-	          	$("#sendMessage").fadeIn();
-	          	$("#sendMessageRequire").attr("data-target","#messageModal");
-	          	$("#sendMessageRequire").attr("data-toggle","modal");
-	          	$("#messageContent").val("");
-	        }
-	    });
-	    
-	    $("#sendMessage").click(function(){
-			$.ajax({  
-	                type: "POST",  
-	                url:"/wenda/addMessage/user/"+ownerId,  
-	                data:$('#messageForm').serialize(),// 序列化表单值  
-	                dataType:"json",
-	                async: false,  
-	                error: function() {  
-	                    alert("网络异常");  
-	                },  
-	                success: function(json) {  
-	                    loginStatus = eval(json);
-	                    if(loginStatus.code==0)
-	                    {
-	                    	$("#sendMessageSuccess").fadeIn();
-	                    	$("#sendMessage").fadeOut();
-	                    }else if(loginStatus.code==999)
-	                    {
-	                   		$("#sendMessageUnlogin").fadeIn();
-	                    	$("#sendMessage").fadeOut();
-	                    }
-	                }  
-	            });  
-			});
-	    
-    	$("#requireQustions").click(function(){
-    		 if(lastClick==$(this).attr("id"));
-    		 else
-    		 {
-    			 lastClick=$(this).attr("id");
-	    		 var questionsResponse;
-	    		 $.ajax({  
-		                type: "GET",  
-		                url:"/wenda/user/"+ownerId+"/questions",  
-		                dataType:"json",
-		                async: false,  
-		                error: function() {  
-		                    alert("网络异常");  
-		                },
-		                success: function(json) {  
-		                    questionsResponse=eval(json);
-		                }
-			           });
-			     if(questionsResponse.code==3)
-			     {
-			    	$("#questions").html(function(i,origText){
-			     	return origText+"<p>该用户还没有提过问题</p>";
-			     	});
-			     }else
-			     {
-			     	for(a in questionsResponse.questionArray)
-			     	{
-			     		$("#questions").html(function(i,origText){
-			     			return origText+'<p><a href="/wenda/question/' +questionsResponse.questionArray[a].id+ '" style="color:black"><em><h2>'
-			     			+questionsResponse.questionArray[a].title
-			     			+'</h2></em></a><span style="color:gray">发布于:'+questionsResponse.questionArray[a].createdDate+'</span></p><hr>';
-			     		});
-			     
-			    	}
-			     }
-			}
-    	});
-    </script>
   </body>
 </html>

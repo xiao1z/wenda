@@ -1,5 +1,7 @@
 package service;
 
+import java.util.List;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
@@ -14,7 +16,41 @@ public class RedisAdapter implements InitializingBean{
 	private static final Logger logger = LoggerFactory.getLogger(RedisAdapter.class);
 
 	
+	public long lpush(String key,String value)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.lpush(key,value);
+		}catch(Exception e)
+		{
+			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return 0;
+	}
 	
+	public List<String> brpop(int timeOut,String key)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.brpop(timeOut,key);
+		}catch(Exception e)
+		{
+			logger.error("（阻塞）redis队列从队尾获取元素错误  "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return null;
+	}
 	
 	public long sadd(String key,String value)
 	{

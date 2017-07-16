@@ -7,6 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
 import dao.CommentDAO;
 import dao.MybatisSqlSessionFactory;
@@ -106,5 +107,26 @@ public class CommentService {
 			}
 		}
 		return commentList;
+	}
+	
+	public Comment getCommentById(int commentId)
+	{
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		CommentDAO commentDAO;
+		Comment comment = null;
+		try{
+			commentDAO = session.getMapper(CommentDAO.class);
+			comment = commentDAO.getCommentById(commentId);
+		}catch(Exception e)
+		{
+			logger.error("根据id获取评论错误 "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return comment;
 	}
 }

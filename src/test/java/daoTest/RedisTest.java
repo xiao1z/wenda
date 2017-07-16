@@ -1,7 +1,11 @@
 package daoTest;
 
+import async.Event;
+import async.EventType;
+import async.StandardEvent;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
+import util.JSONUtil;
 
 public class RedisTest {
 	
@@ -9,8 +13,15 @@ public class RedisTest {
 	{
 		JedisPool pool =new JedisPool("redis://localhost:6379/10");
 		Jedis jedis = pool.getResource();
-		jedis.set("foo", "bar");
-		String value = jedis.get("foo");
-		System.out.println(value);
+		StandardEvent e = new StandardEvent();
+		e.setActorId(0);
+		e.setEntityId(0);
+		e.setEntityOwnerId(0);
+		e.setEntityType(0);
+		e.setPriority(StandardEvent.NORMAL_PRIORITY);
+		e.setStatus(StandardEvent.NORMAL_STATUS);
+		e.setType(EventType.COMMENT);
+		
+		jedis.lpush("eventTest", JSONUtil.getJSONStringOfEvent(e));
 	}
 }

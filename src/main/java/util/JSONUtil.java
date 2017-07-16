@@ -1,21 +1,47 @@
 package util;
 
-import java.util.ArrayList;
+import java.lang.reflect.Field;
+import java.util.HashSet;
 import java.util.List;
-import java.util.TimeZone;
-
+import java.util.Set;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 
+import async.Event;
 import model.Question;
+import model.User;
 
 public class JSONUtil {
 	public static final int UNLOGIN = 999;
 	public static final int SUCCESS = 0;
 	public static final int FAIL = 1;
 	public static final int EMPTY_CONTENT = 2;
+	public static final int DUPLICATE_INSERT = 3;
+	
+	private static Set<String> questionFields = new HashSet<String>();
+	private static Set<String> userFields = new HashSet<String>();
+	
+	static
+	{
+		Field[] questionfields = Question.class.getDeclaredFields();
+		for(int i=0;i<questionfields.length;i++)
+		{
+			questionFields.add(questionfields[i].getName());
+		}
+		
+		Field[] userfields = User.class.getDeclaredFields();
+		for(int i=0;i<userfields.length;i++)
+		{
+			userFields.add(userfields[i].getName());
+		}
+	}
+	
+	public static String getJSONStringOfEvent(Event e)
+	{
+		return JSON.toJSONString(e);
+	}
 	
 	
 	public static String getJSONString(int code,String msg)
@@ -33,18 +59,27 @@ public class JSONUtil {
 		return json.toJSONString();
 	}
 	
-	public static String getJSONStringOfQuestions(List<Question> questions)
+	public static String getJSONStringOfQuestions(List<Question> questions,List<String> omitFields)
 	{
 		if(questions==null||questions.isEmpty())
 		{
 			//表示问题为空
-			return JSONUtil.getJSONString(3);
+			return JSONUtil.getJSONString(EMPTY_CONTENT);
 		}
 		SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
-		filter.getExcludes().add("content");
+		if(omitFields!=null)
+		{
+			for(String omitField:omitFields)
+			{
+				if(questionFields.contains(omitField))
+				{
+					filter.getExcludes().add(omitField);
+				}
+			}
+		}
 		JSONArray jarry =new JSONArray();
 		JSONObject json = new JSONObject();
-		JSONArray.defaultTimeZone = TimeZone.getTimeZone("GMT");
+		//JSONArray.defaultTimeZone = TimeZone.getTimeZone("GMT");
 		json.put("code",0);
 		json.put("count", questions.size());
 		jarry.addAll(questions);
@@ -52,20 +87,36 @@ public class JSONUtil {
 		return JSON.toJSONString(json,filter);
 		
 	}
-
-	public static void main(String args[])
+	
+	public static String getJSONStringOfUsers(List<User> users,List<String> omitFields)
 	{
-		List<Question> list = new ArrayList<Question>();
-		for(int i=0;i<3;i++)
+		if(users==null||users.isEmpty())
 		{
-			Question question = new Question();
-			question.setContent("你好");
-			question.setId(i);
-			question.setCreatedDate(DateUtil.getBeijinTime());
-			question.setCommentCount(0);
-			question.setTitle("你好");
-		//	list.add(question);
+			//表示用户为空
+			return JSONUtil.getJSONString(EMPTY_CONTENT);
 		}
-		System.out.println(JSONUtil.getJSONStringOfQuestions(list));
+		SimplePropertyPreFilter filter = new SimplePropertyPreFilter();
+		if(omitFields!=null)
+		{
+			for(String omitField:omitFields)
+			{
+				if(userFields.contains(omitField))
+				{
+					filter.getExcludes().add(omitField);
+				}
+			}
+		}
+		JSONArray jarry =new JSONArray();
+		JSONObject json = new JSONObject();
+		//JSONArray.defaultTimeZone = TimeZone.getTimeZone("GMT");
+		json.put("code",0);
+		json.put("count", users.size());
+		jarry.addAll(users);
+		json.put("userArray", jarry);
+		return JSON.toJSONString(json,filter);
+		
 	}
+	
+	
+
 }

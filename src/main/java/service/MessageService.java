@@ -7,8 +7,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.util.HtmlUtils;
 
-import dao.CommentDAO;
 import dao.MessageDAO;
 import dao.MybatisSqlSessionFactory;
 import model.Message;
@@ -21,10 +21,16 @@ public class MessageService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 
-	
-	public int addMessage(Message message)
+	public int addMessage(Message message,boolean htmlEscape)
 	{
-		message.setContent(sensitiveWordsService.filterWords(message.getContent()));
+		if(htmlEscape)
+		{
+			message.setContent(HtmlUtils.htmlEscape(sensitiveWordsService.filterWords(message.getContent())));
+		}
+		else
+		{
+			message.setContent(sensitiveWordsService.filterWords(message.getContent()));
+		}
 		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 		MessageDAO messageDAO;
 		int result = -1;
@@ -43,6 +49,11 @@ public class MessageService {
 			}
 		}
 		return result;
+	}
+	
+	public int addMessage(Message message)
+	{
+		return this.addMessage(message, true);
 	}
 	
 	

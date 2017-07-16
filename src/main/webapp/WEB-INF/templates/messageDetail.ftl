@@ -11,8 +11,7 @@
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     
-    <script src="/wenda/static/js/jquery.min.js"></script>
-    <script src="/wenda/static/js/bootstrap.min.js"></script>
+    
 
   </head>
   <body style="font-size:100%">
@@ -37,9 +36,13 @@
 	                            <img alt="头像" src="${user.headUrl}">
 	                        </a>
 							<#else>
-	                        <a href="/wenda/user/${vo.interlocutor.id}" class="list-head">
-	                           <img alt="头像" src="${vo.interlocutor.headUrl}">
-	                        </a>
+								<#if vo.isSystem>
+									<img class="list-head" alt="头像" src="${vo.interlocutor.headUrl}">
+								<#else>
+									<a href="/wenda/user/${vo.interlocutor.id}" class="list-head">
+		                           <img alt="头像" src="${vo.interlocutor.headUrl}">
+		                        </a>
+								</#if>
 	                        </#if>
 	                    </div>
 					</div>
@@ -50,7 +53,12 @@
 								<span  style="color:gray;font-size:1.7em">
 									${vo.action}
 								</span>
-								<a href="/wenda/user/${vo.interlocutor.id}">${vo.interlocutor.username}</a>
+								<#if vo.isSystem>
+									<span style="color:red">${vo.interlocutor.username}</span>
+								<#else>
+									<a href="/wenda/user/${vo.interlocutor.id}">${vo.interlocutor.username}</a>
+								</#if>
+
 								<span class="pull-right" style="color:gray;font-size:1.7em">
 									${vo.message.createDate?string('yyyy年MM月dd日  HH:mm:ss')}
 								</span>
@@ -89,7 +97,9 @@
 		</div>	
 		</#if>
 	</div>
-
+	<script src="/wenda/static/js/jquery.min.js"></script>
+    <script src="/wenda/static/js/bootstrap.min.js"></script>
+    <script src="/wenda/static/js/header.js"></script>
     
   </body>
 </html>

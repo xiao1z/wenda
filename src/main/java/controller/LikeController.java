@@ -7,12 +7,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import model.EntityType;
 import model.HostHolder;
 import service.LikeService;
-import service.RedisAdapter;
 import util.JSONUtil;
-import util.RedisKeyUtil;
 
 @Controller
 public class LikeController {
@@ -22,7 +19,6 @@ public class LikeController {
 	
 	@Autowired
 	LikeService likeService;
-	
 	
 	
 	@RequestMapping(path = {"/like/comment/{commentId}"},method = RequestMethod.POST)
@@ -36,6 +32,7 @@ public class LikeController {
 		{
 			if(likeService.likeComment(hostHolder.getUser().getId(), commentId)>0)
 			{
+				
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS
 						,String.valueOf(likeService.getCommentLikeCount(commentId)));
 			}else

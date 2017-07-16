@@ -16,7 +16,7 @@ public class Message {
 	
 	public static final int DELETED_STATUS = -1;
 	public static final int HAS_READ_STATUS = 1;
-	public static final int NOT_READ = 0;
+	public static final int NOT_READ_STATUS = 0;
 	
 	public int getId() {
 		return id;
