@@ -22,6 +22,7 @@ import model.Question;
 import model.User;
 import model.ViewObject;
 import service.CommentService;
+import service.FollowService;
 import service.QuestionService;
 import service.UserService;
 import util.JSONUtil;
@@ -44,6 +45,9 @@ public class IndexController {
 	
 	@Autowired
 	HostHolder hostHolder;
+	
+	@Autowired
+	FollowService followService;
 
 	@RequestMapping(path = {"/user/{userId}/questions"},method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -60,6 +64,14 @@ public class IndexController {
 		{
 			model.addAttribute("canSendMessage","true");
 			model.addAttribute("discribe","他的");
+			if(hostHolder.getUser()!=null)
+			{
+				String followTableId = followService.isFollowUser(hostHolder.getUser().getId(), userId);
+				if(followTableId!=null)
+				{
+					model.addAttribute("followTableId",followTableId);
+				}
+			}
 		}
 		else
 		{

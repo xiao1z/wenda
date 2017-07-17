@@ -98,4 +98,31 @@ public class FollowController {
 
 	}
 	
+	
+	@RequestMapping(value = "/follow/user/{userId}" ,method = RequestMethod.POST)
+	@ResponseBody
+	public String followUser(@PathVariable("userId") int userId)
+	{
+		if(hostHolder.getUser()==null)
+		{
+			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
+		}else
+		{
+			Follow follow = new Follow();
+			follow.setCreateDate(new Date());
+			follow.setEntityId(hostHolder.getUser().getId());
+			follow.setEntityType(EntityType.USER);
+			follow.setFollowId(userId);
+			follow.setFollowType(EntityType.USER);
+			//防止重复关注
+			if(followService.isFollowQuestion(hostHolder.getUser().getId(), userId)!=null)
+				return JSONUtil.getJSONString(JSONUtil.DUPLICATE_INSERT);
+			else 
+			{
+				int followTableId = followService.addFollowAndGetId(follow);
+				return JSONUtil.getJSONString(JSONUtil.SUCCESS,String.valueOf(followTableId));
+			}
+		}
+
+	}
 }

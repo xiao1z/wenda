@@ -64,7 +64,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8">
-			<#if user.id == question.userId>
+			<#if user?? && user.id == question.userId>
 			<#else>
 				<#if followTableId??>
 					<span class="hidden" id="followTableId">${followTableId}</span>
@@ -77,7 +77,7 @@
 						收藏
 					</button>
 				</#if>
-			</#if>	
+			</#if>
 			<div class="btn-group">
 				 
 				<button class="btn btn-default">

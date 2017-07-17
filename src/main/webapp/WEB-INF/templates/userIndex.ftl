@@ -52,19 +52,28 @@
 				<div class="pull-right">
 					<ul class="list-inline">
 						<#if canSendMessage??>
-						<li>
-							<button type="button" class="btn btn-primary btn-lg">关注他</button> 
-						</li>
-						<li>	
-							<button type="button" id="sendMessageRequire"  class="btn btn-primary btn-lg">发私信</button>
-						</li>
+							<#if followTableId??>
+								<span class="hidden" id="followTableId">${followTableId}</span>
+								<button id="followToggle" type="button" class="btn btn-primary btn-lg">
+									取消关注
+								</button>
+							<#else>
+								<span class="hidden" id="followTableId"></span>
+								<button id="followToggle" type="button" class="btn btn-primary btn-lg">
+									关注 Ta
+								</button>
+							</#if>
+							
+							<li>	
+								<button type="button" id="sendMessageRequire"  class="btn btn-primary btn-lg">发私信</button>
+							</li>
 						<#else>
-						<li>
-							<a type="button" class="btn btn-primary btn-lg">修改资料</a> 
-						</li>
-						<li>
-							<a  href="/wenda/user/${user.id}/messages" type="button" class="btn btn-primary btn-lg">查看私信</a> 
-						</li>
+							<li>
+								<a type="button" class="btn btn-primary btn-lg">修改资料</a> 
+							</li>
+							<li>
+								<a  href="/wenda/user/${user.id}/messages" type="button" class="btn btn-primary btn-lg">查看私信</a> 
+							</li>
 						</#if>
 					</ul>
 				</div>
@@ -133,14 +142,15 @@
 								<a id="requireFollows" href="#follows" data-toggle="tab">关注</a>
 							</li>
 							<li>
-								<a id="requireFollower" href="#followers" data-toggle="tab">粉丝</a>
+								<a id="requireFollowers" href="#followers" data-toggle="tab">粉丝</a>
 							</li>
 						</ul>
 						<div class="tab-content">
 							<div class="tab-pane" id="activities">
-								<p>
-									activity
-								</p>
+								<p style="margin-top:15px"><strong>${discribe}动态</strong></p>
+								<hr>
+								<div id="activitiesContent">
+								</div>
 							</div>
 							<div class="tab-pane active"  id="answers">
 								<p style="margin-top:15px"><strong>${discribe}回答</strong></p>
@@ -163,7 +173,6 @@
 										</div>
 									</div>
 									<div class="col-md-8">
-										<span style="color:gray"> 28人赞同 </span>
 										<span style="color:gray"> &nbsp发布于:${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
 										
 										<p style="word-break: break-all;word-wrap: break-word;">
@@ -205,8 +214,6 @@
 								<div id="followersContent">
 								</div>
 							</div>
-							
-							
 						</div>
 					</div>
 				</div>

@@ -142,7 +142,28 @@ public class FollowService {
 			
 		}catch(Exception e)
 		{
-			logger.error("取消关注错误 "+e.getMessage());
+			logger.error("判断是否关注错误  "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return null;
+	}
+	
+	public String isFollowUser(int followerId,int userId)
+	{
+		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		FollowDAO followDAO;
+		try{
+			followDAO = session.getMapper(FollowDAO.class);
+			return followDAO.selectIdOfEntityAndfollow(followerId, EntityType.USER, userId, EntityType.USER);
+			
+		}catch(Exception e)
+		{
+			logger.error("判断是否关注错误 "+e.getMessage());
 		}finally
 		{
 			if(session!=null)
