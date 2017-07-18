@@ -14,12 +14,17 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+
 import dao.LoginTicketDAO;
 import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
 import model.HostHolder;
 import model.LoginTicket;
 import model.User;
+import service.RedisAdapter;
+import util.RedisKeyUtil;
 
 
 @Component
@@ -30,6 +35,10 @@ public class PassportIntercepter implements HandlerInterceptor{
 
 	@Autowired
 	HostHolder hostHolder;
+	
+	@Autowired
+	RedisAdapter redisAdapter;
+	
 	
 	@Override
 	public void afterCompletion(HttpServletRequest arg0, HttpServletResponse arg1, Object arg2, Exception arg3)
@@ -45,6 +54,18 @@ public class PassportIntercepter implements HandlerInterceptor{
 		if(modelAndView!=null)
 		{
 			modelAndView.addObject("user", hostHolder.getUser());
+			if(hostHolder.getUser()!=null)
+			{
+				String key = RedisKeyUtil.getQusetionAddCacheKey(hostHolder.getUser().getId());
+				String cache = redisAdapter.get(key);
+				if(cache!=null)
+				{
+					JSONObject json = JSON.parseObject(cache);
+					modelAndView.addObject("cache_title", json.get("title"));
+					modelAndView.addObject("cache_content", json.get("content"));
+					redisAdapter.del(key);
+				}
+			}
 		}
 		
 	}

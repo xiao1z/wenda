@@ -18,7 +18,7 @@
   <body style="font-size:100%;">
   	
 
-    <div class="container-fluid">
+    <div class="container-fluid" id="container">
     <#include "header.ftl">
     <span id="questionId" class="hidden">${question.id}</span>
 	<div class="row" style="margin-top:10px">
@@ -248,7 +248,6 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8" style="margin-top:30px">
-		
 			<hr>
 			<hr>
 		</div>

@@ -5,8 +5,14 @@ editor.customConfig.zIndex = 0
 editor.create();
 
 
-$(document).ready(function(){
-	
+//根据Url #后的id进行定位
+$(function(){
+    var url = window.location.toString();
+    var id = url.split("#")[1];
+   if(id){
+      var t = $(id).offset().top;
+      $(window).scrollTop(t);
+   }
 });
 
 //id属性以subCommentCommit开始的所有button标签 
@@ -28,16 +34,17 @@ $("button[id^='subCommentCommit_']").click(function(){
                 },
                 success: function(json) {  
                     loginStatus = eval(json);
+                    if(loginStatus.code==0)
+                    {
+                    	location.reload(true);  
+                    }else if(loginStatus.code==999)
+                    {
+                   		$("#submitUnlogin_comment_inComment_"+commentId).fadeIn();
+                    }
                 }
            });
     }
-    if(loginStatus.code==0)
-    {
-    	location.reload(true);  
-    }else if(loginStatus.code==999)
-    {
-   		$("#submitUnlogin_comment_inComment_"+commentId).fadeIn();
-    }
+    
 	
 });
 
@@ -131,16 +138,17 @@ $("#commentSubmit").click(function(){
                 },
                 success: function(json) {  
                     loginStatus = eval(json);
+                    if(loginStatus.code==0)
+                    {
+                    	location.reload(true);  
+                    }else if(loginStatus.code==999)
+                    {
+                   		$("#submitUnlogin_comment").fadeIn();
+                    }
                 }
            });
     }
-    if(loginStatus.code==0)
-    {
-    	location.reload(true);  
-    }else if(loginStatus.code==999)
-    {
-   		$("#submitUnlogin_comment").fadeIn();
-    }
+
 	
 });
 

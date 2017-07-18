@@ -34,6 +34,61 @@ public class RedisAdapter implements InitializingBean{
 		return 0;
 	}
 	
+	public String set(String key,String value)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.set(key,value);
+		}catch(Exception e)
+		{
+			logger.error("redis set元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return null;
+	}
+	
+	public long del(String key)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.del(key);
+		}catch(Exception e)
+		{
+			logger.error("redis del元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return 0;
+	}
+	
+	
+	public String get(String key)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.get(key);
+		}catch(Exception e)
+		{
+			logger.error("redis get元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return null;
+	}
+	
 	public List<String> brpop(int timeOut,String key)
 	{
 		Jedis jedis = null;

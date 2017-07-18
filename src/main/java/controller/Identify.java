@@ -24,7 +24,7 @@ public class Identify {
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
 		}else
 		{
-			return JSONUtil.getJSONString(JSONUtil.SUCCESS);
+			return JSONUtil.getJSONString(JSONUtil.SUCCESS,String.valueOf(hostHolder.getUser().getId()));
 		}
 			
 	}

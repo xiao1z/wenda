@@ -1,5 +1,8 @@
 package async;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class StandardEvent implements Event{
 	private EventType type;
 	private int actorId;
@@ -8,6 +11,7 @@ public class StandardEvent implements Event{
 	private int entityOwnerId;
 	private int status = NORMAL_STATUS;
 	private int priority = NORMAL_PRIORITY;
+	private Map<String,String> informationMap = new HashMap<String,String>();
 	
 	
 	
@@ -67,6 +71,24 @@ public class StandardEvent implements Event{
 	public StandardEvent setPriority(int priority) {
 		this.priority = priority;
 		return this;
+	}
+	public Map<String,String> getInformationMap() {
+		return informationMap;
+	}
+	public StandardEvent setInformationMap(Map<String,String> information) {
+		this.informationMap = information;
+		return this;
+	}
+	
+	public StandardEvent setInfomation(String key,String value)
+	{
+		this.informationMap.put(key, value);
+		return this;
+	}
+	
+	public String getInformation(String key)
+	{
+		return informationMap.get(key);
 	}
 	
 }

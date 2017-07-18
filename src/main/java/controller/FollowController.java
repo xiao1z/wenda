@@ -18,6 +18,7 @@ import model.HostHolder;
 import model.Question;
 import model.User;
 import service.FollowService;
+import util.DateUtil;
 import util.JSONUtil;
 
 @Controller
@@ -81,7 +82,7 @@ public class FollowController {
 		}else
 		{
 			Follow follow = new Follow();
-			follow.setCreateDate(new Date());
+			follow.setCreateDate(DateUtil.now());
 			follow.setEntityId(hostHolder.getUser().getId());
 			follow.setEntityType(EntityType.USER);
 			follow.setFollowId(questionId);
@@ -109,7 +110,7 @@ public class FollowController {
 		}else
 		{
 			Follow follow = new Follow();
-			follow.setCreateDate(new Date());
+			follow.setCreateDate(DateUtil.now());
 			follow.setEntityId(hostHolder.getUser().getId());
 			follow.setEntityType(EntityType.USER);
 			follow.setFollowId(userId);

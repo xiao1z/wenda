@@ -72,7 +72,8 @@ public class CommentController {
 							.setEntityId(id)
 							.setEntityOwnerId(questionOwnerId)
 							.setEntityType(EntityType.QUESTION)
-							.setType(EventType.COMMENT));
+							.setType(EventType.COMMENT)
+							.setInfomation("commentId", String.valueOf(res)));
 				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}

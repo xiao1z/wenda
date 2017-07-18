@@ -7,8 +7,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.util.HtmlUtils;
-
 import dao.CommentDAO;
 import dao.MybatisSqlSessionFactory;
 import model.Comment;
@@ -30,8 +28,9 @@ public class CommentService {
 		int result = -1;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			result = commentDAO.addComment(comment);
+			commentDAO.addComment(comment);
 			session.commit();
+			result = comment.getId();
 		}catch(Exception e)
 		{
 			logger.error("添加评论错误 "+e.getMessage());

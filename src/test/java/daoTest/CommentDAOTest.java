@@ -33,6 +33,7 @@ public class CommentDAOTest {
 		SqlSession session=sqlSessionFactory.openSession();
 		CommentDAO commentDAO = session.getMapper(CommentDAO.class);
 		commentDAO.addComment(comment);
+		System.out.println(comment.getId());
 		session.commit();
 	}
 	

@@ -18,6 +18,7 @@ import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
 import model.LoginTicket;
 import model.User;
+import util.DateUtil;
 import util.MD5Util;
 
 @Service
@@ -32,7 +33,7 @@ public class UserService {
 
 	
 	
-	public Map<String,String> login(String username,String password)
+	public Map<String,String> login(String username,String password,boolean rememberMe)
 	{
 		Map<String,String> map = new HashMap<String,String>();
 		if(StringUtils.isEmpty(username)){
@@ -56,7 +57,7 @@ public class UserService {
 			return map;
 		}
 		
-		String ticket = this.addTicket(user.getId());
+		String ticket = this.addTicket(user.getId(),rememberMe);
 		map.put("ticket", ticket);
 		return map;
 		
@@ -83,7 +84,7 @@ public class UserService {
 	}
 	
 	
-	public Map<String,String> register(String username,String password)
+	public Map<String,String> register(String username,String password,boolean rememberMe)
 	{
 		Map<String,String> map = new HashMap<String,String>();
 		if(StringUtils.isEmpty(username)){
@@ -118,21 +119,24 @@ public class UserService {
 			return map;
 		}
 		
-		String ticket = this.addTicket(user.getId());
+		String ticket = this.addTicket(user.getId(),rememberMe);
 		map.put("ticket", ticket);
 		
 		return map;
 	}
 	
 	//根据userId下发一个ticket
-	private String addTicket(int userId){
+	private String addTicket(int userId,boolean rememberMe){
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 		LoginTicket loginTicket = new LoginTicket();
 		loginTicket.setUserId(userId);
 		loginTicket.setStatus(0);
 		loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
-		Date now =new Date();
-		now.setTime(LoginTicket.EXPIRED_TIME + now.getTime());
+		Date now =DateUtil.now();
+		if(rememberMe)
+			now.setTime(LoginTicket.EXPIRED_TIME_MILLISECONDS + now.getTime());
+		else
+			now.setTime(LoginTicket.EXPIRED_TIME_MILLISECONDS_IF_NOTREMEBERME + now.getTime());
 		loginTicket.setExpired(now);
 		LoginTicketDAO loginTicketDAO;
 		

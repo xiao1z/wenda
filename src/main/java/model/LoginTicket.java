@@ -12,7 +12,13 @@ public class LoginTicket {
 	private int status;
 	
 	//单位为毫秒
-	public final static long EXPIRED_TIME = 7*24*60*60*1000;
+	public final static long EXPIRED_TIME_MILLISECONDS = 30*24*60*60*1000;
+	
+	//单位为毫秒
+	public final static long EXPIRED_TIME_MILLISECONDS_IF_NOTREMEBERME = 1*60*60*1000;
+	
+	//单位为秒
+	public final static int EXPIRED_TIME_SECONDS = 30*24*60*60;
 	
 	public int getId() {
 		return id;

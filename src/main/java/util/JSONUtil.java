@@ -52,6 +52,14 @@ public class JSONUtil {
 		return json.toJSONString();
 	}
 	
+	public static String getQuestionCacheJSONString(String title,String content)
+	{
+		JSONObject json = new JSONObject();
+		json.put("title", title);
+		json.put("content", content);
+		return json.toJSONString();
+	}
+	
 	public static String getJSONString(int code)
 	{
 		JSONObject json = new JSONObject();

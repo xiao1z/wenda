@@ -22,9 +22,11 @@ import service.CommentService;
 import service.FollowService;
 import service.LikeService;
 import service.QuestionService;
+import service.RedisAdapter;
 import service.UserService;
 import util.DateUtil;
 import util.JSONUtil;
+import util.RedisKeyUtil;
 
 @Controller
 public class QuestionController {
@@ -46,6 +48,9 @@ public class QuestionController {
 	
 	@Autowired
 	FollowService followService;
+	
+	@Autowired
+	RedisAdapter redisAdapter;
 	
 	@RequestMapping(value = "/question/add" ,method = RequestMethod.POST)
 	@ResponseBody
@@ -77,6 +82,17 @@ public class QuestionController {
 			}
 		}
 	}
+	
+	@RequestMapping(value = "/question/addCache/{userId}" ,method = RequestMethod.POST)
+	@ResponseBody
+	public String addQuestionCache(@RequestParam("title") String title
+			,@RequestParam("content") String content
+			,@PathVariable("userId") int userId){
+		String key = RedisKeyUtil.getQusetionAddCacheKey(userId);
+		redisAdapter.set(key, JSONUtil.getQuestionCacheJSONString(title, content));
+		return JSONUtil.getJSONString(JSONUtil.SUCCESS);
+	}
+	
 	
 	@RequestMapping(value = "/question/{id}" ,method = RequestMethod.GET)
 	public String getQuestionDetails(Model model,@PathVariable("id") int id)

@@ -80,9 +80,9 @@
 					<div class="form-group">
 					<form id="question">
 						<label for="title" style="margin-bottom:10px">标题:</label>
-						<textarea id="title" name="title" class="form-control" placeholder="标题" rows="2" style="margin-bottom:20px"></textarea>
+						<textarea id="title" name="title" class="form-control" placeholder="标题" rows="2" style="margin-bottom:20px"><#if cache_title??>${cache_title}</#if></textarea>
 						<label for="title" style="margin-bottom:10px">内容(可选):</label>
-						<textarea id="content" name="content" class="form-control" placeholder="内容" rows="7"></textarea>
+						<textarea id="content" name="content" class="form-control" placeholder="内容" rows="7"><#if cache_content??>${cache_content}</#if></textarea>
 					</form>
 					</div>
 				</div>

@@ -2,6 +2,7 @@ var loginStatus;//标识是否登录
 var isSubmitSuccess =false;
 var currentPath;
 var loginReturnPath;
+var userId;
 $(document).ready(function(){
 		//查询用户是否登录
 		$.ajax({  
@@ -14,6 +15,7 @@ $(document).ready(function(){
             },
             success: function(json) {  
                 loginStatus = eval(json);
+                userId=loginStatus.msg;
             }
        });
        currentPath=window.location.pathname;
@@ -32,7 +34,7 @@ $(document).ready(function(){
       }
 	});
  $("#regloginButton").click(function(){
- 	window.location.replace(loginReturnPath);
+ 	window.location.href=loginReturnPath;
  });
 $("#requireQuestion").click(function(){
     if(loginStatus.code==0)
@@ -51,12 +53,31 @@ $("#requireQuestion").click(function(){
 });
 
 $('#QuestionModal').on('hide.bs.modal', function () {
-	if(!isSubmitSuccess&&loginStatus.code!=999);
-	else window.location.replace("/wenda/");
+	if(isSubmitSuccess&&loginStatus.code==0)
+	{
+		window.location.replace("/wenda");
+	}
+	else if(!isSubmitSuccess&&loginStatus.code==999)
+	{
+		$.ajax({  
+            type: "POST",  
+            url:"/wenda/question/addCache/"+userId,  
+            data:$('#question').serialize(),// 序列化表单值  
+            dataType:"json",
+            async: false,  
+            error: function() {  
+                alert("网络异常");  
+            },   
+        });
+		window.location.replace("/wenda/reglogin");
+	}
 })
 
 $("#questionSubmit").click(function(){
-	$.ajax({  
+	if($("#title").val()=="");
+	else
+	{
+		$.ajax({  
             type: "POST",  
             url:"/wenda/question/add",  
             data:$('#question').serialize(),// 序列化表单值  
@@ -78,5 +99,6 @@ $("#questionSubmit").click(function(){
                 	$("#questionSubmit").fadeOut();
                 }
             }  
-        });  
-	});
+        });
+	}
+});

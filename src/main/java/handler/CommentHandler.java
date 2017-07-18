@@ -50,14 +50,22 @@ public class CommentHandler implements EventHandler{
 			Comment comment = commentService.getCommentById(sevent.getEntityId());
 			
 			message.setContent("您的回答: <a href=\"/wenda/question/"
-				+comment.getEntityId()+"\">"+"<strong>"
+				+comment.getEntityId()+"#subCommentContent_"+comment.getId()+"\">"+"<strong>"
 				+comment.getContent()+" </strong></a> 有了新的评论!");
 		}else if(sevent.getEntityType()==EntityType.QUESTION)
 		{
 			Question question = questionService.getQuestion(sevent.getEntityId());
-			message.setContent("您的问题: <a href=\"/wenda/question/"
-				+question.getId()+"\">"+"<strong>"
-				+question.getTitle()+" </strong></a> 有了新的回答!");
+			if(sevent.getInformation("commentId")!=null)
+			{
+				message.setContent("您的问题: <a href=\"/wenda/question/"
+					+question.getId()+"#subCommentContent_"+sevent.getInformation("commentId")+"\">"+"<strong>"
+					+question.getTitle()+" </strong></a> 有了新的回答!");
+			}
+			else
+			{
+				logger.error("缺少Infomation: commentId");
+				return;
+			}
 		}else
 		{
 			logger.error("无法处理的实体类型（entityType）");

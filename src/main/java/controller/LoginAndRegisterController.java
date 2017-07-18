@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import model.LoginTicket;
 import service.UserService;
 import util.URIUtil;
 
@@ -39,11 +41,15 @@ public class LoginAndRegisterController {
 		
 		try
 		{
-			Map<String,String> map = userService.register(username, password);
+			Map<String,String> map = userService.register(username, password,rememberMe);
 			if(map.containsKey("ticket"))
 			{
-				Cookie cookie = new Cookie("ticket",map.get("ticket"));
+				Cookie cookie = new Cookie("ticket", map.get("ticket"));
 				cookie.setPath("/");
+				if(rememberMe)
+				{
+					cookie.setMaxAge(LoginTicket.EXPIRED_TIME_SECONDS);
+				}
 				response.addCookie(cookie);
 				if(next!=null)
 					return "redirect:"+next;
@@ -88,11 +94,15 @@ public class LoginAndRegisterController {
 		
 		try
 		{
-			Map<String,String> map = userService.login(username, password);
+			Map<String,String> map = userService.login(username, password,rememberMe);
 			if(map.containsKey("ticket"))
 			{
 				Cookie cookie = new Cookie("ticket",map.get("ticket"));
 				cookie.setPath("/");
+				if(rememberMe)
+				{
+					cookie.setMaxAge(LoginTicket.EXPIRED_TIME_SECONDS);
+				}
 				response.addCookie(cookie);
 				if(next!=null)
 					return "redirect:"+next;
