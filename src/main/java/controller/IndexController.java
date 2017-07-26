@@ -14,6 +14,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.Comment;
@@ -32,7 +33,7 @@ public class IndexController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
-	private static final int QUESTION_COUNT_EVERY_PAGE = 5;
+	private static final int QUESTION_COUNT_EVERY_PAGE = 10;
 	
 	@Autowired
 	QuestionService questionService;
@@ -53,7 +54,7 @@ public class IndexController {
 	@ResponseBody
 	public String getUserQuestions(@PathVariable("userId") int userId)
 	{
-		List<Question> questionList = questionService.getLatestQuestion(userId, 0, 10);
+		List<Question> questionList = questionService.getLatestQuestion(userId, 0, QUESTION_COUNT_EVERY_PAGE);
 		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}
 	
@@ -99,19 +100,29 @@ public class IndexController {
 	}
 	
 	@RequestMapping(path = {"/","/index"},method = RequestMethod.GET)
-	public String index(Model model)
+	public String index(Model model,@RequestParam(value="page",defaultValue="1") int page)
 	{
-		List<ViewObject> list = getQuestions(0,0,QUESTION_COUNT_EVERY_PAGE);
-		if(list!=null)
+		List<ViewObject> list = getQuestions(0,(page-1)*QUESTION_COUNT_EVERY_PAGE,QUESTION_COUNT_EVERY_PAGE);
+		List<ViewObject> next = getQuestions(0,(page)*QUESTION_COUNT_EVERY_PAGE,1);
+		if(list.size()!=0)
 		{
-			model.addAttribute("voList", list);
+			model.addAttribute("voList", list);	
 		}
+		if(next.size()==0)
+		{
+			model.addAttribute("hasMore", "-1");
+		}
+		else
+		{
+			model.addAttribute("hasMore", "0");
+		}
+		model.addAttribute("page", page);
 		return "index";
 	}
 	
 	private List<ViewObject> getQuestions(int userId,int offset,int limit)
 	{
-		List<Question> questionList=questionService.getLatestQuestion(userId, 0, QUESTION_COUNT_EVERY_PAGE);
+		List<Question> questionList=questionService.getLatestQuestion(userId, offset, limit);
 		List<ViewObject> voList=new ArrayList<ViewObject>();
 		if(questionList!=null)
 		{

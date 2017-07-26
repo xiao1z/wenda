@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>主页</title>
+    <title>首页</title>
 
   
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
@@ -19,7 +19,9 @@
   
   <body>
 
-    <div class="container-fluid">
+<div class="container-fluid">
+	<span class="hidden" id="page">${page}</span>
+	<span class="hidden" id="hasMore">${hasMore}</span>
     <#include "header.ftl">
     <#if voList??>
     <#list voList as vo>
@@ -56,45 +58,47 @@
 	</div>
 	</#list>
 	<#else>
-		<div>
-			<hr>
-			<p>
-				还没有人提问!
-			<p>
+	<div class="row row-margin-top">
+		<div class="col-md-2">
 		</div>
+		<div class="col-md-8 " style="margin-top:20px">
+			
+			<hr>
+			<h2 class="text-info">
+				没有更多问题了！
+			</h2>
+		</div>
+	</div>	
 	</#if>
 	<div class="row">
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-11 pull-left">
-			<ul class="pagination">
-				<li>
-					<a href="#">Prev</a>
+		<div class="col-md-1">
+		</div>
+		<div class="col-md-10 pull-left">
+			<ul class="pagination pagination-lg">
+				<li id="li_prev">
+					<a href="#" id="prev">Prev</a>
 				</li>
-				<li class="active">
-					<a href="#">1</a>
+				<li id="page_li_1">
+					<a href="/wenda/?page=1" id="page_1">1</a>
 				</li>
-				<li>
-					<a href="#">2</a>
+				<li id="page_li_2">
+					<a href="/wenda/?page=2" id="page_2">2</a>
 				</li>
-				<li>
-					<a href="#">3</a>
+				<li id="page_li_3">
+					<a href="/wenda/?page=3" id="page_3">3</a>
 				</li>
-				<li>
-					<a href="#">4</a>
+				<li id="page_li_4">
+					<a href="/wenda/?page=4" id="page_4">4</a>
 				</li>
-				<li>
-					<a href="#">5</a>
-				</li>
-				<li>
-					<a href="#">6</a>
-				</li>
-				<li>
-					<a href="#">7</a>
+				<li id="page_li_5">
+					<a href="/wenda/?page=5" id="page_5">5</a>
 				</li>
 				
-				<li>
-					<a href="#">Next</a>
+				
+				<li id="li_next">
+					<a href="#"  id="next">Next</a>
 				</li>
 			</ul>
 		</div>
@@ -104,5 +108,6 @@
     <script src="/wenda/static/js/jquery.min.js"></script>
     <script src="/wenda/static/js/bootstrap.min.js"></script>
     <script src="/wenda/static/js/header.js"></script>
+    <script src="/wenda/static/js/index.js"></script>
   </body>
 </html>

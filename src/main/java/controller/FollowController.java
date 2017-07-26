@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import async.EventProducer;
+import async.EventType;
+import async.StandardEvent;
 import model.EntityType;
 import model.Follow;
 import model.HostHolder;
@@ -29,6 +32,9 @@ public class FollowController {
 	
 	@Autowired
 	HostHolder hostHolder;
+	
+	@Autowired
+	EventProducer eventProducer;
 	
 	@RequestMapping(value = "/follow/questions/{userId}" ,method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
@@ -65,6 +71,10 @@ public class FollowController {
 		}else
 		{
 			followService.cancelFollow(followId);
+			eventProducer.fireEvent(new StandardEvent()
+					.setActorId(hostHolder.getUser().getId())
+					.setType(EventType.CANCEL_FOLLOW)
+					.setEntityId(followId));
 			return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 		}
 

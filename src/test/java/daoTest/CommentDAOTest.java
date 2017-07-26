@@ -37,13 +37,12 @@ public class CommentDAOTest {
 		session.commit();
 	}
 	
-	//@Test
+	@Test
 	public void getComment()
 	{
 		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
 		SqlSession session=sqlSessionFactory.openSession();
 		CommentDAO commentDAO = session.getMapper(CommentDAO.class);
-		//System.out.println(commentDAO.getCommentsByEntity(Comment.QUESTION_COMMENT_TYPE, entityType).getContent());
 	}
 
 }

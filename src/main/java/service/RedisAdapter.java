@@ -16,6 +16,42 @@ public class RedisAdapter implements InitializingBean{
 	private static final Logger logger = LoggerFactory.getLogger(RedisAdapter.class);
 
 	
+	public long expire(String key,int seconds)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.expire(key, seconds);
+		}catch(Exception e)
+		{
+			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return 0;
+	}
+	
+	public List<String> lrange(String key,int start,int end)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.lrange(key, start, end);
+		}catch(Exception e)
+		{
+			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return null;
+	}
+	
 	public long lpush(String key,String value)
 	{
 		Jedis jedis = null;
@@ -32,6 +68,24 @@ public class RedisAdapter implements InitializingBean{
 				jedis.close();
 		}
 		return 0;
+	}
+	
+	public String rpop(String key)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.rpop(key);
+		}catch(Exception e)
+		{
+			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return null;
 	}
 	
 	public String set(String key,String value)
@@ -177,6 +231,24 @@ public class RedisAdapter implements InitializingBean{
 				jedis.close();
 		}
 		return false;
+	}
+	
+	public long llen(String key)
+	{
+		Jedis jedis = null;
+		try
+		{
+			jedis = pool.getResource();
+			return jedis.llen(key);
+		}catch(Exception e)
+		{
+			logger.error("redis获取列表长度错误 "+e.getMessage());
+		}finally
+		{
+			if(jedis!=null)
+				jedis.close();
+		}
+		return 0;
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package daoTest;
 
-import async.Event;
 import async.EventType;
 import async.StandardEvent;
 import redis.clients.jedis.Jedis;
@@ -20,7 +19,7 @@ public class RedisTest {
 		e.setEntityType(0);
 		e.setPriority(StandardEvent.NORMAL_PRIORITY);
 		e.setStatus(StandardEvent.NORMAL_STATUS);
-		e.setType(EventType.COMMENT);
+		e.setType(EventType.RAISE_COMMENT);
 		
 		jedis.lpush("eventTest", JSONUtil.getJSONStringOfEvent(e));
 	}

@@ -9,17 +9,22 @@
                  	alt="喵问答">
         			</a>
 				</li>
+
+				
 				<li style=" top:6px;">
 					<a href="/wenda/">首页</a>
 				</li>
+				
 				<#if user??>
+				<li style="top:6px;">
+					<a href="/wenda/timeline/${user.id}">动态</a>
+				</li>
 				<li style=" top:6px;">
 					<a href="/wenda/user/${user.id}">我的主页</a>
 				</li>
+				
 				</#if>
-				<li class="disabled" style=" top:6px;">
-					<a href="#">Messages</a>
-				</li>
+				
 				<li class="pull-right">
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">

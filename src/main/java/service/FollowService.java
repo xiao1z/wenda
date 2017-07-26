@@ -9,6 +9,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import async.EventProducer;
+import async.StandardEvent;
 import dao.FollowDAO;
 import dao.MybatisSqlSessionFactory;
 import model.EntityType;
@@ -22,10 +24,11 @@ public class FollowService {
 	private static final Logger logger = LoggerFactory.getLogger(FollowService.class);
 
 	@Autowired
-	UserService userService;
+	private UserService userService;
 	
 	@Autowired
-	QuestionService questionService;
+	private QuestionService questionService;
+	
 	
 	//获得粉丝列表
 	public List<User> getFollowerOfUserByUserId(int userId)
@@ -187,6 +190,32 @@ public class FollowService {
 		}catch(Exception e)
 		{
 			logger.error("取消关注错误 "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	
+	//获得关注该问题人的列表
+	public List<User> getFollowerOfQuestionByQuestionId(int questionId)
+	{
+		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		FollowDAO followDAO;
+		List<User> result = new ArrayList<User>();
+		try{
+			followDAO = session.getMapper(FollowDAO.class);
+			List<Follow> follows = followDAO.selectFollowerOfEntity(questionId, EntityType.QUESTION);
+			for(Follow follow:follows)
+			{
+				result.add(userService.getUser(follow.getEntityId()));
+			}
+		}catch(Exception e)
+		{
+			logger.error("获得粉丝列表错误 "+e.getMessage());
 		}finally
 		{
 			if(session!=null)

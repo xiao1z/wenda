@@ -13,7 +13,6 @@ public class Comment {
 	private Date createDate;
 	private int status;
 	
-
 	
 	public static final int DELETED_STATUS = -1;
 	public static final int NORMAL_STATUS = 0;
@@ -60,4 +59,5 @@ public class Comment {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+
 }

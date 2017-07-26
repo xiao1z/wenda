@@ -77,7 +77,7 @@ public class CommentHandler implements EventHandler{
 	@Override
 	public List<EventType> getInterestedEventType() {
 		// TODO Auto-generated method stub
-		return Arrays.asList(EventType.COMMENT);
+		return Arrays.asList(EventType.RAISE_COMMENT);
 	}
 
 }

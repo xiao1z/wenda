@@ -33,7 +33,9 @@
   	<mapper class="dao.CommentDAO"/>
   	<mapper class="dao.MessageDAO"/>
   	<mapper class="dao.FollowDAO"/>
+  	<mapper class="dao.FeedDAO"/>
   	<mapper resource="dao/QuestionMapper.xml"/>
   	<mapper resource="dao/FollowMapper.xml"/>
+  	<mapper resource="dao/FeedMapper.xml"/>
   </mappers>
 </configuration>

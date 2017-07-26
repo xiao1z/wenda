@@ -1,5 +1,7 @@
 package controller;
 
+import java.text.SimpleDateFormat;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -67,13 +69,15 @@ public class CommentController {
 				if(questionOwnerId==hostHolder.getUser().getId());
 				else
 				{
+					SimpleDateFormat s = new SimpleDateFormat();
 					eventProducer.fireEvent(new StandardEvent()
 							.setActorId(hostHolder.getUser().getId())
 							.setEntityId(id)
 							.setEntityOwnerId(questionOwnerId)
 							.setEntityType(EntityType.QUESTION)
-							.setType(EventType.COMMENT)
-							.setInfomation("commentId", String.valueOf(res)));
+							.setType(EventType.RAISE_COMMENT)
+							.setInfomation("commentId", String.valueOf(res))
+							.setInfomation("createDate", s.format(DateUtil.now())));
 				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}
@@ -117,7 +121,7 @@ public class CommentController {
 							.setEntityId(id)
 							.setEntityOwnerId(commentOwnerId)
 							.setEntityType(EntityType.COMMENT)
-							.setType(EventType.COMMENT));
+							.setType(EventType.RAISE_COMMENT));
 				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}

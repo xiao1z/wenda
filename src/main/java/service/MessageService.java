@@ -17,7 +17,7 @@ import model.Message;
 public class MessageService {
 	
 	@Autowired
-	SensitiveWordsService sensitiveWordsService;
+	private SensitiveWordsService sensitiveWordsService;
 	
 	private static final Logger logger = LoggerFactory.getLogger(MessageService.class);
 

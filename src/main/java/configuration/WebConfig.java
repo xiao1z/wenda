@@ -90,6 +90,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		// TODO Auto-generated method stub
 		registry.addInterceptor(passportIntercepter);
 		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/user/**");
+		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/timeline/**");
 		super.addInterceptors(registry);
 	}
 	

@@ -25,7 +25,7 @@ import util.MD5Util;
 public class UserService {
 	
 	@Autowired
-	SensitiveWordsService sensitiveWordsService;
+	private SensitiveWordsService sensitiveWordsService;
 	
 	private static int MIN_PASSWORD_LENGTH = 2;
 	
@@ -220,5 +220,21 @@ public class UserService {
 			}
 		}
 		return user;
+	}
+	
+	/*
+	 * 判断用户是否为活跃用户
+	 */
+	public boolean isActiveUser(int userId)
+	{
+		return true;
+	}
+	
+	/*
+	 * 判断用户是否为活跃用户
+	 */
+	public boolean isActiveUser(User user)
+	{
+		return true;
 	}
 }

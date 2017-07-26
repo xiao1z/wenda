@@ -10,7 +10,7 @@ import util.RedisKeyUtil;
 public class LikeService {
 	
 	@Autowired
-	RedisAdapter redisAdapter;
+	private RedisAdapter redisAdapter;
 	
 	/*
 	 * 这里应该考虑事务

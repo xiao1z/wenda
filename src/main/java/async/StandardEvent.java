@@ -90,5 +90,6 @@ public class StandardEvent implements Event{
 	{
 		return informationMap.get(key);
 	}
+
 	
 }

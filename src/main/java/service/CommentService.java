@@ -18,7 +18,7 @@ public class CommentService {
 	private static final Logger logger = LoggerFactory.getLogger(CommentService.class);
 	
 	@Autowired
-	SensitiveWordsService sensitiveWordsService;
+	private SensitiveWordsService sensitiveWordsService;
 	
 	public int addComment(Comment comment)
 	{
