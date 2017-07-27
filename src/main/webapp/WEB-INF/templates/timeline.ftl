@@ -82,7 +82,7 @@
 			<div class="col-md-8">
 			<hr>
 			<h3 class="text-info">
-				您还没有关注他人或者收藏问题
+				没有更多动态了！
 			</h3>
 			</div>
 			<div class="col-md-2">
