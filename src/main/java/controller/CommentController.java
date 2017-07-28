@@ -75,7 +75,7 @@ public class CommentController {
 							.setEntityId(id)
 							.setEntityOwnerId(questionOwnerId)
 							.setEntityType(EntityType.QUESTION)
-							.setType(EventType.RAISE_COMMENT)
+							.setType(EventType.RAISE_COMMENT_EVENT)
 							.setInfomation("commentId", String.valueOf(res))
 							.setInfomation("createDate", s.format(DateUtil.now())));
 				}
@@ -121,7 +121,7 @@ public class CommentController {
 							.setEntityId(id)
 							.setEntityOwnerId(commentOwnerId)
 							.setEntityType(EntityType.COMMENT)
-							.setType(EventType.RAISE_COMMENT));
+							.setType(EventType.RAISE_COMMENT_EVENT));
 				}
 				return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 			}

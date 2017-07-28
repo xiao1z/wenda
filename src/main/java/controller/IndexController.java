@@ -23,6 +23,7 @@ import model.Question;
 import model.User;
 import model.ViewObject;
 import service.CommentService;
+import service.ConfigService;
 import service.FollowService;
 import service.QuestionService;
 import service.UserService;
@@ -33,7 +34,6 @@ public class IndexController {
 	
 	private static final Logger logger = LoggerFactory.getLogger(IndexController.class);
 	
-	private static final int QUESTION_COUNT_EVERY_PAGE = 10;
 	
 	@Autowired
 	QuestionService questionService;
@@ -50,11 +50,14 @@ public class IndexController {
 	@Autowired
 	FollowService followService;
 
+	@Autowired
+	ConfigService configService;
+
 	@RequestMapping(path = {"/user/{userId}/questions"},method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	@ResponseBody
 	public String getUserQuestions(@PathVariable("userId") int userId)
 	{
-		List<Question> questionList = questionService.getLatestQuestion(userId, 0, QUESTION_COUNT_EVERY_PAGE);
+		List<Question> questionList = questionService.getLatestQuestion(userId, 0, configService.getIndex_QUESTION_COUNT_EVERY_PAGE());
 		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}
 	
@@ -102,8 +105,8 @@ public class IndexController {
 	@RequestMapping(path = {"/","/index"},method = RequestMethod.GET)
 	public String index(Model model,@RequestParam(value="page",defaultValue="1") int page)
 	{
-		List<ViewObject> list = getQuestions(0,(page-1)*QUESTION_COUNT_EVERY_PAGE,QUESTION_COUNT_EVERY_PAGE);
-		List<ViewObject> next = getQuestions(0,(page)*QUESTION_COUNT_EVERY_PAGE,1);
+		List<ViewObject> list = getQuestions(0,(page-1)*configService.getIndex_QUESTION_COUNT_EVERY_PAGE(),configService.getIndex_QUESTION_COUNT_EVERY_PAGE());
+		List<ViewObject> next = getQuestions(0,(page)*configService.getIndex_QUESTION_COUNT_EVERY_PAGE(),1);
 		if(list.size()!=0)
 		{
 			model.addAttribute("voList", list);	
@@ -117,6 +120,7 @@ public class IndexController {
 			model.addAttribute("hasMore", "0");
 		}
 		model.addAttribute("page", page);
+		
 		return "index";
 	}
 	

@@ -1,10 +1,14 @@
 package model;
 
+import org.hibernate.validator.constraints.Length;
+
 public class User {
+
 	
-	public static final String DEFAULT_HEAD_URL = "/wenda/static/images/img/default_head.jpg";
 
 	private int id;
+	
+	@Length(min=3,max=10)
 	private String username;
 	private String password;
 	private String salt;

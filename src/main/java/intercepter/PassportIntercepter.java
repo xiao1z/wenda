@@ -1,12 +1,9 @@
 package intercepter;
 
-import java.util.Date;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +14,10 @@ import org.springframework.web.servlet.ModelAndView;
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 
-import dao.LoginTicketDAO;
-import dao.MybatisSqlSessionFactory;
-import dao.UserDAO;
 import model.HostHolder;
-import model.LoginTicket;
-import model.User;
-import service.RedisAdapter;
+import service.LoginTicketService;
+import service.RedisDBForKeyService;
+import service.UserService;
 import util.RedisKeyUtil;
 
 
@@ -37,7 +31,13 @@ public class PassportIntercepter implements HandlerInterceptor{
 	HostHolder hostHolder;
 	
 	@Autowired
-	RedisAdapter redisAdapter;
+	RedisDBForKeyService redisDBForKeyService;
+	
+	@Autowired
+	LoginTicketService loginTicketService;
+	
+	@Autowired
+	UserService userService;
 	
 	
 	@Override
@@ -57,13 +57,13 @@ public class PassportIntercepter implements HandlerInterceptor{
 			if(hostHolder.getUser()!=null)
 			{
 				String key = RedisKeyUtil.getQusetionAddCacheKey(hostHolder.getUser().getId());
-				String cache = redisAdapter.get(key);
+				String cache = redisDBForKeyService.get(key);
 				if(cache!=null)
 				{
 					JSONObject json = JSON.parseObject(cache);
 					modelAndView.addObject("cache_title", json.get("title"));
 					modelAndView.addObject("cache_content", json.get("content"));
-					redisAdapter.del(key);
+					redisDBForKeyService.del(key);
 				}
 			}
 		}
@@ -88,6 +88,15 @@ public class PassportIntercepter implements HandlerInterceptor{
 			}
 			if(ticket!=null)
 			{
+				int userId = loginTicketService.validateTicket(ticket);
+				if(userId!=-1)
+				{
+					hostHolder.setUser(userService.getUser(userId));
+				}
+				
+				/*
+				 * v2版本废弃
+				 *
 				SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 				LoginTicketDAO loginTicketDAO;
 				LoginTicket loginTicket;
@@ -111,6 +120,7 @@ public class PassportIntercepter implements HandlerInterceptor{
 						session.close();
 					}
 				}
+				*/
 			}
 		}
 		return true;

@@ -7,6 +7,10 @@ import org.apache.ibatis.annotations.Update;
 
 import model.LoginTicket;
 
+
+/*
+ * v2版本废弃
+ */
 public interface LoginTicketDAO {
 	String TABLE_NAME=" login_ticket ";
 	String INSERT_FIELDS = " user_id,expired,status,ticket ";

@@ -1,6 +1,5 @@
 package service;
 
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,19 +12,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.util.HtmlUtils;
 
-import dao.LoginTicketDAO;
 import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
-import model.LoginTicket;
 import model.User;
-import util.DateUtil;
 import util.MD5Util;
 
 @Service
 public class UserService {
 	
 	@Autowired
-	private SensitiveWordsService sensitiveWordsService;
+	private ConfigService configService;
+	
+	@Autowired
+	LoginTicketService loginTicketService;
+	
+	@Autowired
+	private CacheService cacheService;
 	
 	private static int MIN_PASSWORD_LENGTH = 2;
 	
@@ -57,7 +59,7 @@ public class UserService {
 			return map;
 		}
 		
-		String ticket = this.addTicket(user.getId(),rememberMe);
+		String ticket = loginTicketService.addTicket(user.getId(),rememberMe);
 		map.put("ticket", ticket);
 		return map;
 		
@@ -65,6 +67,9 @@ public class UserService {
 	
 	public void logout(String ticket)
 	{
+		loginTicketService.discardTicket(ticket);
+		/*
+		 * v2版本废弃
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 		LoginTicketDAO loginTicketDAO;
 		try{
@@ -81,6 +86,7 @@ public class UserService {
 				session.close();
 			}
 		}
+		*/
 	}
 	
 	
@@ -111,7 +117,7 @@ public class UserService {
 		user = new User();
 		user.setUsername(username);
 		user.setSalt(UUID.randomUUID().toString().substring(0,5));
-		user.setHeadUrl(User.DEFAULT_HEAD_URL);
+		user.setHeadUrl(configService.getUser_DEFAULT_HEAD_URL());
 		user.setPassword(MD5Util.getMD5(password+user.getSalt()));
 		if(!this.addUser(user))
 		{
@@ -119,12 +125,13 @@ public class UserService {
 			return map;
 		}
 		
-		String ticket = this.addTicket(user.getId(),rememberMe);
+		String ticket = loginTicketService.addTicket(user.getId(),rememberMe);
 		map.put("ticket", ticket);
-		
 		return map;
 	}
 	
+	/*
+	 * v2 将该功能转移到了LoginTicketService
 	//根据userId下发一个ticket
 	private String addTicket(int userId,boolean rememberMe){
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
@@ -134,9 +141,9 @@ public class UserService {
 		loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
 		Date now =DateUtil.now();
 		if(rememberMe)
-			now.setTime(LoginTicket.EXPIRED_TIME_MILLISECONDS + now.getTime());
+			now.setTime(configService.getLoginTicket_EXPIRED_TIME() + now.getTime());
 		else
-			now.setTime(LoginTicket.EXPIRED_TIME_MILLISECONDS_IF_NOTREMEBERME + now.getTime());
+			now.setTime(configService.getLoginTicket_EXPIRED_TIME_IF_NOTREMEBERME() + now.getTime());
 		loginTicket.setExpired(now);
 		LoginTicketDAO loginTicketDAO;
 		
@@ -156,7 +163,7 @@ public class UserService {
 		}
 		return loginTicket.getTicket();
 	}
-	
+	*/
 	
 	private boolean addUser(User user){
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
@@ -176,6 +183,7 @@ public class UserService {
 				session.close();
 			}
 		}
+		cacheService.addUserToCache(user);
 		return true;
 	}
 	
@@ -199,12 +207,15 @@ public class UserService {
 			}
 		}
 		return user;
+		
 	}
 	
-	public User getUser(int id){
+	public User getUser(int id){	
+		User user = null;
+		if((user = cacheService.getCachedUser(id))!=null)
+			return user;
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 		UserDAO userDAO;
-		User user = null;
 		try{
 			userDAO = session.getMapper(UserDAO.class);
 			user = userDAO.selectUserById(id);
@@ -218,6 +229,10 @@ public class UserService {
 			{
 				session.close();
 			}
+		}
+		if(user!=null)
+		{
+			cacheService.addUserToCache(user);
 		}
 		return user;
 	}

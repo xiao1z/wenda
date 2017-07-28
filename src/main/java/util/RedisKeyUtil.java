@@ -6,6 +6,7 @@ public class RedisKeyUtil {
 	private static final String BIZ_DISLIKE = "DISLIKE";
 	private static final String ASYNC_QUEUE = "ASYNC_QUEUE";
 	private static final String QUESTION_ADD_CACHE = "QUESTION_ADD_CACHE";
+	private static final String USER_CACHE = "USER_CACHE";
 	private static final String FEED_FLOW = "FEED_FLOW";
 	
 	
@@ -15,6 +16,11 @@ public class RedisKeyUtil {
 	public static String getLikeKey(int entityId,int entityType)
 	{
 		return BIZ_LIKE+SPLIT+String.valueOf(entityType)+SPLIT+String.valueOf(entityId);
+	}
+	
+	public static String getUserCacheKey(int userId)
+	{
+		return USER_CACHE+SPLIT+userId;
 	}
 	
 	public static String getDislikeKey(int entityId,int entityType)
@@ -36,4 +42,10 @@ public class RedisKeyUtil {
 	{
 		return FEED_FLOW+SPLIT+userId;
 	}
+	
+	public static String getLoginTicketKey(String ticket)
+	{
+		return ticket;
+	}
+	
 }

@@ -22,7 +22,7 @@ import service.CommentService;
 import service.FollowService;
 import service.LikeService;
 import service.QuestionService;
-import service.RedisAdapter;
+import service.RedisDBForKeyService;
 import service.UserService;
 import util.DateUtil;
 import util.JSONUtil;
@@ -50,7 +50,7 @@ public class QuestionController {
 	FollowService followService;
 	
 	@Autowired
-	RedisAdapter redisAdapter;
+	RedisDBForKeyService redisDBForKeyService;
 	
 	@RequestMapping(value = "/question/add" ,method = RequestMethod.POST)
 	@ResponseBody
@@ -89,7 +89,7 @@ public class QuestionController {
 			,@RequestParam("content") String content
 			,@PathVariable("userId") int userId){
 		String key = RedisKeyUtil.getQusetionAddCacheKey(userId);
-		redisAdapter.set(key, JSONUtil.getQuestionCacheJSONString(title, content));
+		redisDBForKeyService.set(key, JSONUtil.getQuestionCacheJSONString(title, content));
 		return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 	}
 	

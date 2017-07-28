@@ -10,7 +10,7 @@ import util.RedisKeyUtil;
 public class LikeService {
 	
 	@Autowired
-	private RedisAdapter redisAdapter;
+	private RedisDBForKeyService redisDBForKeyService;
 	
 	/*
 	 * 这里应该考虑事务
@@ -19,36 +19,36 @@ public class LikeService {
 	{
 		String likeKey = RedisKeyUtil.getLikeKey(commentId, EntityType.COMMENT);
 		String dislikeKey = RedisKeyUtil.getDislikeKey(commentId, EntityType.COMMENT);
-		redisAdapter.srem(dislikeKey, String.valueOf(userId));
-		return redisAdapter.sadd(likeKey, String.valueOf(userId));
+		redisDBForKeyService.srem(dislikeKey, String.valueOf(userId));
+		return redisDBForKeyService.sadd(likeKey, String.valueOf(userId));
 	}
 	
 	public long dislikeComment(int userId,int commentId)
 	{
 		String likeKey = RedisKeyUtil.getLikeKey(commentId, EntityType.COMMENT);
 		String dislikeKey = RedisKeyUtil.getDislikeKey(commentId, EntityType.COMMENT);
-		redisAdapter.srem(likeKey, String.valueOf(userId));
-		return redisAdapter.sadd(dislikeKey, String.valueOf(userId));
+		redisDBForKeyService.srem(likeKey, String.valueOf(userId));
+		return redisDBForKeyService.sadd(dislikeKey, String.valueOf(userId));
 	}
 	
 	public long getCommentLikeCount(int commentId)
 	{
 		String key = RedisKeyUtil.getLikeKey(commentId, EntityType.COMMENT);
-		return redisAdapter.scard(key);
+		return redisDBForKeyService.scard(key);
 	}
 	
 	public void cancelLikeOrDisLike(int userId,int commentId)
 	{
 		String likeKey = RedisKeyUtil.getLikeKey(commentId, EntityType.COMMENT);
 		String dislikeKey = RedisKeyUtil.getDislikeKey(commentId, EntityType.COMMENT);
-		redisAdapter.srem(likeKey, String.valueOf(userId));
-		redisAdapter.srem(dislikeKey, String.valueOf(userId));
+		redisDBForKeyService.srem(likeKey, String.valueOf(userId));
+		redisDBForKeyService.srem(dislikeKey, String.valueOf(userId));
 	}
 	
 	public boolean isLikeComment(int userId,int commentId)
 	{
 		String key = RedisKeyUtil.getLikeKey(commentId, EntityType.COMMENT);
-		if(redisAdapter.sismember(key, String.valueOf(userId)))
+		if(redisDBForKeyService.sismember(key, String.valueOf(userId)))
 		{
 			return true;
 		}else
@@ -60,7 +60,7 @@ public class LikeService {
 	public boolean isDislikeComment(int userId,int commentId)
 	{
 		String key = RedisKeyUtil.getDislikeKey(commentId, EntityType.COMMENT);
-		if(redisAdapter.sismember(key, String.valueOf(userId)))
+		if(redisDBForKeyService.sismember(key, String.valueOf(userId)))
 		{
 			return true;
 		}else

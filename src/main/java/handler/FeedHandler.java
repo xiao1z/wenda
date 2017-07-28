@@ -20,7 +20,7 @@ import model.Question;
 import model.User;
 import service.FeedService;
 import service.QuestionService;
-import service.RedisAdapter;
+import service.RedisDBForNormalService;
 import service.UserService;
 import util.DateUtil;
 import util.RedisKeyUtil;
@@ -40,14 +40,14 @@ public class FeedHandler implements EventHandler{
 	FeedService feedService;
 	
 	@Autowired
-	RedisAdapter redisAdapter;
+	RedisDBForNormalService redisDBForNormalService;
 	
 	@Override
 	public void doHandle(Event event) {
 		StandardEvent sevent = (StandardEvent) event;
 		switch(sevent.getType())
 		{
-		case RAISE_QUESTION:{
+		case RAISE_QUESTION_EVENT:{
 			/* 未完成
 			SimpleDateFormat s = new SimpleDateFormat();
 			Feed feed = new Feed();
@@ -64,7 +64,7 @@ public class FeedHandler implements EventHandler{
 			*/
 			break;
 		}
-		case RAISE_COMMENT:{
+		case RAISE_COMMENT_EVENT:{
 			//说明是一个问题的回答
 			if(sevent.getInformation("commentId")!=null)
 			{
@@ -93,7 +93,7 @@ public class FeedHandler implements EventHandler{
 			}
 			break;
 		}
-		case CANCEL_FOLLOW:{
+		case CANCEL_FOLLOW_EVENT:{
 			handleCancelFollow(sevent);
 			break;
 		}
@@ -107,15 +107,15 @@ public class FeedHandler implements EventHandler{
 	private void handleCancelFollow(StandardEvent sevent)
 	{
 		//当用户取消关注、取消收藏某个问题时，简单的删除redis中该用户的feedFlow缓存
-		redisAdapter.del(RedisKeyUtil.getFeedFlowKey(sevent.getActorId()));
+		redisDBForNormalService.del(RedisKeyUtil.getFeedFlowKey(sevent.getActorId()));
 	}
 	
 	@Override
 	public List<EventType> getInterestedEventType() {
 		// TODO Auto-generated method stub
-		return Arrays.asList(EventType.LIKE,EventType.RAISE_COMMENT,
-				EventType.FOLLOW,EventType.NEW_ANSWER,EventType.RAISE_QUESTION,
-				EventType.CANCEL_FOLLOW);
+		return Arrays.asList(EventType.LIKE_EVENT,EventType.RAISE_COMMENT_EVENT,
+				EventType.FOLLOW_EVENT,EventType.NEW_ANSWER_EVENT,EventType.RAISE_QUESTION_EVENT,
+				EventType.CANCEL_FOLLOW_EVENT);
 	}
 
 }

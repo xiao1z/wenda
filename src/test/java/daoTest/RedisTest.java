@@ -10,6 +10,31 @@ public class RedisTest {
 	
 	public static void main(String args[])
 	{
+		testSelect();
+	}
+	
+	
+	public static void testSelect()
+	{
+		JedisPool pool1 =new JedisPool("redis://localhost:6379/10");
+		JedisPool pool2 =new JedisPool("redis://localhost:6379/11");
+		Jedis jedis1 = pool1.getResource();
+		System.out.println(jedis1.getDB());
+		jedis1.select(6);
+		System.out.println(jedis1.getDB()+" ss");
+		
+		Jedis jedis2 = pool2.getResource();
+		System.out.println(jedis2.getDB());
+		jedis2.select(6);
+		System.out.println(jedis2.getDB());
+		
+		
+		
+		
+	}
+	
+	public static void testEvent()
+	{
 		JedisPool pool =new JedisPool("redis://localhost:6379/10");
 		Jedis jedis = pool.getResource();
 		StandardEvent e = new StandardEvent();
@@ -19,7 +44,7 @@ public class RedisTest {
 		e.setEntityType(0);
 		e.setPriority(StandardEvent.NORMAL_PRIORITY);
 		e.setStatus(StandardEvent.NORMAL_STATUS);
-		e.setType(EventType.RAISE_COMMENT);
+		e.setType(EventType.RAISE_COMMENT_EVENT);
 		
 		jedis.lpush("eventTest", JSONUtil.getJSONStringOfEvent(e));
 	}

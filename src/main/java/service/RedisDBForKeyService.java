@@ -5,42 +5,29 @@ import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 @Service
-public class RedisAdapter implements InitializingBean{
+public class RedisDBForKeyService implements InitializingBean{
+	
+	@Autowired
+	ConfigService configService;
+	
 	private JedisPool pool=null;
-	private static final Logger logger = LoggerFactory.getLogger(RedisAdapter.class);
+	private static final Logger logger = LoggerFactory.getLogger(RedisDBForKeyService.class);
 
 	
-	public long expire(String key,int seconds)
+	public String setex(String key,int seconds,String value)
 	{
 		Jedis jedis = null;
 		try
 		{
 			jedis = pool.getResource();
-			return jedis.expire(key, seconds);
-		}catch(Exception e)
-		{
-			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
-		}finally
-		{
-			if(jedis!=null)
-				jedis.close();
-		}
-		return 0;
-	}
-	
-	public List<String> lrange(String key,int start,int end)
-	{
-		Jedis jedis = null;
-		try
-		{
-			jedis = pool.getResource();
-			return jedis.lrange(key, start, end);
+			return jedis.setex(key, seconds, value);
 		}catch(Exception e)
 		{
 			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
@@ -69,25 +56,7 @@ public class RedisAdapter implements InitializingBean{
 		}
 		return 0;
 	}
-	
-	public String rpop(String key)
-	{
-		Jedis jedis = null;
-		try
-		{
-			jedis = pool.getResource();
-			return jedis.rpop(key);
-		}catch(Exception e)
-		{
-			logger.error("redis队列从队头增加元素错误 "+e.getMessage());
-		}finally
-		{
-			if(jedis!=null)
-				jedis.close();
-		}
-		return null;
-	}
-	
+
 	public String set(String key,String value)
 	{
 		Jedis jedis = null;
@@ -160,6 +129,7 @@ public class RedisAdapter implements InitializingBean{
 		}
 		return null;
 	}
+	
 	
 	public long sadd(String key,String value)
 	{
@@ -254,7 +224,7 @@ public class RedisAdapter implements InitializingBean{
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
-		pool =new JedisPool("redis://localhost:6379/10");
+		pool =new JedisPool(configService.getRedis_KEY_SERVICE_POOL_LOC());
 
 	}
 

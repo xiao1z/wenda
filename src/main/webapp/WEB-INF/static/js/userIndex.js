@@ -178,7 +178,7 @@ $("#followToggle").click(function(){
 	               },
 	               success: function(json) {  
 	                   loginStatus = eval(json);
-	                   if(loginStatus.code==0)
+	                   if(loginStatus.code==0||loginStatus.code==3)
 	                   {
 	                	   $("#followTableId").text(loginStatus.msg);
 	                	   $("#followToggle").text("取消关注");
@@ -189,7 +189,9 @@ $("#followToggle").click(function(){
 	                   
 	               }
 	          });
-		 }else
+		 }
+		 //否则
+		 else
 		 {
 			 $.ajax({  
 	               type: "POST",  
@@ -204,7 +206,7 @@ $("#followToggle").click(function(){
 	                   if(loginStatus.code==0)
 	                   {
 	                	   $("#followTableId").text("");
-	                	   $("#followToggle").text("关注");
+	                	   $("#followToggle").text("关注Ta");
 	                   }else if(loginStatus.code==999)
 	                   {
 	                	   alert("未登录");

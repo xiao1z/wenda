@@ -62,7 +62,7 @@ public class LikeHandler implements EventHandler{
 	@Override
 	public List<EventType> getInterestedEventType() {
 		// TODO Auto-generated method stub
-		return Arrays.asList(EventType.LIKE);
+		return Arrays.asList(EventType.LIKE_EVENT);
 	}
 
 }

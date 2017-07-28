@@ -26,7 +26,7 @@ import intercepter.PassportIntercepter;
 @Configuration
 @EnableWebMvc
 @EnableAspectJAutoProxy
-@ComponentScan(basePackages={"controller","aspect","service","intercepter","async","handler"})
+@ComponentScan(basePackages={"controller","aspect","intercepter"})
 public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	@Autowired

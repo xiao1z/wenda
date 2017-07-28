@@ -1,31 +1,21 @@
 package model;
 
-import java.util.Date;
-
 public class LoginTicket {
-	private int id;
+	
+	//v2版本移除
+	//private int id;
+	
 	private int userId;
 	private String ticket;
-	private Date expired;
 	
+	//v2版本移除 ticket过期时间有redis控制
+	//private Date expired;
+	
+	
+	//v2版本移除
 	//status:0表示有效，-1表示失效
-	private int status;
+	//private int status;
 	
-	//单位为毫秒
-	public final static long EXPIRED_TIME_MILLISECONDS = 30*24*60*60*1000;
-	
-	//单位为毫秒
-	public final static long EXPIRED_TIME_MILLISECONDS_IF_NOTREMEBERME = 1*60*60*1000;
-	
-	//单位为秒
-	public final static int EXPIRED_TIME_SECONDS = 30*24*60*60;
-	
-	public int getId() {
-		return id;
-	}
-	public void setId(int id) {
-		this.id = id;
-	}
 	public int getUserId() {
 		return userId;
 	}
@@ -38,16 +28,5 @@ public class LoginTicket {
 	public void setTicket(String ticket) {
 		this.ticket = ticket;
 	}
-	public Date getExpired() {
-		return expired;
-	}
-	public void setExpired(Date expired) {
-		this.expired = expired;
-	}
-	public int getStatus() {
-		return status;
-	}
-	public void setStatus(int status) {
-		this.status = status;
-	}
+
 }

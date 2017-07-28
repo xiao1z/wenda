@@ -43,6 +43,11 @@ public class JSONUtil {
 		return JSON.toJSONString(e);
 	}
 	
+	public static String getJSONStringOfUser(User user)
+	{
+		return JSON.toJSONString(user);
+	}
+	
 	
 	public static String getJSONString(int code,String msg)
 	{

@@ -26,13 +26,16 @@ public class FeedService {
 	private static final Logger logger = LoggerFactory.getLogger(FeedService.class);
 	
 	@Autowired
-	private RedisAdapter redisAdapter;
+	private RedisDBForNormalService redisDBForNormalService;
 	
 	@Autowired
 	private FollowService followService;
 	
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private ConfigService configService;
 	
 	public int addFeed(Feed feed)
 	{
@@ -60,7 +63,7 @@ public class FeedService {
 	public List<Feed> getFeedsOfUser(int userId,int maxId,int count)
 	{
 		String key = RedisKeyUtil.getFeedFlowKey(userId);
-		List<String> cacheFeed = redisAdapter.lrange(key, 0, -1);
+		List<String> cacheFeed = redisDBForNormalService.lrange(key, 0, -1);
 		int min = Integer.MAX_VALUE;
 		if(cacheFeed!=null)
 		{
@@ -78,7 +81,7 @@ public class FeedService {
 						feedsList.add(temp);
 				}
 			}
-			redisAdapter.expire(key, Feed.MAX_CACHE_SECONDS);//刷缓存过期时间
+			redisDBForNormalService.expire(key, configService.getFeed_MAX_CACHE_SECONDS());//刷缓存过期时间
 			
 			//如果缓存中数量不足count,再去数据库拉feed
 			if(feedsList.size()<count)
@@ -247,17 +250,17 @@ public class FeedService {
 	private void addFeedToCache(Feed feed,int userId)
 	{
 		String key = RedisKeyUtil.getFeedFlowKey(userId);
-		if(redisAdapter.llen(key)<Feed.MAX_CACHE_SZIE)
+		if(redisDBForNormalService.llen(key)<configService.getFeed_MAX_CACHE_SZIE())
 		{
-			redisAdapter.lpush(key, String.valueOf(feed.getId()));
-			if(redisAdapter.llen(key)==1)
+			redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
+			if(redisDBForNormalService.llen(key)==1)
 			{
-				redisAdapter.expire(key, Feed.MAX_CACHE_SECONDS);
+				redisDBForNormalService.expire(key, configService.getFeed_MAX_CACHE_SECONDS());
 			}
 		}else
 		{
-			redisAdapter.rpop(key);
-			redisAdapter.lpush(key, String.valueOf(feed.getId()));
+			redisDBForNormalService.rpop(key);
+			redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
 		}
 	}
 	
@@ -271,17 +274,17 @@ public class FeedService {
 				if(userService.isActiveUser(user))
 				{
 					String key = RedisKeyUtil.getFeedFlowKey(user.getId());
-					if(redisAdapter.llen(key)<Feed.MAX_CACHE_SZIE)
+					if(redisDBForNormalService.llen(key)<configService.getFeed_MAX_CACHE_SZIE())
 					{
-						redisAdapter.lpush(key, String.valueOf(feed.getId()));
-						if(redisAdapter.llen(key)==1)
+						redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
+						if(redisDBForNormalService.llen(key)==1)
 						{
-							redisAdapter.expire(key, Feed.MAX_CACHE_SECONDS);
+							redisDBForNormalService.expire(key, configService.getFeed_MAX_CACHE_SECONDS());
 						}
 					}else
 					{
-						redisAdapter.rpop(key);
-						redisAdapter.lpush(key, String.valueOf(feed.getId()));
+						redisDBForNormalService.rpop(key);
+						redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
 					}
 				}
 			}
@@ -293,17 +296,17 @@ public class FeedService {
 				if(userService.isActiveUser(user))
 				{
 					String key = RedisKeyUtil.getFeedFlowKey(user.getId());
-					if(redisAdapter.llen(key)<Feed.MAX_CACHE_SZIE)
+					if(redisDBForNormalService.llen(key)<configService.getFeed_MAX_CACHE_SZIE())
 					{
-						redisAdapter.lpush(key, String.valueOf(feed.getId()));
-						if(redisAdapter.llen(key)==1)
+						redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
+						if(redisDBForNormalService.llen(key)==1)
 						{
-							redisAdapter.expire(key, Feed.MAX_CACHE_SECONDS);
+							redisDBForNormalService.expire(key,configService.getFeed_MAX_CACHE_SECONDS());
 						}
 					}else
 					{
-						redisAdapter.rpop(key);
-						redisAdapter.lpush(key, String.valueOf(feed.getId()));
+						redisDBForNormalService.rpop(key);
+						redisDBForNormalService.lpush(key, String.valueOf(feed.getId()));
 					}
 				}
 			}

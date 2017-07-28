@@ -1,6 +1,5 @@
 package controller;
 
-import java.util.Date;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
@@ -16,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import model.LoginTicket;
+import service.ConfigService;
 import service.UserService;
 import util.URIUtil;
 
@@ -30,6 +29,9 @@ public class LoginAndRegisterController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ConfigService configService;
 	
 	@RequestMapping(path = {"/reg/"}, method = RequestMethod.POST)
 	public String register(Model model
@@ -48,7 +50,7 @@ public class LoginAndRegisterController {
 				cookie.setPath("/");
 				if(rememberMe)
 				{
-					cookie.setMaxAge(LoginTicket.EXPIRED_TIME_SECONDS);
+					cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
 				}
 				response.addCookie(cookie);
 				if(next!=null)
@@ -101,7 +103,7 @@ public class LoginAndRegisterController {
 				cookie.setPath("/");
 				if(rememberMe)
 				{
-					cookie.setMaxAge(LoginTicket.EXPIRED_TIME_SECONDS);
+					cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
 				}
 				response.addCookie(cookie);
 				if(next!=null)

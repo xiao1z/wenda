@@ -5,7 +5,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import service.RedisAdapter;
+import service.RedisDBForKeyService;
 import util.JSONUtil;
 import util.RedisKeyUtil;
 
@@ -16,7 +16,7 @@ public class EventProducer {
 
 	
 	@Autowired
-	RedisAdapter redisAdapter;
+	RedisDBForKeyService redisDBForKeyService;
 	
 	
 	
@@ -25,7 +25,7 @@ public class EventProducer {
 		String key = RedisKeyUtil.getAsyncQueueKey(e.getPriority());
 		try
 		{
-			if(redisAdapter.lpush(key, JSONUtil.getJSONStringOfEvent(e))>0)
+			if(redisDBForKeyService.lpush(key, JSONUtil.getJSONStringOfEvent(e))>0)
 			{
 				return true;
 			}

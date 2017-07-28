@@ -1,7 +1,6 @@
 package controller;
 
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 
@@ -73,7 +72,7 @@ public class FollowController {
 			followService.cancelFollow(followId);
 			eventProducer.fireEvent(new StandardEvent()
 					.setActorId(hostHolder.getUser().getId())
-					.setType(EventType.CANCEL_FOLLOW)
+					.setType(EventType.CANCEL_FOLLOW_EVENT)
 					.setEntityId(followId));
 			return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 		}

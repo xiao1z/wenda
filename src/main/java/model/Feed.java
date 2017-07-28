@@ -18,9 +18,7 @@ public class Feed {
 	//辅助的json对象，不会存到数据库
 	private JSONObject json = null;
 	
-	//最大缓存数量
-	public static final int MAX_CACHE_SZIE = 10;
-	public static final int MAX_CACHE_SECONDS = 60*60*24*7;
+	
 	
 	//这些Type只能由人发出
 	

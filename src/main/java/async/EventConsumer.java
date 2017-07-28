@@ -17,11 +17,11 @@ import org.springframework.stereotype.Service;
 
 import com.alibaba.fastjson.JSON;
 
-import dao.LoginTicketDAO;
 import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
 import model.User;
-import service.RedisAdapter;
+import service.ConfigService;
+import service.RedisDBForKeyService;
 import service.UserService;
 import util.RedisKeyUtil;
 
@@ -32,10 +32,13 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
 	private static final Logger logger = LoggerFactory.getLogger(EventConsumer.class);
 
 	@Autowired
-	RedisAdapter redisAdapter;
+	RedisDBForKeyService redisDBForKeyService;
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ConfigService configService;
 	
 	Map<EventType,List<EventHandler>> configs = new HashMap<EventType,List<EventHandler>>();
 	private ApplicationContext applicationContext;
@@ -48,7 +51,7 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
 		if(userService.getUser(User.SYSTEM_USER_ID)==null)
 		{
 			User user = new User();
-			user.setHeadUrl(User.DEFAULT_HEAD_URL);
+			user.setHeadUrl(configService.getUser_DEFAULT_HEAD_URL());
 			user.setPassword("");
 			user.setSalt("");
 			user.setUsername("系统通知");
@@ -99,7 +102,7 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
 				while(true)
 				{
 					String key = RedisKeyUtil.getAsyncQueueKey(StandardEvent.NORMAL_PRIORITY);
-					List<String> list = redisAdapter.brpop(0,key);
+					List<String> list = redisDBForKeyService.brpop(0,key);
 					if(list!=null)
 					{
 						for(String jsonString:list)

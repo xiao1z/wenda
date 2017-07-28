@@ -9,8 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import async.EventProducer;
-import async.StandardEvent;
 import dao.FollowDAO;
 import dao.MybatisSqlSessionFactory;
 import model.EntityType;
