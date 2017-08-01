@@ -1,5 +1,53 @@
 var lastClick;
 var ownerId = $("#ownerId").text();
+var userInfo;
+function initFileInput(ctrlName,uploadUrl) 
+{      
+    var control = $('#' + ctrlName);   
+    control.fileinput({  
+        language: 'zh', //设置语言  
+        uploadUrl: uploadUrl,  //上传地址  
+        uploadAsync:true, 
+        showCaption: true, 
+        showUpload: false,//是否显示上传按钮 
+        showRemove: true,//是否显示删除按钮 
+        showCaption: true,//是否显示输入框 
+        showPreview:true, 
+        showCancel:true,  
+        maxFileCount: 1, 
+        initialPreviewShowDelete:true, 
+        previewSettings:
+        {
+        	 image: {width: "240px", height: "160px"}
+        },
+        allowedPreviewTypes: ['image'],  
+        allowedFileTypes: ['image'],  
+        allowedFileExtensions:  ['jpg', 'png'],  
+        maxFileSize : 20000,    
+    });
+}  
+
+$(function () {  
+    var path="/wenda/user/"+ownerId+"/headImg";  
+    initFileInput("headImg",path);  
+    
+    $("#briefIntroduction").val($("#briefIntroductionContent").text());
+}) 
+
+$("#uploadHeadImg").click(function(){
+
+	$("#headImg").fileinput('upload');
+});
+
+$('#headImg').on('fileuploaded', function(event,data) {
+	//加？是为了防止浏览器使用缓存而不更新图片
+	$("#ownerHeadUrl").attr("src",function(){return data.response.headUrl+"?"});
+	$("#uploadHeadImageSuccess").fadeIn();
+	$("#uploadHeadImg").fadeOut();
+});
+
+
+
 $("#sendMessageRequire").click(function(){
 	 
     if(loginStatus.code==0)
@@ -11,6 +59,108 @@ $("#sendMessageRequire").click(function(){
       	$("#messageContent").val("");
     }
 });
+
+
+$("#alterInfoRequire").click(function(){
+	
+	$.ajax({  
+        type: "GET",  
+        url:"/wenda/user/"+ownerId+"/info", 
+        dataType:"json",
+        async: false,  
+        error: function() {  
+            alert("您已登出，请先登录");
+            window.location.reload();
+        },  
+        success: function(json) {  
+        	userInfo = eval(json);
+        }  
+    });
+	$("#description").val(userInfo.description);
+	$("#location").val(userInfo.location);
+	if(userInfo.sex=='F')
+		$("#female").attr("checked",true);
+	if(userInfo.sex=='M')
+		$("#male").attr("checked",true);
+	if(userInfo.sex=='S')
+		$("#secrecy").attr("checked",true);
+
+    if(loginStatus.code==0)
+    {
+    	$("#alterMessageSuccess").attr("style","display:none");
+    	$("#alterInfo").fadeIn();
+      	$("#alterInfoRequire").attr("data-target","#infoModal");
+      	$("#alterInfoRequire").attr("data-toggle","modal");
+    }
+});
+
+$("#infoDisplayRequire").click(function(){
+	$.ajax({  
+        type: "GET",  
+        url:"/wenda/user/"+ownerId+"/info", 
+        dataType:"json",
+        async: false,  
+        error: function() {  
+            alert("网络异常");  
+        },  
+        success: function(json) {  
+        	userInfo = eval(json);
+        	$("#descriptionDisplay").text(userInfo.description);
+        	$("#locationDisplay").text(userInfo.location);
+        	if(userInfo.sex=='F')
+        		$("#sexDisplay").text("女");
+        	if(userInfo.sex=='M')
+        		$("#sexDisplay").text("男");
+        	if(userInfo.sex=='S')
+        		$("#sexDisplay").text("保密");
+          	$("#infoDisplayRequire").attr("data-target","#infoDisplayModal");
+          	$("#infoDisplayRequire").attr("data-toggle","modal");
+        }  
+    });
+	
+});
+
+
+$("#uploadHeadImageRequire").click(function(){
+	 
+    if(loginStatus.code==0)
+    {  
+    	$('#headImg').fileinput('refresh');
+    	$("#uploadHeadImageSuccess").attr("style","display:none");
+      	$("#uploadHeadImg").fadeIn();
+      	$("#uploadHeadImageRequire").attr("data-target","#headImgModal");
+      	$("#uploadHeadImageRequire").attr("data-toggle","modal");
+    }
+});
+
+$("#alterInfo").click(function(){
+	$.ajax({  
+            type: "POST",  
+            url:"/wenda/user/"+ownerId+"/info",  
+            data:$('#infoForm').serialize(),// 序列化表单值  
+            dataType:"json",
+            async: false,  
+            error: function() {  
+            	alert("您已登出，请先登录");
+                window.location.reload(); 
+            },  
+            success: function(json) {  
+                loginStatus = eval(json);
+                if(loginStatus.code==0)
+                {
+                	$("#briefIntroductionDisplayInModal").text($("#briefIntroduction").val());
+                	$("#briefIntroductionDisplay").text($("#briefIntroduction").val());
+                	$("#alterMessageSuccess").fadeIn();
+                	$("#alterInfo").fadeOut();
+                }else if(loginStatus.code==999)
+                {
+               		$("#alterMessageUnlogin").fadeIn();
+                	$("#alterInfo").fadeOut();
+                }
+            }  
+        });  
+	});
+
 
 $("#sendMessage").click(function(){
 	$.ajax({  

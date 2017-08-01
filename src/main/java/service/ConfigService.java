@@ -36,6 +36,9 @@ public class ConfigService {
 	@Value("${cache.MAX_USER_CACHE_SIZE}")
 	private int cache_MAX_USER_CACHE_SIZE;
 	
+	@Value("${User.ROOT_HEAD_URL}")
+	private String User_ROOT_HEAD_URL;
+	
 	public int getIndex_QUESTION_COUNT_EVERY_PAGE() {
 		return index_QUESTION_COUNT_EVERY_PAGE;
 	}
@@ -74,6 +77,10 @@ public class ConfigService {
 
 	public int getCache_MAX_USER_CACHE_SIZE() {
 		return cache_MAX_USER_CACHE_SIZE;
+	}
+
+	public String getUser_ROOT_HEAD_URL() {
+		return User_ROOT_HEAD_URL;
 	}
 
 	

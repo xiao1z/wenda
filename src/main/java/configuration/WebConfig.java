@@ -8,6 +8,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
+import org.springframework.web.multipart.MultipartResolver;
+import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.multipart.support.StandardServletMultipartResolver;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.DefaultServletHandlerConfigurer;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.view.freemarker.FreeMarkerViewResolver;
 import freemarker.template.utility.XmlEscape;
 import intercepter.LoginRequiredIntercepter;
 import intercepter.PassportIntercepter;
+import service.ConfigService;
 
 @Configuration
 @EnableWebMvc
@@ -34,6 +38,9 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	
 	@Autowired
 	LoginRequiredIntercepter loginRequiredIntercepter;
+	
+	@Autowired
+	ConfigService configService;
 	
 	@Bean
 	public ViewResolver freeMarkerViewResolver()
@@ -60,6 +67,13 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	}
 	
 	@Bean
+	public MultipartResolver multipartResolver()
+	{
+		CommonsMultipartResolver multipartResolver=new CommonsMultipartResolver();
+		return multipartResolver;
+	}
+	
+	@Bean
 	public ViewResolver commonViewResolver()
 	{
 		InternalResourceViewResolver resolver=new InternalResourceViewResolver();
@@ -69,6 +83,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		resolver.setOrder(1);
 		return resolver;
 	}
+	
 	
 	
 	
@@ -82,7 +97,10 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
 		// TODO Auto-generated method stub
 		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
+		
+		registry.addResourceHandler("/headImg/**").addResourceLocations("file:"+configService.getUser_ROOT_HEAD_URL());
 		//registry.addResourceHandler("user/static/**").addResourceLocations("/WEB-INF/static/");
+	
 	}
 
 	@Override
@@ -92,7 +110,5 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/user/**");
 		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/timeline/**");
 		super.addInterceptors(registry);
-	}
-	
-	
+	}	
 }

@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import model.Question;
 import model.User;
 import model.ViewObject;
 import service.CommentService;
+import service.ConfigService;
 import service.FollowService;
 import service.LikeService;
 import service.QuestionService;
@@ -39,6 +41,9 @@ public class QuestionController {
 	
 	@Autowired
 	UserService userService;
+	
+	@Autowired
+	ConfigService configService;
 	
 	@Autowired
 	CommentService commentService;
@@ -160,5 +165,13 @@ public class QuestionController {
 		model.addAttribute("question", question);
 		model.addAttribute("asker", asker);
 		return "questionDetail";
+	}
+	
+	@RequestMapping(path = {"/user/{userId}/questions"},method = RequestMethod.GET, produces = "application/json; charset=utf-8")
+	@ResponseBody
+	public String getUserQuestions(@PathVariable("userId") int userId)
+	{
+		List<Question> questionList = questionService.getLatestQuestion(userId, 0, configService.getIndex_QUESTION_COUNT_EVERY_PAGE());
+		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}
 }

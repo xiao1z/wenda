@@ -1,24 +1,36 @@
 package service;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.util.HtmlUtils;
 
 import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
 import model.User;
+import model.UserInfo;
+import util.DateUtil;
 import util.MD5Util;
 
 @Service
-public class UserService {
+public class UserService implements InitializingBean{
 	
 	@Autowired
 	private ConfigService configService;
@@ -29,7 +41,14 @@ public class UserService {
 	@Autowired
 	private CacheService cacheService;
 	
-	private static int MIN_PASSWORD_LENGTH = 2;
+	@Autowired
+	SensitiveWordsService sensitiveWordsService;
+	
+	@Autowired
+	UserInfoService userInfoService;
+	
+	private static Validator validator;
+	
 	
 	private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
@@ -38,16 +57,29 @@ public class UserService {
 	public Map<String,String> login(String username,String password,boolean rememberMe)
 	{
 		Map<String,String> map = new HashMap<String,String>();
+		
 		if(StringUtils.isEmpty(username)){
-			map.put("error", "用户名不能为空");
-			return map;
+			username=null;
 		}
 		if(StringUtils.isEmpty(password)){
-			map.put("error", "密码不能为空");
+			password=null;
+		}
+		
+		User user = new User();
+		user.setUsername(username);
+		user.setPassword(password);
+		
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+		if(!constraintViolations.isEmpty())
+		{
+			for(ConstraintViolation<User> c:constraintViolations)
+			{
+				map.put("error", c.getMessage());
+			}
 			return map;
 		}
 		
-		User user = this.getUser(username);
+		user = this.getUser(username);
 		if(user==null)
 		{
 			map.put("error", "用户名或密码错误");
@@ -68,102 +100,59 @@ public class UserService {
 	public void logout(String ticket)
 	{
 		loginTicketService.discardTicket(ticket);
-		/*
-		 * v2版本废弃
-		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
-		LoginTicketDAO loginTicketDAO;
-		try{
-			loginTicketDAO = session.getMapper(LoginTicketDAO.class);
-			loginTicketDAO.updateStatus(-1, ticket);
-			session.commit();
-		}catch(Exception e)
-		{
-			logger.error("登出错误 "+e.getMessage());
-		}finally
-		{
-			if(session!=null)
-			{
-				session.close();
-			}
-		}
-		*/
 	}
 	
 	
-	public Map<String,String> register(String username,String password,boolean rememberMe)
+	public Map<String,String> register(String username,String password,
+			String briefIntroduction,boolean rememberMe)
 	{
 		Map<String,String> map = new HashMap<String,String>();
-		if(StringUtils.isEmpty(username)){
-			map.put("error", "用户名不能为空");
-			return map;
-		}
-		if(StringUtils.isEmpty(password)){
-			map.put("error", "密码不能为空");
-			return map;
-		}
-		if(password.length()<MIN_PASSWORD_LENGTH)
+		User user = new User();
+		if(StringUtils.isEmpty(username))
+			username=null;
+		if(StringUtils.isEmpty(password))
+			password=null;
+		user.setUsername(username);
+		user.setPassword(password);
+		Set<ConstraintViolation<User>> constraintViolations = validator.validate(user);
+		if(!constraintViolations.isEmpty())
 		{
-			map.put("error", "密码长度不能小于" +MIN_PASSWORD_LENGTH);
+			for(ConstraintViolation<User> c:constraintViolations)
+			{
+				map.put("error", c.getMessage());
+			}
 			return map;
 		}
 		
-		User user = this.getUser(username);
-		if(user!=null)
+		if(this.getUser(username)!=null)
 		{
 			map.put("error", "用户名已经被注册");
 			return map;
 		}
 		username = HtmlUtils.htmlEscape(username);
-		user = new User();
-		user.setUsername(username);
+		
 		user.setSalt(UUID.randomUUID().toString().substring(0,5));
 		user.setHeadUrl(configService.getUser_DEFAULT_HEAD_URL());
 		user.setPassword(MD5Util.getMD5(password+user.getSalt()));
+		user.setBriefIntroduction(briefIntroduction);
+		user.setNickname(username);
+	
 		if(!this.addUser(user))
 		{
 			map.put("error", "用户注册错误");
 			return map;
 		}
 		
+		UserInfo userInfo = new UserInfo();
+		userInfo.setUserId(user.getId());
+		userInfo.setRegisterDate(DateUtil.now());
+		userInfoService.addUserInfo(userInfo);
+		
 		String ticket = loginTicketService.addTicket(user.getId(),rememberMe);
 		map.put("ticket", ticket);
 		return map;
 	}
 	
-	/*
-	 * v2 将该功能转移到了LoginTicketService
-	//根据userId下发一个ticket
-	private String addTicket(int userId,boolean rememberMe){
-		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
-		LoginTicket loginTicket = new LoginTicket();
-		loginTicket.setUserId(userId);
-		loginTicket.setStatus(0);
-		loginTicket.setTicket(UUID.randomUUID().toString().replaceAll("-",""));
-		Date now =DateUtil.now();
-		if(rememberMe)
-			now.setTime(configService.getLoginTicket_EXPIRED_TIME() + now.getTime());
-		else
-			now.setTime(configService.getLoginTicket_EXPIRED_TIME_IF_NOTREMEBERME() + now.getTime());
-		loginTicket.setExpired(now);
-		LoginTicketDAO loginTicketDAO;
-		
-		try{
-			loginTicketDAO = session.getMapper(LoginTicketDAO.class);
-			loginTicketDAO.addTicket(loginTicket);
-			session.commit();
-		}catch(Exception e)
-		{
-			logger.error("下发ticket错误 "+e.getMessage());
-		}finally
-		{
-			if(session!=null)
-			{
-				session.close();
-			}
-		}
-		return loginTicket.getTicket();
-	}
-	*/
 	
 	private boolean addUser(User user){
 		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
@@ -185,6 +174,74 @@ public class UserService {
 		}
 		cacheService.addUserToCache(user);
 		return true;
+	}
+	
+	public String updateHeadUrl(int userId,MultipartFile headImg)
+	{
+		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		UserDAO userDAO;
+		try{
+			StringBuilder realHeadUrlPath = new StringBuilder(configService.getUser_ROOT_HEAD_URL());
+			File userPath = new File(realHeadUrlPath.append(userId).toString());
+			if(!userPath.exists())
+				userPath.mkdirs();
+			byte[] bytes = headImg.getBytes();
+			realHeadUrlPath.append("\\");
+			realHeadUrlPath.append(HtmlUtils.htmlEscape(headImg.getOriginalFilename()));
+			FileOutputStream fileOutputStream = new FileOutputStream(realHeadUrlPath.toString());
+			fileOutputStream.write(bytes);
+			fileOutputStream.flush();
+			fileOutputStream.close();
+			
+			userDAO = session.getMapper(UserDAO.class);
+			
+			StringBuilder headUrl = new StringBuilder("/wenda/headImg/")
+					.append(userId).append("/").append(headImg.getOriginalFilename());
+			userDAO.updateHeadUrl(userId, headUrl.toString());
+			session.commit();
+			
+			cacheService.failCache(userId);
+			
+			//外部访问路径
+			return headUrl.toString();
+		}catch(Exception e)
+		{
+			logger.error("更新用户头像错误 "+e.getMessage());
+			return null;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+	}
+	
+	public int updateBriefIntroduction(int userId,String briefIntroduction){
+		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		if(briefIntroduction!=null)
+		{
+			briefIntroduction = sensitiveWordsService.filterWords(
+					HtmlUtils.htmlEscape(briefIntroduction));
+		}
+		UserDAO userDAO;
+		int result = -1;
+		try{
+			userDAO = session.getMapper(UserDAO.class);
+			result = userDAO.updateBriefIntroduction(userId, briefIntroduction);
+			session.commit();
+		}catch(Exception e)
+		{
+			logger.error("更新用户简介错误  "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		cacheService.failCache(userId);
+		return result;
 	}
 	
 	
@@ -251,5 +308,11 @@ public class UserService {
 	public boolean isActiveUser(User user)
 	{
 		return true;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
+	    validator = factory.getValidator();
 	}
 }

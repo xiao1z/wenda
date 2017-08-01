@@ -34,6 +34,8 @@
   	<mapper class="dao.MessageDAO"/>
   	<mapper class="dao.FollowDAO"/>
   	<mapper class="dao.FeedDAO"/>
+  	<mapper class="dao.UserInfoDAO"/>
+  	<mapper resource="dao/UserInfoMapper.xml"/>
   	<mapper resource="dao/QuestionMapper.xml"/>
   	<mapper resource="dao/FollowMapper.xml"/>
   	<mapper resource="dao/FeedMapper.xml"/>

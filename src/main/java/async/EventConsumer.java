@@ -47,14 +47,17 @@ public class EventConsumer implements InitializingBean,ApplicationContextAware{
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
 		
-		//服务器第一运行，数据库中还没有系统用户的信息
+		//服务器第一次运行，数据库中还没有系统用户的信息
 		if(userService.getUser(User.SYSTEM_USER_ID)==null)
 		{
+			System.out.println("here");
 			User user = new User();
-			user.setHeadUrl(configService.getUser_DEFAULT_HEAD_URL());
 			user.setPassword("");
 			user.setSalt("");
+			user.setHeadUrl(configService.getUser_DEFAULT_HEAD_URL());
 			user.setUsername("系统通知");
+			user.setNickname("系统通知");
+			user.setStatus(User.NOMROL_STATUS_TYPE);
 			SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 			UserDAO userDAO;
 			try{

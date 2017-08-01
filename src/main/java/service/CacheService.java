@@ -54,6 +54,12 @@ public class CacheService implements InitializingBean{
 		}
 	}
 	
+	public void failCache(int userId)
+	{
+		String redisKey = RedisKeyUtil.getUserCacheKey(userId);
+		redisDBForNormalService.del(redisKey);
+	}
+	
 	public void addUserToCache(User user)
 	{
 		if(status!=0)

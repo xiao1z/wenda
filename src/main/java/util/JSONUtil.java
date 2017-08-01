@@ -12,6 +12,7 @@ import com.alibaba.fastjson.serializer.SimplePropertyPreFilter;
 import async.Event;
 import model.Question;
 import model.User;
+import model.UserInfo;
 
 public class JSONUtil {
 	public static final int UNLOGIN = 999;
@@ -48,6 +49,10 @@ public class JSONUtil {
 		return JSON.toJSONString(user);
 	}
 	
+	public static String getJSONStringOfUserInfo(UserInfo userInfo)
+	{
+		return JSON.toJSONString(userInfo);
+	}
 	
 	public static String getJSONString(int code,String msg)
 	{
@@ -69,6 +74,13 @@ public class JSONUtil {
 	{
 		JSONObject json = new JSONObject();
 		json.put("code", code);
+		return json.toJSONString();
+	}
+	
+	public static String getJSONString(String key,String value)
+	{
+		JSONObject json = new JSONObject();
+		json.put(key, value);
 		return json.toJSONString();
 	}
 	

@@ -24,4 +24,5 @@ public class WendaWebAppInitializer
 		return new String[]{"/"};
 	}
 
+	
 }

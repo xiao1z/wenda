@@ -39,11 +39,12 @@ public class LoginAndRegisterController {
 			,@RequestParam("password") String password
 			,@RequestParam(value = "rememberMe",defaultValue = "false") boolean rememberMe
 			,@RequestParam(value = "next",required = false) String next
+			,@RequestParam(value = "briefIntroduction",required = false) String briefIntroduction
 			,HttpServletResponse response){
 		
 		try
 		{
-			Map<String,String> map = userService.register(username, password,rememberMe);
+			Map<String,String> map = userService.register(username, password,briefIntroduction,rememberMe);
 			if(map.containsKey("ticket"))
 			{
 				Cookie cookie = new Cookie("ticket", map.get("ticket"));

@@ -5,7 +5,7 @@
 			<ul class="nav nav-tabs">
 				<li style=" top:0px;">
 					<a href="/wenda/">
-            		<img src="/wenda/static/images/log_icon.jpg" class="img-rounded img-responsive" 
+            		<img src="/wenda/static/img/log_icon.jpg" class="img-rounded img-responsive" 
                  	alt="喵问答">
         			</a>
 				</li>

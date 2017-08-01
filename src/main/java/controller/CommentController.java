@@ -50,6 +50,7 @@ public class CommentController {
 		}
 		else
 		{
+			System.out.println(content);
 			Comment comment = new Comment();
 			comment.setContent(content);
 			comment.setCreateDate(DateUtil.now());
