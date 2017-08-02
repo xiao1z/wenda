@@ -18,7 +18,7 @@ function initFileInput(ctrlName,uploadUrl)
         initialPreviewShowDelete:true, 
         previewSettings:
         {
-        	 image: {width: "240px", height: "160px"}
+        	 image: {width: "200px", height: "160px"}
         },
         allowedPreviewTypes: ['image'],  
         allowedFileTypes: ['image'],  

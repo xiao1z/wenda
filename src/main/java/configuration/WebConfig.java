@@ -99,6 +99,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addResourceHandler("/static/**").addResourceLocations("/WEB-INF/static/");
 		
 		registry.addResourceHandler("/headImg/**").addResourceLocations("file:"+configService.getUser_ROOT_HEAD_URL());
+		registry.addResourceHandler("/img/**").addResourceLocations("file:"+configService.getQuestion_ROOT_IMG_URL());
 		//registry.addResourceHandler("user/static/**").addResourceLocations("/WEB-INF/static/");
 	
 	}

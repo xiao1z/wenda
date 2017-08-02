@@ -16,12 +16,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.Comment;
 import model.HostHolder;
+import model.Img;
 import model.Question;
 import model.User;
 import model.ViewObject;
 import service.CommentService;
 import service.ConfigService;
 import service.FollowService;
+import service.ImgService;
 import service.LikeService;
 import service.QuestionService;
 import service.RedisDBForKeyService;
@@ -43,6 +45,9 @@ public class QuestionController {
 	UserService userService;
 	
 	@Autowired
+	ImgService imgService;
+	
+	@Autowired
 	ConfigService configService;
 	
 	@Autowired
@@ -56,6 +61,7 @@ public class QuestionController {
 	
 	@Autowired
 	RedisDBForKeyService redisDBForKeyService;
+	
 	
 	@RequestMapping(value = "/question/add" ,method = RequestMethod.POST)
 	@ResponseBody
@@ -97,6 +103,7 @@ public class QuestionController {
 		redisDBForKeyService.set(key, JSONUtil.getQuestionCacheJSONString(title, content));
 		return JSONUtil.getJSONString(JSONUtil.SUCCESS);
 	}
+	
 	
 	
 	@RequestMapping(value = "/question/{id}" ,method = RequestMethod.GET)
@@ -141,6 +148,12 @@ public class QuestionController {
 				vo.set("likeCount", likeService.getCommentLikeCount(comment.getId()));
 				vo.set("user", user);
 				vo.set("comment", comment);
+				if(comment.getImgCount()>0)
+				{
+					List<Img> imgList = imgService.getImgOfQuestionComment(comment.getId());
+					if(imgList!=null)
+						vo.set("imgList", imgList);
+				}
 				List<Comment> subComments = commentService.getCommentsOfComment(comment.getId());
 				if(subComments!=null && !subComments.isEmpty())
 				{

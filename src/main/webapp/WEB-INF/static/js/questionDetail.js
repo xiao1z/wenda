@@ -1,19 +1,101 @@
-var E = window.wangEditor;
-var editor = new E('#editor');
-editor.customConfig.uploadImgShowBase64 = true;
-editor.customConfig.zIndex = 0
-editor.create();
+var observe;
+var questionId = $("#questionId").text();
+var extraCommentId;
+var successUploaded = 0;
+var filesCount = 0;
+if (window.attachEvent) {
+    observe = function (element, event, handler) {
+        element.attachEvent('on'+event, handler);
+    };
+}
+else {
+    observe = function (element, event, handler) {
+        element.addEventListener(event, handler, false);
+    };
+}
+function init (textareaId) {
+    var text = document.getElementById(textareaId);
+    function resize () {
+        text.style.height = 'auto';
+        text.style.height = text.scrollHeight+'px';
+    }
+    /* 0-timeout to get the already changed text */
+    function delayedResize () {
+        window.setTimeout(resize, 0);
+    }
+    observe(text, 'change',  resize);
+    observe(text, 'cut',     delayedResize);
+    observe(text, 'paste',   delayedResize);
+    observe(text, 'drop',    delayedResize);
+    observe(text, 'keydown', delayedResize);
 
 
-//根据Url #后的id进行定位
+    resize();
+}
+
+function getExtraData(index)
+{
+	var obj = {};
+	obj["commentId"] = extraCommentId;
+    obj["offset"] = index+1;//index表示上传的第几个文件，从0开始
+    return obj;
+}
+
+function initFileInput(ctrlName,uploadUrl) 
+{      
+    var control = $('#' + ctrlName);   
+    control.fileinput({  
+        language: 'zh', //设置语言  
+        uploadUrl: uploadUrl,  //上传地址  
+        uploadAsync:true, 
+        showCaption: true, 
+        dropZoneEnabled:false,
+        uploadExtraData:function (previewId, index) {
+            return getExtraData(index);
+        },
+        
+        showUpload: false,//是否显示上传按钮 
+        showRemove: true,//是否显示删除按钮 
+        showCaption: true,//是否显示输入框 
+        showPreview:true, 
+        showCancel:true,  
+        maxFileCount: 128, 
+        initialPreviewShowDelete:true, 
+        layoutTemplates:
+        {
+        	actionUpload:'',
+        },
+        previewSettings:
+        {
+        	 image: {width: "240px", height: "160px"}
+        },
+        allowedPreviewTypes: ['image'],  
+        allowedFileTypes: ['image'],  
+        allowedFileExtensions:  ['jpg', 'png'],  
+        maxFileSize : 20000,    
+    });
+}  
+
+
 $(function(){
+	init ('questionComment');
+	$("textarea[id^='subCommentContent_']").each(function(){
+	    init($(this).attr("id"));
+	  });
+	
+	var path="/wenda/comment/question/"+questionId+"/img";  
+    initFileInput("commentImg",path);  
+	
+	//根据Url #后的id进行定位
     var url = window.location.toString();
     var id = url.split("#")[1];
-   if(id){
+    if(id){
       var t = $(id).offset().top;
       $(window).scrollTop(t);
    }
 });
+
+
 
 //id属性以subCommentCommit开始的所有button标签 
 $("button[id^='subCommentCommit_']").click(function(){
@@ -121,18 +203,31 @@ $("a[id^='like_']").click(function(){
 	
 });
 
+ $('#commentImg').on('fileuploaded', function(event, data, previewId, index) {
+	 successUploaded++;
+	 if(successUploaded==filesCount)
+		 location.reload(true);  
+	});
+
+ 
 $("#commentSubmit").click(function(){
-	 var questionId = $("#questionId").text();
-	 var content = editor.txt.text();
-	 if(content==""||loginStatus.code==999);
+	 //var questionId = $("#questionId").text();
+	 var content = $("#questionComment").val();
+	 if(content=="")
+		 $("#submitComment_emptyContent").fadeIn();
+	 else if(loginStatus.code==999)
+	 {
+	 	 $("#submitUnlogin_comment").fadeIn();
+	 }
 	 else
 	 {
+		 filesCount = $('#commentImg').fileinput('getFilesCount');
 	   	 $.ajax({  
                 type: "POST",  
                 url:"/wenda/comment/question/"+questionId,  
                 dataType:"json",
-                data:{"content":content},
-                async: false,  
+                data:{"content":content,"filesCount":filesCount},
+                async: true,  
                 error: function() {  
                     alert("网络异常");  
                 },
@@ -140,7 +235,9 @@ $("#commentSubmit").click(function(){
                     loginStatus = eval(json);
                     if(loginStatus.code==0)
                     {
-                    	location.reload(true);  
+                    	extraCommentId = loginStatus.msg;
+                    	if(filesCount!=0)
+                    		$("#commentImg").fileinput('upload');
                     }else if(loginStatus.code==999)
                     {
                    		$("#submitUnlogin_comment").fadeIn();

@@ -12,10 +12,19 @@
 	
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/wenda/static/css/style.css" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="/wenda/static/css/fileinput.min.css" />
     
-   
+  <style>
+	  textarea {
+	    border: 0 none white;
+	    overflow: hidden;
+	    padding: 0;
+	    outline: none;
+	    background-color: #D0D0D0;
+	}
+  </style>
   </head>
-  <body style="font-size:100%;">
+  <body style="font-size:100%">
   	
 
     <div class="container-fluid" id="container">
@@ -164,12 +173,21 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-md-8">
+				<div class="col-md-10">
 					<span style="color:gray">发布于${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
-					
 					<p style="word-break: break-all;word-wrap: break-word; font-size:2em;">
 						${vo.comment.content}
 					</p>
+					
+					<#if vo.imgList??>
+						<#list vo.imgList as imgItem>
+							<div class="row">
+								<img src="${imgItem.url}" class="QuestionCommentImgSize">
+							</div>
+							<hr>	
+						</#list>
+					</#if>
+					
 				</div>
 			
 			</div>
@@ -182,7 +200,7 @@
 			</div>
 			<div class="col-md-1">
 			</div>
-			<div class="col-md-8">
+			<div class="col-md-8" style="margin-top:5px">
 				<div class="col-md-1">
 				</div>
 				<div class="col-md-10" style="background-color:rgba(224,238,224,0.6);line-height:1.5">
@@ -191,15 +209,18 @@
 					<#list vo.subVoList as subVo>
 					<span style="color:gray"> &nbsp发布于：${subVo.subComment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
 					<br>
-					<p><a href="/wenda/user/${subVo.subUser.id}">${subVo.subUser.username}：</a>${subVo.subComment.content}</p>
+					<p style="word-break: break-all;word-wrap: break-word;"><a href="/wenda/user/${subVo.subUser.id}">${subVo.subUser.username}：</a>
+						${subVo.subComment.content}
+					</p>
 					<br>
 					</#list>
 					</#if>
+					
 					<span class="hidden" id="commentId_${vo.comment.id}">${vo.comment.id}</span>
-					<textarea  type="text" id="subCommentContent_${vo.comment.id}" name="content" class="form-control" style="overflow-x:visible;overflow-y:visible;" placeholder="请输入您的观点" rows="1"></textarea>
+					<textarea style="height:1em;font-size:1em" class="form-control" id="subCommentContent_${vo.comment.id}" name="content"  placeholder="请输入您的观点" rows="1"></textarea>
 					<br>
 					<div id="submitUnlogin_comment_inComment_${vo.comment.id}" class="alert alert-danger" style="display:none;margin-top:10px">发布评论需要登录，请先登录！</div>
-					<button type="button" id="subCommentCommit_${vo.comment.id}" class="btn btn-primary pull-right">回复</button>
+					<button type="button" id="subCommentCommit_${vo.comment.id}" class="btn btn-sm btn-primary pull-right">回复</button>
 					<hr>
 				</div>
 			</div>
@@ -231,9 +252,32 @@
 		</div>
 		<div class="col-md-8">
 			<hr>
-			<div id="editor">
+			<form role="form">
+				<div id="editor" class="form-group">
+					<textarea placeholder="请输入您的回答" rows="4" class="form-control" style="height:1em;font-size:2em" id="questionComment"></textarea>
+				</div>
+				<div class="form-group">
+				<label for="commentImg" class=" control-label">上传图片(最多支持128张图片):</label>
+				<div>
+					<input id="commentImg" multiple name="commentImg" type="file" data-show-caption="true">  
+			        <p class="help-block">支持jpg、jpeg、png格式</p>
+			    </div>    
+		        </div>
+			</form>
+			<div id="submitUnlogin_comment" class="alert alert-danger alert-dismissable" style="display:none;margin-top:10px">
+				<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">
+					&times;
+				</button>
+				回复问题需要登录，请先登录！
 			</div>
-			<div id="submitUnlogin_comment" class="alert alert-danger" style="display:none;margin-top:10px">发布回答需要登录，请先登录！</div>
+			<div id="submitComment_emptyContent" class="alert alert-danger alert-dismissable" style="display:none;margin-top:10px">
+				<button type="button" class="close" data-dismiss="alert"
+						aria-hidden="true">
+					&times;
+				</button>
+				请输入回答内容哦！
+			</div>
 		    <div class="pull-right" style="margin-top:10px">
 		   		<button id="commentSubmit" type="button" class="btn btn-primary btn-lg">提交回答</button>
 		    </div>
@@ -258,8 +302,9 @@
  	<script src="/wenda/static/js/jquery.min.js"></script>
     <script src="/wenda/static/js/bootstrap.min.js"></script>
     <script src="/wenda/static/js/header.js"></script>
-	<script type="text/javascript" src="/wenda/static/js/wangEditor.min.js"></script>
 	<script src="/wenda/static/js/questionDetail.js"></script>
+	<script type="text/javascript" src="/wenda/static/js/fileinput.min.js"></script>
+	<script type="text/javascript" src="/wenda/static/js/fileinput_locale_zh.js"></script>
     
   </body>
 </html>

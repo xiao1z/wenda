@@ -10,7 +10,7 @@ import model.Comment;
 
 public interface CommentDAO {
 	String TABLE_NAME=" comment ";
-	String INSERT_FIELDS = " user_id,entity_id,entity_type,content,create_date,status ";
+	String INSERT_FIELDS = " user_id,entity_id,entity_type,content,create_date,status,img_count ";
 	String SELECT_FIELDS = " id,"+INSERT_FIELDS; 
 	
 	@Select({"select",SELECT_FIELDS,"from",TABLE_NAME,"where id=#{id}"})
@@ -24,7 +24,7 @@ public interface CommentDAO {
 	public List<Comment> getCommentsByUserIdAndEntityType(@Param("userId") int userId,@Param("entityType") int entityType);
 	
 	@Insert({"Insert into",TABLE_NAME,"(",INSERT_FIELDS,")"
-		,"values(#{userId},#{entityId},#{entityType},#{content},#{createDate},#{status})"})
+		,"values(#{userId},#{entityId},#{entityType},#{content},#{createDate},#{status},#{imgCount})"})
 	public int addComment(Comment comment);
 	
 }

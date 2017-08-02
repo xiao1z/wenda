@@ -28,13 +28,13 @@
     </environment>
   </environments>
   <mappers>
-  	<mapper class="dao.LoginTicketDAO"/>
   	<mapper class="dao.UserDAO"/>
   	<mapper class="dao.CommentDAO"/>
   	<mapper class="dao.MessageDAO"/>
   	<mapper class="dao.FollowDAO"/>
   	<mapper class="dao.FeedDAO"/>
   	<mapper class="dao.UserInfoDAO"/>
+  	<mapper class="dao.ImgDAO"/>
   	<mapper resource="dao/UserInfoMapper.xml"/>
   	<mapper resource="dao/QuestionMapper.xml"/>
   	<mapper resource="dao/FollowMapper.xml"/>

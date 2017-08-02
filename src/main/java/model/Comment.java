@@ -12,6 +12,7 @@ public class Comment {
 	private String content;
 	private Date createDate;
 	private int status;
+	private int imgCount = 0;
 	
 	
 	public static final int DELETED_STATUS = -1;
@@ -59,5 +60,12 @@ public class Comment {
 	public void setStatus(int status) {
 		this.status = status;
 	}
+	public int getImgCount() {
+		return imgCount;
+	}
+	public void setImgCount(int imgCount) {
+		this.imgCount = imgCount;
+	}
+	
 
 }

@@ -39,6 +39,9 @@ public class ConfigService {
 	@Value("${User.ROOT_HEAD_URL}")
 	private String User_ROOT_HEAD_URL;
 	
+	@Value("${Question.ROOT_IMG_URL}")
+	private String Question_ROOT_IMG_URL;
+	
 	public int getIndex_QUESTION_COUNT_EVERY_PAGE() {
 		return index_QUESTION_COUNT_EVERY_PAGE;
 	}
@@ -81,6 +84,10 @@ public class ConfigService {
 
 	public String getUser_ROOT_HEAD_URL() {
 		return User_ROOT_HEAD_URL;
+	}
+
+	public String getQuestion_ROOT_IMG_URL() {
+		return Question_ROOT_IMG_URL;
 	}
 
 	
