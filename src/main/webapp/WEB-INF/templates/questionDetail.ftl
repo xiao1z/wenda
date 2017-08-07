@@ -36,11 +36,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8">
-			 <span class="label label-info">Label</span>
-			 <span class="label label-info">Label</span>
-			 <span class="label label-info">Label</span>
-			 <span class="label label-info">Label</span>
-			 <a href="#" class="btn" type="button">Button</a>
+			 
 		</div>
 		<div class="col-md-1">
 		</div>
@@ -52,9 +48,7 @@
 			<div class="text-center">
 					<img alt="用户头像" class="img-rounded headimgSize" src="${asker.headUrl}">
 			</div>
-			<div class="text-center">		
-					<span class="badge badgeCss">100</span>
-			</div>
+			
 		</div>
 		<div class="col-md-8">
 			<h2>
@@ -119,7 +113,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8">
-			<span><strong style="color:#0080FF">9</strong>人关注该问题</span>
+			<span><strong id="followerCount" style="color:#0080FF">${followerCount}</strong>人关注该问题</span>
 		</div>
 		<div class="col-md-1">
 		</div>
@@ -130,9 +124,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8">
-			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
-			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
-			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-thumbnail" style="width:40px;height:40px">
+			
 		</div>
 		<div class="col-md-1">
 		</div>

@@ -238,6 +238,8 @@ $("#commentSubmit").click(function(){
                     	extraCommentId = loginStatus.msg;
                     	if(filesCount!=0)
                     		$("#commentImg").fileinput('upload');
+                    	else
+                    		location.reload(true); 
                     }else if(loginStatus.code==999)
                     {
                    		$("#submitUnlogin_comment").fadeIn();
@@ -273,6 +275,7 @@ $("#collectToggle").click(function(){
 	                   loginStatus = eval(json);
 	                   if(loginStatus.code==0)
 	                   {
+	                	   $("#followerCount").text(parseInt($("#followerCount").text())+1);
 	                	   $("#followTableId").text(loginStatus.msg);
 	                	   $("#collectToggle").text("取消收藏");
 	                   }else if(loginStatus.code==999)
@@ -296,6 +299,7 @@ $("#collectToggle").click(function(){
 	                   loginStatus = eval(json);
 	                   if(loginStatus.code==0)
 	                   {
+	                	   $("#followerCount").text(parseInt($("#followerCount").text())-1);
 	                	   $("#followTableId").text("");
 	                	   $("#collectToggle").text("收藏");
 	                   }else if(loginStatus.code==999)

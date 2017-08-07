@@ -12,7 +12,7 @@
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     <style>
     .row-margin-top {
-    margin-top: 10px;
+    margin-top: 5px;
 	}	
     </style>
   </head>
@@ -34,9 +34,7 @@
 					<img alt="用户头像" class="img-rounded headimgSize" src="${vo.user.headUrl}">
 				</a>
 			</div>
-			<div class="text-center">		
-					<span class="badge badgeCss">100</span>
-			</div>
+			
 			
 		</div>
 		<div class="col-md-8 well" style="background-color:rgba(0,0,0,0.0);">
@@ -49,7 +47,7 @@
 				${vo.question.content}
 			</p>
 			<p class="text-right">
-				<a class="btn" href="/wenda/question/${vo.question.id}">查看全部 »</a>
+				<a class="btn" href="/wenda/question/${vo.question.id}">查看全部(${vo.question.commentCount}条回答) »</a>
 			</p>
 			
 		</div>
@@ -76,7 +74,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-10 pull-left">
-			<ul class="pagination pagination-lg">
+			<ul class="pagination">
 				<li id="li_prev">
 					<a href="#" id="prev">Prev</a>
 				</li>

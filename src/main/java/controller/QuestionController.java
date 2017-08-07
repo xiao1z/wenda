@@ -110,6 +110,7 @@ public class QuestionController {
 	public String getQuestionDetails(Model model,@PathVariable("id") int id)
 	{
 		Question question = questionService.getQuestion(id);
+		model.addAttribute("followerCount", followService.getFollowerCountOfEQuestion(id));
 		if(hostHolder.getUser()!=null)
 		{
 			String followTableId = null;

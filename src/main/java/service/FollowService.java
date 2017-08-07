@@ -54,6 +54,29 @@ public class FollowService {
 		return result;
 	}
 	
+	public int getFollowerCountOfEQuestion(int questionId)
+	{
+		SqlSession session = MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		FollowDAO followDAO;
+		int result = 0;
+		try{
+			followDAO = session.getMapper(FollowDAO.class);
+			result = followDAO.getFollowerCountOfEntity(questionId, EntityType.QUESTION);
+		}catch(Exception e)
+		{
+			logger.error("获取问题关注人数错误 "+e.getMessage());
+			return 0;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	
+	
 	//获得关注的人的列表
 	public List<User> getFollowUserByUserId(int userId)
 	{

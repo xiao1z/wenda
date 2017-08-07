@@ -1,7 +1,6 @@
 package controller;
 
 import java.text.SimpleDateFormat;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +19,7 @@ import async.StandardEvent;
 import model.Comment;
 import model.EntityType;
 import model.HostHolder;
+import model.Question;
 import service.CommentService;
 import service.ConfigService;
 import service.QuestionService;
@@ -50,14 +50,16 @@ public class CommentController {
 	
 	@RequestMapping(value = "/comment/question/{questionId}/img" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadCommentImgs(@PathVariable("questionId") int questionId,
+	public String uploadCommentImg(@PathVariable("questionId") int questionId,
 							@RequestParam("commentId") int commentId,
 							@RequestParam("offset") int offset,
 							@RequestParam("commentImg") MultipartFile commentImg){
-		
+		//Date before = new Date();
 		if(commentImg!=null)
 		{
 			String url = commentService.uploadQuestionCommetImg(questionId, commentImg, commentId, offset);
+			//Date after = new Date();
+			//System.out.println(Thread.currentThread().getId()+":"+(after.getTime()-before.getTime()));
 			if(url!=null)
 				return "{}";
 			else
@@ -97,7 +99,12 @@ public class CommentController {
 				return JSONUtil.getJSONString(JSONUtil.FAIL, "添加失败");
 			}else
 			{
-				int questionOwnerId = questionService.getQuestion(id).getUserId();
+				//这里需要一个事务
+				Question question = questionService.getQuestion(id);
+				questionService.updateQuestionCommentCount(id, commentService.getCommentsCountOfQuestion(id));
+				//
+				
+				int questionOwnerId = question.getUserId();
 				if(questionOwnerId==hostHolder.getUser().getId());
 				else
 				{

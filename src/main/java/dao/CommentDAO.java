@@ -17,7 +17,11 @@ public interface CommentDAO {
 	public Comment getCommentById(int id);
 	
 	@Select({"select",SELECT_FIELDS,"from",TABLE_NAME,"where entity_id=#{entityId} and entity_type=#{entityType}"})
-	public List<Comment>getCommentsByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
+	public List<Comment> getCommentsByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
+	
+	
+	@Select({"select count(id) from",TABLE_NAME,"where entity_id=#{entityId} and entity_type=#{entityType}"})
+	public int getCommentsCountByEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
 	
 	//该查询会使用user_id列上的索引
 	@Select({"select",SELECT_FIELDS,"from",TABLE_NAME,"where user_id=#{userId} and entity_type=#{entityType} order by create_date desc"})

@@ -186,7 +186,7 @@ public class UserService implements InitializingBean{
 			if(!userPath.exists())
 				userPath.mkdirs();
 			byte[] bytes = headImg.getBytes();
-			realHeadUrlPath.append("\\");
+			realHeadUrlPath.append("/");
 			realHeadUrlPath.append(HtmlUtils.htmlEscape(headImg.getOriginalFilename()));
 			FileOutputStream fileOutputStream = new FileOutputStream(realHeadUrlPath.toString());
 			fileOutputStream.write(bytes);

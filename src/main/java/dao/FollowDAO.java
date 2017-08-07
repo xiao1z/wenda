@@ -17,6 +17,10 @@ public interface FollowDAO {
 
 	public int addFollowAndGetId(Follow follow);
 	
+	@Select({"select count(id) from ",TABLE_NAME,"where follow_id=#{entityId} and follow_type=#{entityType} and status=0"})
+	public int getFollowerCountOfEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
+	
+	
 	@Select({"select ",SELECT_FIELDS,"from ",TABLE_NAME,"where follow_id=#{entityId} and follow_type=#{entityType} and status=0 order by create_date desc"})
 	public List<Follow> selectFollowerOfEntity(@Param("entityId") int entityId,@Param("entityType") int entityType);
 	

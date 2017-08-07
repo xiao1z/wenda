@@ -11,15 +11,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.HtmlUtils;
-
 import dao.CommentDAO;
 import dao.MybatisSqlSessionFactory;
-import dao.UserDAO;
 import model.Comment;
 import model.EntityType;
 import model.Img;
-import util.JSONUtil;
 
 @Service
 public class CommentService {
@@ -61,6 +57,28 @@ public class CommentService {
 	}
 	
 	
+	public int getCommentsCountOfQuestion(int questionId)
+	{
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		CommentDAO commentDAO;
+		int result = 0;
+		try{
+			commentDAO = session.getMapper(CommentDAO.class);
+			result = commentDAO.getCommentsCountByEntity(questionId, EntityType.QUESTION);
+		}catch(Exception e)
+		{
+			logger.error("添加评论错误 "+e.getMessage());
+			return 0;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	
 	public String uploadQuestionCommetImg(int questionId,MultipartFile commentImg,int commentId,int offset)
 	{
 		File questionDir = new File(configService.getQuestion_ROOT_IMG_URL()+questionId);
@@ -69,7 +87,7 @@ public class CommentService {
 		try {
 			byte  [] bytes = commentImg.getBytes();
 			StringBuilder imgUrl = new StringBuilder(questionDir.getPath());
-			imgUrl.append("\\").append(commentId).append("-").append(offset).append("-").append(commentImg.getOriginalFilename());
+			imgUrl.append("/").append(commentId).append("-").append(offset).append("-").append(commentImg.getOriginalFilename());
 			FileOutputStream os = new FileOutputStream(imgUrl.toString());
 			os.write(bytes);
 			os.flush();
