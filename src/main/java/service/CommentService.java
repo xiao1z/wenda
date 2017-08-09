@@ -3,6 +3,7 @@ package service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -16,6 +17,7 @@ import dao.MybatisSqlSessionFactory;
 import model.Comment;
 import model.EntityType;
 import model.Img;
+import net.coobird.thumbnailator.Thumbnails;
 
 @Service
 public class CommentService {
@@ -85,14 +87,21 @@ public class CommentService {
 		if(!questionDir.exists())
 			questionDir.mkdirs();
 		try {
-			byte  [] bytes = commentImg.getBytes();
+			
 			StringBuilder imgUrl = new StringBuilder(questionDir.getPath());
 			imgUrl.append("/").append(commentId).append("-").append(offset).append("-").append(commentImg.getOriginalFilename());
+			
+			Thumbnails.of(commentImg.getInputStream()).size(600, 800).toFile(imgUrl.toString());
+			
+			/* 未压缩图片
+			byte  [] bytes = commentImg.getBytes();
 			FileOutputStream os = new FileOutputStream(imgUrl.toString());
 			os.write(bytes);
 			os.flush();
 			os.close();
-
+			*/
+			
+			
 			StringBuilder netUrl = new StringBuilder("/wenda/img/")
 					.append(questionId).append("/").append(commentId).append("-").append(offset).append("-").append(commentImg.getOriginalFilename());
 			Img img = new Img();

@@ -28,7 +28,7 @@
 		<div class="col-md-5">
 		</div>
 		<div class="col-md-4" >
-			<img alt="Bootstrap Image Preview" src="http://lorempixel.com/140/140/" class="img-circle">
+			<img alt="log" style="width:160px;height:160px;" src="/wenda/static/img/log.jpg" class="img-circle">
 		</div>
 		<div class="col-md-3">
 		</div>

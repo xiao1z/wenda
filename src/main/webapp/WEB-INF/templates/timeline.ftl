@@ -45,7 +45,7 @@
 	</#macro>
   </head>
   
-  <body>
+  <body  style="font-size:100%;">
 
   <div class="container-fluid">
     <#include "header.ftl">
@@ -62,7 +62,7 @@
 				</a>
 			</div>
 			<div class="text-center">		
-					<span class="badge badgeCss">100</span>
+				
 			</div>
 			</#if>
 		</div>

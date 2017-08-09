@@ -35,15 +35,15 @@
 			<div class="col-md-2">
 				<div>
 					<a href="/wenda/user/${owner.id}">
-						<img alt="用户头像" id="ownerHeadUrl"  style="width:170px;height:170px;" class="img-rounded" src="${owner.headUrl}">
+						<img alt="用户头像" id="ownerHeadUrl"  style="width:130px;height:130px;" class="img-rounded" src="${owner.headUrl}">
 					</a>
 				</div>
 				<br>
 			</div>
 			<div class="col-md-8">
-				<h2>
+				<h3>
 				<strong>${owner.username}</strong>
-				</h2> 
+				</h3> 
 				<#if owner.briefIntroduction??>
 					<p id="briefIntroductionDisplay" style="word-break: break-all;word-wrap: break-word;font-size:1.5em;">
 						${owner.briefIntroduction}
@@ -125,22 +125,22 @@
 						<#if canSendMessage??>
 							<#if followTableId??>
 								<span class="hidden" id="followTableId">${followTableId}</span>
-								<button id="followToggle" type="button" class="btn btn-primary ">
+								<button id="followToggle" type="button" class="btn btn-primary">
 									取消关注
 								</button>
 							<#else>
 								<span class="hidden" id="followTableId"></span>
-								<button id="followToggle" type="button" class="btn btn-primary btn-lg">
+								<button id="followToggle" type="button" class="btn btn-primary">
 									关注 Ta
 								</button>
 							</#if>
 							
 							<li>	
-								<button type="button" id="sendMessageRequire"  class="btn btn-primary btn-lg ">发私信</button>
+								<button type="button" id="sendMessageRequire"  class="btn btn-primary  ">发私信</button>
 							</li>
 						<#else>
 							<li>
-								<a type="button" id="uploadHeadImageRequire" class="btn btn-primary btn-lg ">上传头像</a> 
+								<a type="button" id="uploadHeadImageRequire" class="btn btn-primary  ">上传头像</a> 
 							</li>
 							<div class="modal fade" tabindex="-2" id="headImgModal" role="dialog"  aria-hidden="true">
 								<div class="modal-dialog">
@@ -184,7 +184,7 @@
 							
 							
 							<li>
-								<a type="button" id="alterInfoRequire" class="btn btn-primary btn-lg ">修改资料</a> 
+								<a type="button" id="alterInfoRequire" class="btn btn-primary  ">修改资料</a> 
 							</li>
 							<div class="modal fade" tabindex="-2" id="infoModal" role="dialog"  aria-hidden="true">
 								<div class="modal-dialog modal-lg">
@@ -263,7 +263,7 @@
 							</div>
 								
 							<li>
-								<a  href="/wenda/user/${user.id}/messages" type="button" class="btn btn-primary btn-lg">查看私信</a> 
+								<a  href="/wenda/user/${user.id}/messages" type="button" class="btn btn-primary ">查看私信</a> 
 							</li>
 						</#if>
 					</ul>
@@ -313,8 +313,8 @@
 		</div>
 		<div class="col-md-9">
 			<div class="row">
-				<div class="col-md-8 well" style="background-color:rgba(224,238,224,0.0);">
-					<div class="tabbable" id="tabs" style="margin-left:10px;font-size:2em">
+				<div class="col-md-10 well" style="background-color:rgba(224,238,224,0.0);">
+					<div class="tabbable" id="tabs" style="margin-left:10px;font-size:1.5em">
 						
 						<ul class="nav nav-tabs" >
 							<li>
@@ -349,7 +349,7 @@
 								<#list voList as vo>
 								<hr>
 								<p>
-									<a href="/wenda/question/${vo.question.id}" style="color:black"><em><h3>${vo.question.title}</h3></em></a>
+									<a href="/wenda/question/${vo.question.id}" style="color:black"><em><h4>${vo.question.title}</h4></em></a>
 								</p>
 								<div class="row">
 									<div class="col-md-1">
@@ -409,11 +409,7 @@
 					</div>
 				</div>
 
-				<div class="col-md-3 well" style="background-color:rgba(224,238,224,0.0);margin-left:6px;">
-					
-					<span style="color:blue;font-size:2em">共同关注</span>
-					
-				</div>
+				
 				
 			</div>
 		</div>

@@ -26,6 +26,7 @@ import dao.MybatisSqlSessionFactory;
 import dao.UserDAO;
 import model.User;
 import model.UserInfo;
+import net.coobird.thumbnailator.Thumbnails;
 import util.DateUtil;
 import util.MD5Util;
 
@@ -185,14 +186,19 @@ public class UserService implements InitializingBean{
 			File userPath = new File(realHeadUrlPath.append(userId).toString());
 			if(!userPath.exists())
 				userPath.mkdirs();
-			byte[] bytes = headImg.getBytes();
+			
+			
 			realHeadUrlPath.append("/");
 			realHeadUrlPath.append(HtmlUtils.htmlEscape(headImg.getOriginalFilename()));
+			Thumbnails.of(headImg.getInputStream()).size(600, 800).toFile(realHeadUrlPath.toString());
+			
+			/*未压缩图片
+			byte[] bytes = headImg.getBytes();
 			FileOutputStream fileOutputStream = new FileOutputStream(realHeadUrlPath.toString());
 			fileOutputStream.write(bytes);
 			fileOutputStream.flush();
 			fileOutputStream.close();
-			
+			*/
 			userDAO = session.getMapper(UserDAO.class);
 			
 			StringBuilder headUrl = new StringBuilder("/wenda/headImg/")

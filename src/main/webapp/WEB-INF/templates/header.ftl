@@ -11,16 +11,16 @@
 				</li>
 
 				
-				<li style=" top:6px;">
-					<a href="/wenda/">首页</a>
+				<li style=" top:3px;">
+					<a href="/wenda/" style="font-size:1.3em">首页</a>
 				</li>
 				
 				<#if user??>
-				<li style="top:6px;">
-					<a href="/wenda/timeline/${user.id}">动态</a>
+				<li style="top:3px;">
+					<a href="/wenda/timeline/${user.id}" style="font-size:1.3em">动态</a>
 				</li>
-				<li style=" top:6px;">
-					<a href="/wenda/user/${user.id}">我的主页</a>
+				<li style=" top:3px;">
+					<a href="/wenda/user/${user.id}" style="font-size:1.3em">我的主页</a>
 				</li>
 				
 				</#if>
@@ -35,22 +35,11 @@
 				</li>
 				
 				<#if user??>
-				<li class="dropdown pull-right" style="top:6px">
-					 <a href="#" data-toggle="dropdown" class="dropdown-toggle">${user.username}<strong class="caret"></strong></a>
+				<li class="dropdown pull-right" style="top:3px">
+					 <a href="#" data-toggle="dropdown" class="dropdown-toggle" style="font-size:1.3em">${user.username}<strong class="caret"></strong></a>
 					<ul class="dropdown-menu"style="min-width:100%">
 						<li>
 							<a href="/wenda/logout">退出</a>
-						</li>
-						<li class="disabled">
-							<a href="#">action</a>
-						</li>
-						<li class="disabled">
-							<a href="#">action</a>
-						</li>
-						<li class="divider">
-						</li>
-						<li class="disabled">
-							<a href="#">action</a>
 						</li>
 					</ul>
 				</li>

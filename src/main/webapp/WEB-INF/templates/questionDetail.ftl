@@ -51,10 +51,10 @@
 			
 		</div>
 		<div class="col-md-8">
-			<h2>
+			<h4>
 				<strong>${question.title}</strong>
-			</h2>
-			<p style="word-break: break-all;word-wrap: break-word;font-size:2em;">
+			</h4>
+			<p style="word-break: break-all;word-wrap: break-word;font-size:1.3em;">
 				${question.content}
 			</p>
 		</div>
@@ -71,38 +71,17 @@
 			<#else>
 				<#if followTableId??>
 					<span class="hidden" id="followTableId">${followTableId}</span>
-					<button id="collectToggle" type="button" class="btn btn-primary">
+					<button id="collectToggle" type="button" class="btn btn-primary btn-sm">
 						取消收藏
 					</button>
 				<#else>
 					<span class="hidden" id="followTableId"></span>
-					<button id="collectToggle" type="button" class="btn btn-primary">
+					<button id="collectToggle" type="button" class="btn btn-primary btn-sm">
 						收藏
 					</button>
 				</#if>
 			</#if>
-			<div class="btn-group">
-				 
-				<button class="btn btn-default">
-					Action
-				</button> 
-				<button data-toggle="dropdown" class="btn btn-default dropdown-toggle">
-					<span class="caret"></span>
-				</button>
-				<ul class="dropdown-menu">
-					<li>
-						<a href="#">Action</a>
-					</li>
-					<li class="disabled">
-						<a href="#">Another action</a>
-					</li>
-					<li class="divider">
-					</li>
-					<li>
-						<a href="#">Something else here</a>
-					</li>
-				</ul>
-			</div>
+			
 		</div>
 		<div class="col-md-1">
 		</div>
@@ -113,7 +92,7 @@
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-8">
-			<span><strong id="followerCount" style="color:#0080FF">${followerCount}</strong>人关注该问题</span>
+			<span style="font-size:1.5em;"><strong id="followerCount" style="color:#0080FF">${followerCount}</strong>人关注该问题</span>
 		</div>
 		<div class="col-md-1">
 		</div>
@@ -167,7 +146,7 @@
 				</div>
 				<div class="col-md-10">
 					<span style="color:gray">发布于${vo.comment.createDate?string('yyyy年MM月dd日  HH:mm:ss')}</span>
-					<p style="word-break: break-all;word-wrap: break-word; font-size:2em;">
+					<p style="word-break: break-all;word-wrap: break-word; font-size:1.3em;">
 						${vo.comment.content}
 					</p>
 					
@@ -246,7 +225,7 @@
 			<hr>
 			<form role="form">
 				<div id="editor" class="form-group">
-					<textarea placeholder="请输入您的回答" rows="4" class="form-control" style="height:1em;font-size:2em" id="questionComment"></textarea>
+					<textarea placeholder="请输入您的回答" rows="4" class="form-control" style="height:1em;font-size:1.5em" id="questionComment"></textarea>
 				</div>
 				<div class="form-group">
 				<label for="commentImg" class=" control-label">上传图片(最多支持128张图片):</label>
@@ -271,7 +250,7 @@
 				请输入回答内容哦！
 			</div>
 		    <div class="pull-right" style="margin-top:10px">
-		   		<button id="commentSubmit" type="button" class="btn btn-primary btn-lg">提交回答</button>
+		   		<button id="commentSubmit" type="button" class="btn btn-primary">提交回答</button>
 		    </div>
 		</div>
 		<div class="col-md-1">

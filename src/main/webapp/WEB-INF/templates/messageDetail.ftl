@@ -50,24 +50,24 @@
 						<hr>
 						<div style="min-height:90px">
 							<p>
-								<span  style="color:gray;font-size:1.7em">
+								<span  style="color:gray;font-size:1.3em">
 									${vo.action}
 								</span>
 								<#if vo.isSystem>
-									<span style="color:red">${vo.interlocutor.username}</span>
+									<span style="color:red;font-size:1.3em">${vo.interlocutor.username}</span>
 								<#else>
-									<a href="/wenda/user/${vo.interlocutor.id}">${vo.interlocutor.username}</a>
+									<a href="/wenda/user/${vo.interlocutor.id}" style="font-size:1.3em">${vo.interlocutor.username}</a>
 								</#if>
 
-								<span class="pull-right" style="color:gray;font-size:1.7em">
+								<span class="pull-right" style="color:gray;font-size:1.3em">
 									${vo.message.createDate?string('yyyy年MM月dd日  HH:mm:ss')}
 								</span>
 							</p>
-							<p class="word" style="font-size:2em">
+							<p class="word" style="font-size:1.3em">
 							 	${vo.message.content}
 							</p>
 							<p class="text-right">
-								<a href="#"><span style="font-size:1.7em">删除</span></a>
+								<a href="#"><span style="font-size:1.3em">删除</span></a>
 							</p>
 						</div>
 					</div>

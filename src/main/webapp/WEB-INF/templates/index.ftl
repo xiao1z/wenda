@@ -17,7 +17,7 @@
     </style>
   </head>
   
-  <body>
+  <body  style="font-size:100%;">
 
 <div class="container-fluid">
 	<span class="hidden" id="page">${page}</span>
@@ -38,12 +38,12 @@
 			
 		</div>
 		<div class="col-md-8 well" style="background-color:rgba(0,0,0,0.0);">
-			<h4><strong>
+			<h5><strong>
 				${vo.question.title}
-			</strong></h4>
+			</strong></h5>
 			<hr>
-			<a href="/wenda/user/${vo.user.id}/answers">${vo.user.username}</a>
-			<p style="word-break:break-all;word-wrap:break-word;">
+			<a href="/wenda/user/${vo.user.id}/answers" style="font-size:1.3em">${vo.user.username}</a>
+			<p style="word-break:break-all;word-wrap:break-word;font-size:1.3em">
 				${vo.question.content}
 			</p>
 			<p class="text-right">

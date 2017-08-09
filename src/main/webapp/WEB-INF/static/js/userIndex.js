@@ -214,9 +214,9 @@ $("#requireQustions").click(function(){
 	           	     	for(a in questionsResponse.questionArray)
 	           	     	{
 	           	     		$("#questionsContent").html(function(i,origText){
-	           	     			return origText+ '<p><a href="/wenda/question/' +questionsResponse.questionArray[a].id+ '" style="color:black"><em><h3>'
+	           	     			return origText+ '<p><a href="/wenda/question/' +questionsResponse.questionArray[a].id+ '" style="color:black"><em><h4>'
 	           	     			+questionsResponse.questionArray[a].title
-	           	     			+'</h3></em></a><span style="color:gray">发布于:'+questionsResponse.questionArray[a].createdDate+'</span></p><hr>';
+	           	     			+'</h4></em></a><span style="color:gray">发布于:'+questionsResponse.questionArray[a].createdDate+'</span></p><hr>';
 	           	     		});
 	           	     
 	           	    	}
@@ -255,9 +255,9 @@ $("#requireCollections").click(function(){
 	     	for(a in collectionsResponse.questionArray)
 	     	{
 	     		$("#collectionsContent").html(function(i,origText){
-	     			return origText+  '<p><a href="/wenda/question/' +collectionsResponse.questionArray[a].id+ '" style="color:black"><em><h3>'
+	     			return origText+  '<p><a href="/wenda/question/' +collectionsResponse.questionArray[a].id+ '" style="color:black"><em><h4>'
 	     			+collectionsResponse.questionArray[a].title
-	     			+'</h3></em></a><span style="color:gray">发布于:'+collectionsResponse.questionArray[a].createdDate+'</span></p><hr>';
+	     			+'</h4></em></a><span style="color:gray">发布于:'+collectionsResponse.questionArray[a].createdDate+'</span></p><hr>';
 	     		});
 	     
 	    	}

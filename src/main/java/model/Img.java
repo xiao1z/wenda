@@ -5,7 +5,7 @@ public class Img {
 	private int entityId;
 	private int entityType;
 	private String url;
-	private int offset;
+	private int offset;//从1开始
 	private int status = NORMAL_STATUS;
 	
 	public static final int NORMAL_STATUS = 0;
