@@ -16,6 +16,7 @@ public class RedisTest {
 	
 	public static void testSelect()
 	{
+		
 		JedisPool pool1 =new JedisPool("redis://localhost:6379/10");
 		JedisPool pool2 =new JedisPool("redis://localhost:6379/11");
 		Jedis jedis1 = pool1.getResource();

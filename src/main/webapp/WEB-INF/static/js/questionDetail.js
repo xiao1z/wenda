@@ -76,6 +76,38 @@ function initFileInput(ctrlName,uploadUrl)
     });
 }  
 
+function initPage(){
+	var page = parseInt($("#page").text());
+    var pageCount = parseInt($("#pageCount").text());
+    $("#page_1").attr("href","/wenda/question/"+questionId+"?page=1");
+    var page2 = Math.round((page+1)/2);
+    if(page2==page||page2==1)
+    	$("#page_2").text("...");
+    else $("#page_2").text(page2);
+    $("#page_2").attr("href","/wenda/question/"+questionId+"?page="+page2);
+    var page4 = Math.round((pageCount+page)/2);
+    if(page4==page||page4==pageCount)
+    	$("#page_4").text("...");
+    else $("#page_4").text(page4);
+    $("#page_4").attr("href","/wenda/question/"+questionId+"?page="+page4);
+    
+    $("#page_5").text(pageCount);
+    $("#page_5").attr("href","/wenda/question/"+questionId+"?page="+pageCount);
+    $("#page_li_3").addClass("active");
+    $("#page_3").text(page);
+    $("#page_3").attr("href","/wenda/question/"+questionId+"?page="+page);
+    if(page==1){
+    	$("#prev").addClass("disabled");
+		$("#prev").addClass("btn");
+    }
+    if(page==pageCount){
+    	$("#next").addClass("disabled");
+		$("#next").addClass("btn");
+    }
+    $("#prev").attr("href","/wenda/question/"+questionId+"?page="+(page-1));
+    $("#next").attr("href","/wenda/question/"+questionId+"?page="+(page-(-1)));
+}
+
 
 $(function(){
 	init ('questionComment');
@@ -92,7 +124,8 @@ $(function(){
     if(id){
       var t = $(id).offset().top;
       $(window).scrollTop(t);
-   }
+    }
+    initPage();
 });
 
 

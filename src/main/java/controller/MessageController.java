@@ -20,6 +20,7 @@ import model.ViewObject;
 import service.MessageService;
 import service.UserService;
 import util.DateUtil;
+import util.IdResolver;
 import util.JSONUtil;
 
 @Controller
@@ -35,9 +36,9 @@ public class MessageController {
 	UserService userService;
 	
 	@RequestMapping(value = "/user/{userId}/messages/{conversationId}" ,method = RequestMethod.GET)
-	public String getUserMessageDetail(Model model,@PathVariable("userId") int userId
+	public String getUserMessageDetail(Model model,@PathVariable("userId") String userIdStr
 			,@PathVariable("conversationId") String conversationId){
-		
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 			return "redirect:/reglogin?next="+"/user/"+userId+"/messages/"+conversationId;
 		
@@ -76,8 +77,9 @@ public class MessageController {
 	
 	
 	@RequestMapping(value = "/user/{userId}/messages" ,method = RequestMethod.GET)
-	public String getUserMessages(Model model,@PathVariable("userId") int userId)
+	public String getUserMessages(Model model,@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 			return "redirect:/reglogin?next="+"/user/"+userId+"/messages";
 		
@@ -115,8 +117,9 @@ public class MessageController {
 	
 	@RequestMapping(value = "/addMessage/user/{id}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String addMessage(@PathVariable("id") int id,@RequestParam("messageContent") String content)
+	public String addMessage(@PathVariable("id") String idStr,@RequestParam("messageContent") String content)
 	{
+		int id = IdResolver.resolveId(idStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);

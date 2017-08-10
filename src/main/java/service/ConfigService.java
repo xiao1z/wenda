@@ -42,6 +42,13 @@ public class ConfigService {
 	@Value("${Question.ROOT_IMG_URL}")
 	private String Question_ROOT_IMG_URL;
 	
+	@Value("${Commnet.COMMENT_COUNT_EVERY_PAGE}")
+	private int Comment_COMMENT_COUNT_EVERY_PAGE;
+	
+	public int getComment_COMMENT_COUNT_EVERY_PAGE(){
+		return Comment_COMMENT_COUNT_EVERY_PAGE;
+	}
+	
 	public int getIndex_QUESTION_COUNT_EVERY_PAGE() {
 		return index_QUESTION_COUNT_EVERY_PAGE;
 	}

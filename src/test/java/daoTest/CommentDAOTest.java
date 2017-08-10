@@ -13,7 +13,6 @@ import configuration.WendaWebAppInitializer;
 import dao.CommentDAO;
 import dao.MybatisSqlSessionFactory;
 import model.Comment;
-import util.DateUtil;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = WendaWebAppInitializer.class)
@@ -40,9 +39,9 @@ public class CommentDAOTest {
 	@Test
 	public void getComment()
 	{
-		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
-		SqlSession session=sqlSessionFactory.openSession();
-		CommentDAO commentDAO = session.getMapper(CommentDAO.class);
+		//SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();
+		//SqlSession session=sqlSessionFactory.openSession();
+		//CommentDAO commentDAO = session.getMapper(CommentDAO.class);
 	}
 
 }

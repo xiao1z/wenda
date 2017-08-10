@@ -38,6 +38,7 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 	@Autowired
 	LoginRequiredIntercepter loginRequiredIntercepter;
 	
+	
 	@Autowired
 	ConfigService configService;
 	
@@ -111,4 +112,5 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		registry.addInterceptor(loginRequiredIntercepter).addPathPatterns("/timeline/**");
 		super.addInterceptors(registry);
 	}	
+	
 }

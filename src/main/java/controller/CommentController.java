@@ -1,8 +1,6 @@
 package controller;
 
 import java.text.SimpleDateFormat;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.StringUtils;
@@ -24,12 +22,13 @@ import service.CommentService;
 import service.ConfigService;
 import service.QuestionService;
 import util.DateUtil;
+import util.IdResolver;
 import util.JSONUtil;
 
 @Controller
 public class CommentController {
 	
-	private static final Logger logger = LoggerFactory.getLogger(CommentController.class); 
+	//private static final Logger logger = LoggerFactory.getLogger(CommentController.class); 
 	
 	@Autowired
 	HostHolder hostHolder;
@@ -50,11 +49,12 @@ public class CommentController {
 	
 	@RequestMapping(value = "/comment/question/{questionId}/img" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String uploadCommentImg(@PathVariable("questionId") int questionId,
+	public String uploadCommentImg(@PathVariable("questionId") String questionIdStr,
 							@RequestParam("commentId") int commentId,
 							@RequestParam("offset") int offset,
 							@RequestParam("commentImg") MultipartFile commentImg){
 		//Date before = new Date();
+		int questionId = IdResolver.resolveId(questionIdStr);
 		if(commentImg!=null)
 		{
 			String url = commentService.uploadQuestionCommetImg(questionId, commentImg, commentId, offset);
@@ -71,10 +71,11 @@ public class CommentController {
 	
 	@RequestMapping(value = "/comment/question/{id}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String addQuestionComment(@PathVariable("id") int id,
+	public String addQuestionComment(@PathVariable("id") String idStr,
 			@RequestParam("content") String content,
 			@RequestParam("filesCount") int filesCount){
 		
+		int id = IdResolver.resolveId(idStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -127,8 +128,10 @@ public class CommentController {
 	
 	@RequestMapping(value = "/comment/comment/{id}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String addCommentComment(@PathVariable("id") int id,@RequestParam("content") String content)
+	public String addCommentComment(@PathVariable("id") String idStr,@RequestParam("content") String content)
 	{
+		
+		int id = IdResolver.resolveId(idStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);

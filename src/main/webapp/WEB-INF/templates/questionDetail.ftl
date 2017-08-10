@@ -7,9 +7,6 @@
 
     <title>${question.title}</title>
 
-   
-
-	
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
     <link href="/wenda/static/css/style.css" rel="stylesheet">
     <link type="text/css" rel="stylesheet" href="/wenda/static/css/fileinput.min.css" />
@@ -256,17 +253,37 @@
 		<div class="col-md-1">
 		</div>
 	</div>
-	
-	<div class="row" id="footer">
+	<span class="hidden" id="pageCount">${pageCount}</span>
+	<span class="hidden" id="page">${page}</span>
+	<div class="row">
 		<div class="col-md-1">
 		</div>
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-8" style="margin-top:30px">
-			<hr>
-			<hr>
-		</div>
-		<div class="col-md-1">
+		<div class="col-md-10 pull-left">
+			<ul class="pagination">
+				<li id="li_prev">
+					<a href="#" id="prev">Prev</a>
+				</li>
+				<li id="page_li_1">
+					<a id="page_1">1</a>
+				</li>
+				<li id="page_li_2">
+					<a id="page_2">...</a>
+				</li>
+				<li id="page_li_3">
+					<a id="page_3">3</a>
+				</li>
+				<li id="page_li_4">
+					<a id="page_4">...</a>
+				</li>
+				<li id="page_li_5">
+					<a id="page_5">5</a>
+				</li>
+				<li id="li_next">
+					<a href="#"  id="next">Next</a>
+				</li>
+			</ul>
 		</div>
 	</div>
 </div>

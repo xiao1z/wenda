@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import model.HostHolder;
 import service.LikeService;
+import util.IdResolver;
 import util.JSONUtil;
 
 @Controller
@@ -23,8 +24,9 @@ public class LikeController {
 	
 	@RequestMapping(path = {"/like/comment/{commentId}"},method = RequestMethod.POST)
 	@ResponseBody
-	public String likeQuestionComment(@PathVariable("commentId") int commentId)
+	public String likeQuestionComment(@PathVariable("commentId") String commentIdStr)
 	{
+		int commentId = IdResolver.resolveId(commentIdStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -44,8 +46,9 @@ public class LikeController {
 	
 	@RequestMapping(path = {"/dislike/comment/{commentId}"},method = RequestMethod.POST)
 	@ResponseBody
-	public String dislikeQuestionComment(@PathVariable("commentId") int commentId)
+	public String dislikeQuestionComment(@PathVariable("commentId") String commentIdStr)
 	{
+		int commentId = IdResolver.resolveId(commentIdStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);

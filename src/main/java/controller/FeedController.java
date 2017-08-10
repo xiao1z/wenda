@@ -13,6 +13,7 @@ import model.Feed;
 import model.HostHolder;
 import service.CommentService;
 import service.FeedService;
+import util.IdResolver;
 
 @Controller
 public class FeedController {
@@ -30,7 +31,8 @@ public class FeedController {
 	
 	@RequestMapping(value = {"/timeline/{userId}"} ,method = RequestMethod.GET)
 	public String getTimeline(Model model,
-			@PathVariable(value = "userId") int userId){
+			@PathVariable(value = "userId") String userIdStr){
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()!=null&&hostHolder.getUser().getId()!=userId)
 		{
 			return "redirect:/";

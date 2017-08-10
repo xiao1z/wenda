@@ -3,6 +3,7 @@
  "http://java.sun.com/dtd/web-app_2_3.dtd" >
 
 <web-app>
+
   <display-name>Archetype Created Web Application</display-name>
   <context-param>    
        <param-name>webAppRootKey</param-name>    
@@ -21,4 +22,15 @@
 	<listener>  
 	    <listener-class>org.springframework.web.util.Log4jConfigListener</listener-class>  
 	</listener>
+	
+	<error-page>
+       <error-code>404</error-code>
+       <location>/error</location>
+       <!-- 表示当系统发生404就是不存在请求地址的错误的时候，页面跳转到404.html页面。 -->
+    </error-page>
+    <error-page>
+       <error-code>500</error-code>
+       <location>/error</location>
+       <!-- 表示当系统发生500也就是操作异常错误的时候，页面跳转到error.jsp页面。 -->
+    </error-page>
 </web-app>

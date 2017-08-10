@@ -1,9 +1,7 @@
 package service;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.List;
 
 import org.apache.ibatis.session.SqlSession;
@@ -69,7 +67,7 @@ public class CommentService {
 			result = commentDAO.getCommentsCountByEntity(questionId, EntityType.QUESTION);
 		}catch(Exception e)
 		{
-			logger.error("添加评论错误 "+e.getMessage());
+			logger.error("获取问题回答数量错误 "+e.getMessage());
 			return 0;
 		}finally
 		{
@@ -118,14 +116,14 @@ public class CommentService {
 		}
 	}
 	
-	public List<Comment> getCommentsOfQusetion(int questionId)
+	public List<Comment> getCommentsOfQusetion(int questionId,int offset,int limit)
 	{
 		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
 		CommentDAO commentDAO;
 		List<Comment> commentList = null;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			commentList = commentDAO.getCommentsByEntity(questionId,EntityType.QUESTION );
+			commentList = commentDAO.getCommentsByEntity(questionId,EntityType.QUESTION,offset,limit);
 		}catch(Exception e)
 		{
 			logger.error("根据问题获取评论错误 "+e.getMessage());
@@ -147,7 +145,7 @@ public class CommentService {
 		List<Comment> commentList = null;
 		try{
 			commentDAO = session.getMapper(CommentDAO.class);
-			commentList = commentDAO.getCommentsByEntity(CommentId,EntityType.COMMENT );
+			commentList = commentDAO.getCommentsByEntity(CommentId,EntityType.COMMENT,0,Integer.MAX_VALUE);
 		}catch(Exception e)
 		{
 			logger.error("根据评论获取评论错误 "+e.getMessage());

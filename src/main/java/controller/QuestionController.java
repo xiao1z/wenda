@@ -29,6 +29,7 @@ import service.QuestionService;
 import service.RedisDBForKeyService;
 import service.UserService;
 import util.DateUtil;
+import util.IdResolver;
 import util.JSONUtil;
 import util.RedisKeyUtil;
 
@@ -98,7 +99,8 @@ public class QuestionController {
 	@ResponseBody
 	public String addQuestionCache(@RequestParam("title") String title
 			,@RequestParam("content") String content
-			,@PathVariable("userId") int userId){
+			,@PathVariable("userId") String userIdStr){
+		int userId = IdResolver.resolveId(userIdStr);
 		String key = RedisKeyUtil.getQusetionAddCacheKey(userId);
 		redisDBForKeyService.set(key, JSONUtil.getQuestionCacheJSONString(title, content));
 		return JSONUtil.getJSONString(JSONUtil.SUCCESS);
@@ -107,10 +109,14 @@ public class QuestionController {
 	
 	
 	@RequestMapping(value = "/question/{id}" ,method = RequestMethod.GET)
-	public String getQuestionDetails(Model model,@PathVariable("id") int id)
-	{
+	public String getQuestionDetails(Model model,@PathVariable("id") String idStr,
+			@RequestParam(value="page",required = false,defaultValue = "1") int page){
+		
+		int id = IdResolver.resolveId(idStr);
 		Question question = questionService.getQuestion(id);
 		model.addAttribute("followerCount", followService.getFollowerCountOfEQuestion(id));
+		int offset = configService.getComment_COMMENT_COUNT_EVERY_PAGE()*(page-1);
+		int limit = configService.getComment_COMMENT_COUNT_EVERY_PAGE();
 		if(hostHolder.getUser()!=null)
 		{
 			String followTableId = null;
@@ -120,8 +126,7 @@ public class QuestionController {
 			}
 		}
 		User asker = userService.getUser(question.getUserId());
-		List<Comment> commentList = commentService.getCommentsOfQusetion(question.getId());
-		//System.out.println(commentList.size()+"　"+question.getId());
+		List<Comment> commentList = commentService.getCommentsOfQusetion(question.getId(),offset,limit);
 		if(commentList!=null && !commentList.isEmpty())
 		{
 			List<ViewObject> voList=new ArrayList<ViewObject>();
@@ -176,6 +181,9 @@ public class QuestionController {
 			}
 			model.addAttribute("voList", voList);
 		}
+		int pageCount = commentService.getCommentsCountOfQuestion(id)/configService.getComment_COMMENT_COUNT_EVERY_PAGE();
+		model.addAttribute("pageCount", pageCount);
+		model.addAttribute("page", page);
 		model.addAttribute("question", question);
 		model.addAttribute("asker", asker);
 		return "questionDetail";
@@ -183,8 +191,9 @@ public class QuestionController {
 	
 	@RequestMapping(path = {"/user/{userId}/questions"},method = RequestMethod.GET, produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getUserQuestions(@PathVariable("userId") int userId)
+	public String getUserQuestions(@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		List<Question> questionList = questionService.getLatestQuestion(userId, 0, configService.getIndex_QUESTION_COUNT_EVERY_PAGE());
 		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}

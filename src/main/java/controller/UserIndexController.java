@@ -3,8 +3,6 @@ package controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -30,13 +28,14 @@ import service.FollowService;
 import service.QuestionService;
 import service.UserInfoService;
 import service.UserService;
+import util.IdResolver;
 import util.JSONUtil;
 
 @Controller
 public class UserIndexController {
 	
 	
-	private static final Logger logger = LoggerFactory.getLogger(UserIndexController.class); 
+	//private static final Logger logger = LoggerFactory.getLogger(UserIndexController.class); 
 	@Autowired
 	QuestionService questionService;
 	
@@ -60,8 +59,10 @@ public class UserIndexController {
 	
 	@RequestMapping(path = {"/user/{userId}/headImg"},method = RequestMethod.POST)
 	@ResponseBody
-	public String alterUserHeadImg(Model model,@PathVariable("userId") int userId,
+	public String alterUserHeadImg(Model model,@PathVariable("userId") String userIdStr,
 							@RequestParam(value="headImg") MultipartFile headImg){
+		
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -79,21 +80,22 @@ public class UserIndexController {
 	
 	@RequestMapping(path = {"/user/{userId}/info"},method = RequestMethod.GET,produces="application/json; charset=utf-8")
 	@ResponseBody
-	public String getUserInfo(Model model,@PathVariable("userId") int userId)
+	public String getUserInfo(Model model,@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		return JSONUtil.getJSONStringOfUserInfo(userInfoService.getUserInfo(userId));
 	}
 	
 	
 	@RequestMapping(path = {"/user/{userId}/info"},method = RequestMethod.POST)
 	@ResponseBody
-	public String alterUserInfo(Model model,@PathVariable("userId") int userId,
+	public String alterUserInfo(Model model,@PathVariable("userId") String userIdStr,
 							@RequestParam(value="nickname",required=false) String nickname,
 							@RequestParam(value="description",required=false) String description,
 							@RequestParam(value="location",required=false) String location,
 							@RequestParam(value="sex",required=false) String sex,
 							@RequestParam(value="briefIntroduction",required=false) String briefIntroduction){
-		
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -129,8 +131,9 @@ public class UserIndexController {
 	}
 	
 	@RequestMapping(path = {"/user/{userId}/answers","/user/{userId}"},method = RequestMethod.GET)
-	public String userIndex(Model model,@PathVariable("userId") int userId)
+	public String userIndex(Model model,@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null||hostHolder.getUser().getId()!=userId)
 		{
 			model.addAttribute("canSendMessage","true");

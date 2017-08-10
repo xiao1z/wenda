@@ -21,6 +21,7 @@ import model.Question;
 import model.User;
 import service.FollowService;
 import util.DateUtil;
+import util.IdResolver;
 import util.JSONUtil;
 
 @Controller
@@ -37,24 +38,27 @@ public class FollowController {
 	
 	@RequestMapping(value = "/follow/questions/{userId}" ,method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getFollowQuestion(@PathVariable("userId") int userId)
+	public String getFollowQuestion(@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		List<Question> questionList = followService.getFollowQuestionByUserId(userId);
 		return JSONUtil.getJSONStringOfQuestions(questionList,Arrays.asList("content"));
 	}
 	
 	@RequestMapping(value = "/follow/users/{userId}" ,method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getFollowUsers(@PathVariable("userId") int userId)
+	public String getFollowUsers(@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		List<User> userList = followService.getFollowUserByUserId(userId);
 		return JSONUtil.getJSONStringOfUsers(userList, null);
 	}
 	
 	@RequestMapping(value = "/follow/followers/{userId}" ,method = RequestMethod.GET,produces = "application/json; charset=utf-8")
 	@ResponseBody
-	public String getFollowers(@PathVariable("userId") int userId)
+	public String getFollowers(@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		List<User> userList = followService.getFollowerOfUserByUserId(userId);
 		return JSONUtil.getJSONStringOfUsers(userList, null);
 		
@@ -62,8 +66,9 @@ public class FollowController {
 	
 	@RequestMapping(value = "/follow/cancel/{followId}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String cancelFollow(@PathVariable("followId") int followId)
+	public String cancelFollow(@PathVariable("followId") String followIdStr)
 	{
+		int followId =IdResolver.resolveId(followIdStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -83,8 +88,9 @@ public class FollowController {
 	
 	@RequestMapping(value = "/follow/question/{questionId}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String followQuestion(@PathVariable("questionId") int questionId)
+	public String followQuestion(@PathVariable("questionId") String questionIdStr)
 	{
+		int questionId = IdResolver.resolveId(questionIdStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
@@ -111,8 +117,9 @@ public class FollowController {
 	
 	@RequestMapping(value = "/follow/user/{userId}" ,method = RequestMethod.POST)
 	@ResponseBody
-	public String followUser(@PathVariable("userId") int userId)
+	public String followUser(@PathVariable("userId") String userIdStr)
 	{
+		int userId = IdResolver.resolveId(userIdStr);
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);
