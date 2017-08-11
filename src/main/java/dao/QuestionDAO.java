@@ -23,7 +23,11 @@ public interface QuestionDAO {
 			+ "values(#{title},#{content},#{createdDate},#{userId},#{commentCount})"})
 	int addQuestion(Question question);
 	
-
+	@Select({"select count(id) from question"})
+	int getQuestionCount();
+	
+	
+	
 	@Select({"select",SELECT_FIELDS," from",TABLE_NAME,"where id=#{id}"})
 	Question selectQuestion(int id);
 	

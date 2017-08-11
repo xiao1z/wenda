@@ -21,6 +21,28 @@ public class QuestionService{
 	
 	private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 	
+	public int getQuestionCount()
+	{
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		QuestionDAO questionDAO;
+		int result = -1;
+		try{
+			questionDAO = session.getMapper(QuestionDAO.class);
+			result= questionDAO.getQuestionCount();
+		}catch(Exception e)
+		{
+			logger.error("查询问题总数错误 "+e.getMessage());
+			return -1;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	
 	public int updateQuestionCommentCount(int questionId,int commentCount)
 	{
 		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();

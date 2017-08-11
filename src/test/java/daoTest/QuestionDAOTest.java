@@ -21,7 +21,9 @@ public class QuestionDAOTest {
 
 	
 	
-	@Test
+	
+	
+	//@Test
 	public void addQuestionTest()
 	{
 		SqlSessionFactory sqlSessionFactory = MybatisSqlSessionFactory.getSqlSessionFactory();

@@ -21,7 +21,7 @@
 
 <div class="container-fluid">
 	<span class="hidden" id="page">${page}</span>
-	<span class="hidden" id="hasMore">${hasMore}</span>
+	<span class="hidden" id="pageCount">${pageCount}</span>
     <#include "header.ftl">
     <#if voList??>
     <#list voList as vo>
@@ -81,6 +81,9 @@
 				<li id="page_li_1">
 					<a href="/wenda/?page=1" id="page_1">1</a>
 				</li>
+				<li>
+					<a>...</a>
+				</li>
 				<li id="page_li_2">
 					<a href="/wenda/?page=2" id="page_2">2</a>
 				</li>
@@ -89,6 +92,9 @@
 				</li>
 				<li id="page_li_4">
 					<a href="/wenda/?page=4" id="page_4">4</a>
+				</li>
+				<li>
+					<a>...</a>
 				</li>
 				<li id="page_li_5">
 					<a href="/wenda/?page=5" id="page_5">5</a>

@@ -181,7 +181,8 @@ public class QuestionController {
 			}
 			model.addAttribute("voList", voList);
 		}
-		int pageCount = commentService.getCommentsCountOfQuestion(id)/configService.getComment_COMMENT_COUNT_EVERY_PAGE();
+
+		int pageCount = commentService.getCommentsCountOfQuestion(id)/configService.getComment_COMMENT_COUNT_EVERY_PAGE()+1;
 		model.addAttribute("pageCount", pageCount);
 		model.addAttribute("page", page);
 		model.addAttribute("question", question);

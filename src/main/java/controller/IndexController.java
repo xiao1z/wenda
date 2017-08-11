@@ -49,19 +49,12 @@ public class IndexController {
 	public String index(Model model,@RequestParam(value="page",defaultValue="1") int page)
 	{
 		List<ViewObject> list = getQuestions(0,(page-1)*configService.getIndex_QUESTION_COUNT_EVERY_PAGE(),configService.getIndex_QUESTION_COUNT_EVERY_PAGE());
-		List<ViewObject> next = getQuestions(0,(page)*configService.getIndex_QUESTION_COUNT_EVERY_PAGE(),1);
+		int pageCount = questionService.getQuestionCount()/configService.getIndex_QUESTION_COUNT_EVERY_PAGE()+1;
 		if(list.size()!=0)
 		{
 			model.addAttribute("voList", list);	
 		}
-		if(next.size()==0)
-		{
-			model.addAttribute("hasMore", "-1");
-		}
-		else
-		{
-			model.addAttribute("hasMore", "0");
-		}
+		model.addAttribute("pageCount", pageCount);
 		model.addAttribute("page", page);
 		
 		return "index";

@@ -1,53 +1,38 @@
 $(function(){
-	var page=$("#page").text();
-	var hasMore=$("#hasMore").text();
-	if(page<=4)
+	var page=parseInt($("#page").text());
+	var pageCount=parseInt($("#pageCount").text());
+	if(page==1)
 	{
-		if(page==1)
-		{
-			$("#prev").addClass("disabled");
-			$("#prev").addClass("btn");
-		}else
-		{
-			$("#prev").attr("href","/wenda/?page="+(page-1));
-		}	
-		$("#page_li_"+page).addClass("active");
-		if(hasMore==-1)
-		{
-			for(var i=page;i<6;i++)
-			{
-				$("#page_"+i).addClass("disabled");
-				$("#page_"+i).addClass("btn");
-				$("#next").addClass("disabled");
-				$("#next").addClass("btn");
-			}
-		}
-		$("#next").attr("href","/wenda/?page="+(page-(-1)));
+		$("#prev").addClass("disabled");
+		$("#prev").addClass("btn");
 	}else
 	{
-		$("#page_4").text(page);
-		$("#page_4").attr("href","/wenda/?page="+page);
-		$("#page_li_4").addClass("active");
 		$("#prev").attr("href","/wenda/?page="+(page-1));
-		$("#next").attr("href","/wenda/?page="+(page-(-1)));
-		
-	
-		$("#page_1").text(page-3);
-		$("#page_1").attr("href","/wenda/?page="+(page-3));
-		$("#page_2").text(page-2);
-		$("#page_2").attr("href","/wenda/?page="+(page-2));
-		$("#page_3").text(page-1);
-		$("#page_3").attr("href","/wenda/?page="+(page-1));
-		$("#page_5").text(page-(-1));
-		$("#page_5").attr("href","/wenda/?page="+(page-(-1)));
-		
-		if(hasMore==-1)
-		{
-			$("#page_5").addClass("disabled");
-			$("#page_5").addClass("btn");
-			$("#next").addClass("disabled");
-			$("#next").addClass("btn");
-		}
 	}
+	if(page==pageCount)
+	{
+		$("#next").addClass("disabled");
+		$("#next").addClass("btn");
+	}else
+	{
+		$("#next").attr("href","/wenda/?page="+(page+1));
+	}
+	
+	$("#page_1").text("1");
+	$("#page_1").attr("href","/wenda/?page=1");
+	$("#page_5").text(pageCount);
+	$("#page_5").attr("href","/wenda/?page="+pageCount);
+	$("#page_li_3").addClass("active");
+	$("#page_3").text(page);
+	$("#page_3").attr("href","/wenda/?page="+page);
+	
+	var page2 =  Math.floor((page+1)/2);
+	$("#page_2").text(page2);
+	$("#page_2").attr("href","/wenda/?page="+page2);
+	
+	var page4 =  Math.ceil((page+pageCount)/2);
+	$("#page_4").text(page4);
+	$("#page_4").attr("href","/wenda/?page="+page4);
+	
 	
 });

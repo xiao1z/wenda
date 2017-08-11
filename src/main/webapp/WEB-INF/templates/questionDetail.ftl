@@ -41,9 +41,14 @@
 	<div class="row">
 		<div class="col-md-1">
 		</div>
-		<div class="col-md-1">
+		<div class="col-md-1" style="word-break: break-all;word-wrap: break-word;">
 			<div class="text-center">
-					<img alt="用户头像" class="img-rounded headimgSize" src="${asker.headUrl}">
+				<a href="/wenda/user/${asker.id}">
+				<img alt="用户头像" class="img-rounded headimgSize" src="${asker.headUrl}">
+				</a>
+				<p>
+					<a href="/wenda/user/${asker.id}">${asker.username}</a>
+				</p>
 			</div>
 			
 		</div>
@@ -213,6 +218,38 @@
 		</div>
 	</div>
 	</#if>
+	<span class="hidden" id="pageCount">${pageCount}</span>
+	<span class="hidden" id="page">${page}</span>
+	<div class="row">
+		<div class="col-md-2">
+		</div>
+		<div class="col-md-8 pull-left">
+		<hr>
+			<ul class="pagination">
+				<li id="li_prev">
+					<a href="#" id="prev">Prev</a>
+				</li>
+				<li id="page_li_1">
+					<a id="page_1">1</a>
+				</li>
+				<li id="page_li_2">
+					<a id="page_2">...</a>
+				</li>
+				<li id="page_li_3">
+					<a id="page_3">3</a>
+				</li>
+				<li id="page_li_4">
+					<a id="page_4">...</a>
+				</li>
+				<li id="page_li_5">
+					<a id="page_5">5</a>
+				</li>
+				<li id="li_next">
+					<a href="#"  id="next">Next</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 	<div class="row" style="margin-top:20px">
 		<div class="col-md-1">
 		</div>
@@ -253,39 +290,7 @@
 		<div class="col-md-1">
 		</div>
 	</div>
-	<span class="hidden" id="pageCount">${pageCount}</span>
-	<span class="hidden" id="page">${page}</span>
-	<div class="row">
-		<div class="col-md-1">
-		</div>
-		<div class="col-md-1">
-		</div>
-		<div class="col-md-10 pull-left">
-			<ul class="pagination">
-				<li id="li_prev">
-					<a href="#" id="prev">Prev</a>
-				</li>
-				<li id="page_li_1">
-					<a id="page_1">1</a>
-				</li>
-				<li id="page_li_2">
-					<a id="page_2">...</a>
-				</li>
-				<li id="page_li_3">
-					<a id="page_3">3</a>
-				</li>
-				<li id="page_li_4">
-					<a id="page_4">...</a>
-				</li>
-				<li id="page_li_5">
-					<a id="page_5">5</a>
-				</li>
-				<li id="li_next">
-					<a href="#"  id="next">Next</a>
-				</li>
-			</ul>
-		</div>
-	</div>
+	
 </div>
  	<script src="/wenda/static/js/jquery.min.js"></script>
     <script src="/wenda/static/js/bootstrap.min.js"></script>

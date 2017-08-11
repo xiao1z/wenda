@@ -28,9 +28,9 @@
 				<li class="pull-right">
 				<form class="navbar-form navbar-left" role="search">
 					<div class="form-group">
-						<input type="text" class="form-control" placeholder="站内搜索">
+						<input type="text" disabled="disabled" class="form-control" placeholder="暂未开放">
 					</div>
-					<button type="submit" class="btn btn-default">搜索</button>
+					<button type="submit"  disabled="disabled" class="btn btn-default">搜索</button>
 				</form>
 				</li>
 				
