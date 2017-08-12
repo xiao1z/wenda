@@ -111,6 +111,7 @@ function initPage(){
 
 $(function(){
 	init ('questionComment');
+	initPage();
 	$("textarea[id^='subCommentContent_']").each(function(){
 	    init($(this).attr("id"));
 	  });
@@ -125,7 +126,6 @@ $(function(){
       var t = $(id).offset().top;
       $(window).scrollTop(t);
     }
-    initPage();
 });
 
 
@@ -168,7 +168,14 @@ $("a[id^='like_']").click(function(){
 	 if($(this).hasClass("btn-info"));
 	 else
 	 {
-    	 var commentId = $(this).attr("id").substr(5);
+		 /*
+		 var commentIdArray = $(this).attr("id").substr(5).split(",");
+		 var commentId="";
+		 for(i=0;i<commentIdArray.length;i++){
+			 commentId=commentId+commentIdArray[i];
+		 }
+		 */
+		 var commentId = $(this).attr("id").substr(5);
     	 
     	 if(loginStatus.code==999);
    		 else
@@ -204,6 +211,13 @@ $("a[id^='like_']").click(function(){
  	 if($(this).hasClass("btn-info"));
 	 else
 	 {
+		 /*
+		 var commentIdArray = $(this).attr("id").substr(8).split(",");
+		 var commentId="";
+		 for(i=0;i<commentIdArray.length;i++){
+			 commentId=commentId+commentIdArray[i];
+		 }
+		 */
     	 var commentId = $(this).attr("id").substr(8);
     	 
     	 if(loginStatus.code==999);
@@ -228,6 +242,7 @@ $("a[id^='like_']").click(function(){
         	$("#likeCount_"+commentId).text(loginStatus.msg); 
         	$("#like_"+commentId).removeClass("btn-info");
         	$(this).addClass("btn-info");
+        	
         }else if(loginStatus.code==999)
         {
        		alert("登录后才能赞踩哦");

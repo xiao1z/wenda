@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
+  	<Link Rel="SHORTCUT ICON" href="/wenda/static/img/favicon.ico">
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    <title>首页</title>
+    <title>出错啦</title>
 
   
     <link href="/wenda/static/css/bootstrap.min.css" rel="stylesheet">
@@ -23,6 +24,7 @@
 	</div>
 	<script src="/wenda/static/js/jquery.min.js"></script>
     <script src="/wenda/static/js/bootstrap.min.js"></script>
+    <script src="/wenda/static/js/header.js"></script>
 
   </body>
 </html>

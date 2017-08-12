@@ -2,6 +2,7 @@ package configuration;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -59,10 +60,13 @@ public class WebConfig extends WebMvcConfigurerAdapter{
 		FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 		configurer.setTemplateLoaderPath("/WEB-INF/templates/");
 		configurer.setDefaultEncoding("UTF-8");
-	
 		Map<String, Object> map= new HashMap<String,Object>();
 		map.put("xml_escape",new XmlEscape());
 		configurer.setFreemarkerVariables(map);
+		Properties properties = new Properties();
+		properties.put("number_format", "#");
+		properties.put("template_exception_handler","controller.FreemarkerExceptionHandler");
+		configurer.setFreemarkerSettings(properties);
 		return configurer;
 	}
 	
