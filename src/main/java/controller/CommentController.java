@@ -74,7 +74,7 @@ public class CommentController {
 	public String addQuestionComment(@PathVariable("id") String idStr,
 			@RequestParam("content") String content,
 			@RequestParam("filesCount") int filesCount){
-		
+		content = content.replaceAll("\n", "<br>");
 		int id = IdResolver.resolveId(idStr);
 		if(hostHolder.getUser()==null)
 		{
@@ -130,7 +130,7 @@ public class CommentController {
 	@ResponseBody
 	public String addCommentComment(@PathVariable("id") String idStr,@RequestParam("content") String content)
 	{
-		
+		content = content.replaceAll("\n", "<br>");
 		int id = IdResolver.resolveId(idStr);
 		if(hostHolder.getUser()==null)
 		{

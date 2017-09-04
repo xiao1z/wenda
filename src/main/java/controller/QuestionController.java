@@ -76,6 +76,7 @@ public class QuestionController {
 	@ResponseBody
 	public String addQuestion(@RequestParam("title") String title,@RequestParam("content") String content)
 	{
+		content = content.replaceAll("\n", "<br>");
 		if(hostHolder.getUser()==null)
 		{
 			return JSONUtil.getJSONString(JSONUtil.UNLOGIN);

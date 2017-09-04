@@ -28,7 +28,8 @@ public class RedisTest {
 		System.out.println(jedis2.getDB());
 		jedis2.select(6);
 		System.out.println(jedis2.getDB());
-		
+		pool1.close();
+		pool2.close();
 		
 		
 		
@@ -48,5 +49,6 @@ public class RedisTest {
 		e.setType(EventType.RAISE_COMMENT_EVENT);
 		
 		jedis.lpush("eventTest", JSONUtil.getJSONStringOfEvent(e));
+		pool.close();
 	}
 }

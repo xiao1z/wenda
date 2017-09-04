@@ -17,11 +17,8 @@ import org.apache.solr.client.solrj.impl.HttpSolrClient;
 //import org.apache.solr.client.solrj.impl.CommonsHttpSolrServer;
 import org.apache.solr.client.solrj.response.QueryResponse;
 import org.apache.solr.client.solrj.response.UpdateResponse;
-
 //import org.apache.solr.common.SolrDocumentList;
 import org.apache.solr.common.SolrInputDocument;
-//import org.apache.solr.common.params.ModifiableSolrParams;
-import org.apache.solr.common.params.SolrParams;
 
 @Service
 
@@ -84,6 +81,14 @@ public class SearchService
 		doc.setField(QUESTION_CONTENT_FIELD, content);
 		UpdateResponse response = client.add(doc, 1000);
 		return response != null && response.getStatus() == 0;
+	}
+	
+	public boolean deleteById(int qid) throws Exception
+	{
+			String sqid = Integer.toString(qid);
+			client.deleteById(sqid);
+			client.commit();
+		return true;
 	}
 
 	

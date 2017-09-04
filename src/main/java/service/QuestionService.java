@@ -19,9 +19,6 @@ public class QuestionService{
 	@Autowired
 	private SensitiveWordsService sensitiveWordsService;
 	
-	@Autowired
-	private CommentService commentService;
-	
 	private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 	
 	public int getQuestionCount()

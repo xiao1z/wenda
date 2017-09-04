@@ -1,37 +1,21 @@
 package controller;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.multipart.MultipartFile;
-
-import async.EventProducer;
-import async.EventType;
-import async.StandardEvent;
-import model.Comment;
-import model.EntityType;
-import model.HostHolder;
 import model.Question;
 import model.User;
 import model.ViewObject;
-import service.CommentService;
 import service.ConfigService;
 import service.QuestionService;
 import service.SearchService;
 import service.UserService;
-import util.DateUtil;
-import util.IdResolver;
-import util.JSONUtil;
 
 
 
