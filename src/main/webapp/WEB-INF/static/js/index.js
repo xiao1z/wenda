@@ -36,3 +36,23 @@ $(function(){
 	
 	
 });
+
+
+$("a[id^='delete_']").click(function(){
+	var questionId = $(this).attr("id").substr(7);
+	var r = confirm("确认删除?")
+	if(r == true){
+		$.ajax({  
+            type: "POST",  
+            url:"/wenda/question/delete/"+questionId,  
+            async: false,  
+            error: function() {  
+                alert("网络异常");  
+            },
+            success:function(){
+            	window.location.href = "/wenda";
+            }
+  
+       });
+	}else;
+})

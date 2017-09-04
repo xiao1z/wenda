@@ -26,11 +26,11 @@
 				</#if>
 				
 				<li class="pull-right">
-				<form class="navbar-form navbar-left" role="search">
+				<form method = "GET" action = "/wenda/search" class="navbar-form navbar-left" role="search">
 					<div class="form-group">
-						<input type="text" disabled="disabled" class="form-control" placeholder="暂未开放">
+						<input type="text" class="form-control" name = "keyword" placeholder="搜索感兴趣的内容...">
 					</div>
-					<button type="submit"  disabled="disabled" class="btn btn-default">搜索</button>
+					<button type="submit"  class="btn btn-default">搜索</button>
 				</form>
 				</li>
 				

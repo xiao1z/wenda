@@ -17,13 +17,7 @@ import org.springframework.stereotype.Service;
 public class SensitiveWordsService implements InitializingBean{
 	
 	private static final Logger logger = LoggerFactory.getLogger(SensitiveWordsService.class);
-	
-	public static void main(String args[])
-	{
-		SensitiveWordsService sensitiveWordsService = new SensitiveWordsService();
-		sensitiveWordsService.loadSensitiveTable();
-		System.out.println(sensitiveWordsService.filterWords("是tmdsas&11231s+色情+"));
-	}
+
 
 	private class TreeNode
 	{
@@ -45,7 +39,7 @@ public class SensitiveWordsService implements InitializingBean{
 	
 	private void loadSensitiveTable()
 	{
-		InputStream is = this.getClass().getResourceAsStream("sensitiveWords.txt");
+		InputStream is = this.getClass().getClassLoader().getResourceAsStream("sensitiveWords.txt");
 		assert(is!=null) :"inputStream is null";
 		InputStreamReader ipr = new InputStreamReader(is);
 		BufferedReader reader = new BufferedReader(ipr);

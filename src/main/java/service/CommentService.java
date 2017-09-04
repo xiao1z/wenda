@@ -31,7 +31,53 @@ public class CommentService {
 	@Autowired
 	private ImgService imgService;
 	
+	/*
+	public int deleteCommentsOfQuestion(int questionId){
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		CommentDAO commentDAO;
+		int result = -1;
+		List<Comment> commentList = this.getCommentsOfQusetion(questionId, 0, Integer.MAX_VALUE);
+		for(Comment comment:commentList){
+			this.deleteCommentsOfComment(comment.getId());
+		}
+		try{
+			commentDAO = session.getMapper(CommentDAO.class);
+			result = commentDAO.deleteCommnet(questionId, EntityType.QUESTION);
+			session.commit();
+		}catch(Exception e)
+		{
+			logger.error("删除评论下的评论错误 "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
 	
+	public int deleteCommentsOfComment(int commentId){
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		CommentDAO commentDAO;
+		int result = -1;
+		try{
+			commentDAO = session.getMapper(CommentDAO.class);
+			result = commentDAO.deleteCommnet(commentId, EntityType.COMMENT);
+			session.commit();
+		}catch(Exception e)
+		{
+			logger.error("删除评论下的评论错误 "+e.getMessage());
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	*/
 	public int addComment(Comment comment)
 	{
 		comment.setContent(sensitiveWordsService.filterWords(comment.getContent()));

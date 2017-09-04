@@ -1,2 +1,3 @@
 eclipse.preferences.version=1
-encoding//src/main/java/service/config.properties=UTF-8
+encoding//src/main/java/config.properties=UTF-8
+encoding//src/main/webapp/WEB-INF/templates/index.ftl=UTF-8

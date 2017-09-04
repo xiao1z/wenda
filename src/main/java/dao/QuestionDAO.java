@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -23,10 +24,11 @@ public interface QuestionDAO {
 			+ "values(#{title},#{content},#{createdDate},#{userId},#{commentCount})"})
 	int addQuestion(Question question);
 	
-	@Select({"select count(id) from question"})
+	@Select({"select count(id) from", TABLE_NAME})
 	int getQuestionCount();
 	
-	
+	@Delete({"delete from ",TABLE_NAME,"where id = #{questionId}"})
+	int deleteQuestion(int questionId);
 	
 	@Select({"select",SELECT_FIELDS," from",TABLE_NAME,"where id=#{id}"})
 	Question selectQuestion(int id);

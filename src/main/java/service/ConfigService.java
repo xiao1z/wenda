@@ -45,6 +45,8 @@ public class ConfigService {
 	@Value("${Commnet.COMMENT_COUNT_EVERY_PAGE}")
 	private int Comment_COMMENT_COUNT_EVERY_PAGE;
 	
+	
+	
 	public int getComment_COMMENT_COUNT_EVERY_PAGE(){
 		return Comment_COMMENT_COUNT_EVERY_PAGE;
 	}

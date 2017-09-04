@@ -23,6 +23,8 @@ public class User {
 	private String briefIntroduction;
 	
 	public static final int NOMROL_STATUS_TYPE = 0;
+	public static final int MANAGER_STATUS_TYPE = 1;
+	
 	
 	//系统用户的初始化在async包的EventConsumer类中，因为只有事件处理会用到系统用户
 	public static final int SYSTEM_USER_ID = 1;

@@ -19,6 +19,9 @@ public class QuestionService{
 	@Autowired
 	private SensitiveWordsService sensitiveWordsService;
 	
+	@Autowired
+	private CommentService commentService;
+	
 	private static final Logger logger = LoggerFactory.getLogger(QuestionService.class);
 	
 	public int getQuestionCount()
@@ -56,6 +59,27 @@ public class QuestionService{
 		{
 			logger.error("更新问题评论数错误 "+e.getMessage());
 			return -1;
+		}finally
+		{
+			if(session!=null)
+			{
+				session.close();
+			}
+		}
+		return result;
+	}
+	
+	public int deleteQuestion(int questionId){
+		SqlSession session=MybatisSqlSessionFactory.getSqlSessionFactory().openSession();
+		int result = -1;
+		QuestionDAO questionDAO;
+		try{
+			questionDAO = session.getMapper(QuestionDAO.class);
+			result = questionDAO.deleteQuestion(questionId);
+			session.commit();
+		}catch(Exception e)
+		{
+			logger.error("删除问题错误 "+e.getMessage());
 		}finally
 		{
 			if(session!=null)

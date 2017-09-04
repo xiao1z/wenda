@@ -48,9 +48,14 @@
 			<p style="word-break:break-all;word-wrap:break-word;font-size:1.3em">
 				${vo.question.content}
 			</p>
+			
 			<p class="text-right">
+				<#if user?? && user.status == 1>
+					<a class="btn btn-warning" id="delete_${vo.question.id}">删除该问题</a>
+				</#if>
 				<a class="btn" href="/wenda/question/${vo.question.id}">查看全部(${vo.question.commentCount}条回答) »</a>
 			</p>
+			
 			
 		</div>
 		<div class="col-md-2">

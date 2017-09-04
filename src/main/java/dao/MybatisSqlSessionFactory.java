@@ -16,7 +16,7 @@ public class MybatisSqlSessionFactory {
 	
 	private MybatisSqlSessionFactory()
 	{
-		String resource = "dao/mybatis-config.xml";
+		String resource = "mybatis-config.xml";
 		InputStream inputStream;
 		try {
 			inputStream = Resources.getResourceAsStream(resource);

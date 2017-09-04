@@ -63,6 +63,14 @@ public class QuestionController {
 	@Autowired
 	RedisDBForKeyService redisDBForKeyService;
 	
+	@RequestMapping(value = "/question/delete/{questionId}" ,method = RequestMethod.POST)
+	public String deleteQuestion(@PathVariable("questionId") int questionId){
+		if(hostHolder.getUser().getStatus() == User.MANAGER_STATUS_TYPE){		
+			questionService.deleteQuestion(questionId);
+		}
+		return "redirect:/";
+	}
+	
 	
 	@RequestMapping(value = "/question/add" ,method = RequestMethod.POST)
 	@ResponseBody

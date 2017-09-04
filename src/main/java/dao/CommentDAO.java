@@ -2,6 +2,7 @@ package dao;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Delete;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Param;
 import org.apache.ibatis.annotations.Select;
@@ -34,4 +35,6 @@ public interface CommentDAO {
 		,"values(#{userId},#{entityId},#{entityType},#{content},#{createDate},#{status},#{imgCount})"})
 	public int addComment(Comment comment);
 	
+	@Delete({"delete from ",TABLE_NAME,"where entity_id=#{entityId} and entity_type=#{entityType}"})
+	public int deleteCommnet(@Param("entityId") int entityId,@Param("entityType") int entityType);
 }

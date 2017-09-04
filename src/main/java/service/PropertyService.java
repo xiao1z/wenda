@@ -11,7 +11,7 @@ public class PropertyService extends PropertyPlaceholderConfigurer implements In
 	@Override
 	public void afterPropertiesSet() throws Exception {
 		super.setFileEncoding("UTF-8");
-		super.setLocation(new InputStreamResource(this.getClass().getResourceAsStream("config.properties")));
+		super.setLocation(new InputStreamResource(this.getClass().getClassLoader().getResourceAsStream("config.properties")));
 		
 	}
 }

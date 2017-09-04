@@ -129,7 +129,6 @@ $(function(){
 });
 
 
-
 //id属性以subCommentCommit开始的所有button标签 
 $("button[id^='subCommentCommit_']").click(function(){
 	 var commentId = $(this).attr("id").substr(17);
