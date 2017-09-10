@@ -88,9 +88,6 @@
 				<li id="page_li_1">
 					<a href="/wenda/?page=1" id="page_1">1</a>
 				</li>
-				<li>
-					<a>...</a>
-				</li>
 				<li id="page_li_2">
 					<a href="/wenda/?page=2" id="page_2">2</a>
 				</li>
@@ -100,14 +97,15 @@
 				<li id="page_li_4">
 					<a href="/wenda/?page=4" id="page_4">4</a>
 				</li>
-				<li>
-					<a>...</a>
-				</li>
 				<li id="page_li_5">
 					<a href="/wenda/?page=5" id="page_5">5</a>
 				</li>
-				
-				
+				<li id="page_li_6">
+					<a href="/wenda/?page=6" id="page_6">6</a>
+				</li>
+				<li id="page_li_7">
+					<a href="/wenda/?page=7" id="page_7">7</a>
+				</li>
 				<li id="li_next">
 					<a href="#"  id="next">Next</a>
 				</li>

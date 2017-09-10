@@ -228,24 +228,42 @@
 		</div>
 		<div class="col-md-8 pull-left">
 		<hr>
-			<ul class="pagination">
+				<ul class="pagination">
 				<li id="li_prev">
 					<a href="#" id="prev">Prev</a>
 				</li>
 				<li id="page_li_1">
-					<a id="page_1">1</a>
+					<a href="/wenda/?page=1" id="page_1">1</a>
+				</li>
+				<li>
+					<a>...</a>
 				</li>
 				<li id="page_li_2">
-					<a id="page_2">...</a>
+					<a href="/wenda/?page=2" id="page_2">2</a>
+				</li>
+				<li>
+					<a>...</a>
 				</li>
 				<li id="page_li_3">
-					<a id="page_3">3</a>
+					<a href="/wenda/?page=3" id="page_3">3</a>
 				</li>
 				<li id="page_li_4">
-					<a id="page_4">...</a>
+					<a href="/wenda/?page=4" id="page_4">4</a>
 				</li>
 				<li id="page_li_5">
-					<a id="page_5">5</a>
+					<a href="/wenda/?page=5" id="page_5">5</a>
+				</li>
+				<li>
+					<a>...</a>
+				</li>
+				<li id="page_li_6">
+					<a href="/wenda/?page=6" id="page_6">6</a>
+				</li>
+				<li>
+					<a>...</a>
+				</li>
+				<li id="page_li_7">
+					<a href="/wenda/?page=7" id="page_7">7</a>
 				</li>
 				<li id="li_next">
 					<a href="#"  id="next">Next</a>

@@ -16,6 +16,13 @@
 	</repositories>
  
  <dependencies>
+ 	<!-- https://mvnrepository.com/artifact/org.json/json -->
+	<dependency>
+    	<groupId>org.json</groupId>
+		<artifactId>json</artifactId>
+		<version>20170516</version>
+	</dependency>
+ 
 	 <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
 	<dependency>
 	    <groupId>mysql</groupId>

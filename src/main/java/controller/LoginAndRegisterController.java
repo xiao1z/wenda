@@ -3,6 +3,7 @@ package controller;
 import java.util.Map;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
@@ -19,7 +20,7 @@ import service.ConfigService;
 import service.UserService;
 import util.URIUtil;
 
-
+import sdk.GeetestLib;
 
 @Controller
 public class LoginAndRegisterController {
@@ -32,7 +33,7 @@ public class LoginAndRegisterController {
 	
 	@Autowired
 	ConfigService configService;
-	
+
 	@RequestMapping(path = {"/reg/"}, method = RequestMethod.POST)
 	public String register(Model model
 			,@RequestParam("username") String username
@@ -40,33 +41,59 @@ public class LoginAndRegisterController {
 			,@RequestParam(value = "rememberMe",defaultValue = "false") boolean rememberMe
 			,@RequestParam(value = "next",required = false) String next
 			,@RequestParam(value = "briefIntroduction",required = false) String briefIntroduction
-			,HttpServletResponse response){
+			,HttpServletResponse response,HttpServletRequest request){
 		
 		try
 		{
-			Map<String,String> map = userService.register(username, password,briefIntroduction,rememberMe);
-			if(map.containsKey("ticket"))
-			{
-				Cookie cookie = new Cookie("ticket", map.get("ticket"));
-				cookie.setPath("/");
-				if(rememberMe)
+			GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(), GeetestConfig.isnewfailback());
+
+			String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
+			String validate = request.getParameter(GeetestLib.fn_geetest_validate);
+			String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+		
+			int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+			String userid = (String)request.getSession().getAttribute("userid");
+			int gtResult = 0;
+
+			if (gt_server_status_code == 1) {
+				gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userid);	
+				System.out.println(gtResult);
+			} else {
+				System.out.println("failback:use your own server captcha validate");
+				gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+				System.out.println(gtResult);
+			}
+
+			if (gtResult == 1) {//验证成功
+				Map<String,String> map = userService.register(username, password,briefIntroduction,rememberMe);
+				if(map.containsKey("ticket"))
 				{
-					cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
+					Cookie cookie = new Cookie("ticket", map.get("ticket"));
+					cookie.setPath("/");
+					if(rememberMe)
+					{
+						cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
+					}
+					response.addCookie(cookie);
+					if(next!=null)
+						return "redirect:"+next;
+					else
+						return "redirect:/";
 				}
-				response.addCookie(cookie);
-				if(next!=null)
-					return "redirect:"+next;
-				else
+				else if(map.containsKey("error"))
+				{
+					model.addAttribute("error", map.get("error"));
+					return "login";
+				}
+				else 
 					return "redirect:/";
 			}
-			else if(map.containsKey("error"))
-			{
-				model.addAttribute("error", map.get("error"));
+			else {
+				logger.error("注册验证错误 ");
 				return "login";
 			}
-			else 
-				return "redirect:/";
-		}catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			logger.error("注册错误 "+e.getMessage());
 			return "login";
@@ -93,33 +120,59 @@ public class LoginAndRegisterController {
 			,@RequestParam("password") String password
 			,@RequestParam(value = "rememberMe",defaultValue = "false") boolean rememberMe
 			,@RequestParam(value = "next",required = false) String next
-			,HttpServletResponse response){
+			,HttpServletResponse response,HttpServletRequest request){
 		
 		try
 		{
-			Map<String,String> map = userService.login(username, password,rememberMe);
-			if(map.containsKey("ticket"))
-			{
-				Cookie cookie = new Cookie("ticket",map.get("ticket"));
-				cookie.setPath("/");
-				if(rememberMe)
-				{
-					cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
-				}
-				response.addCookie(cookie);
-				if(next!=null)
-					return "redirect:"+next;
-				else
-					return "redirect:/";
-				
+			GeetestLib gtSdk = new GeetestLib(GeetestConfig.getGeetest_id(), GeetestConfig.getGeetest_key(), GeetestConfig.isnewfailback());
+
+			String challenge = request.getParameter(GeetestLib.fn_geetest_challenge);
+			String validate = request.getParameter(GeetestLib.fn_geetest_validate);
+			String seccode = request.getParameter(GeetestLib.fn_geetest_seccode);
+		
+			int gt_server_status_code = (Integer) request.getSession().getAttribute(gtSdk.gtServerStatusSessionKey);
+			String userid = (String)request.getSession().getAttribute("userid");
+			int gtResult = 0;
+
+			if (gt_server_status_code == 1) {
+				gtResult = gtSdk.enhencedValidateRequest(challenge, validate, seccode, userid);	
+				System.out.println(gtResult);
+			} else {
+				System.out.println("failback:use your own server captcha validate");
+				gtResult = gtSdk.failbackValidateRequest(challenge, validate, seccode);
+				System.out.println(gtResult);
 			}
-			else if(map.containsKey("error"))
-			{
-				model.addAttribute("error", map.get("error"));
+
+			if (gtResult == 1) {//验证成功
+				Map<String,String> map = userService.login(username, password,rememberMe);
+				if(map.containsKey("ticket"))
+				{
+					Cookie cookie = new Cookie("ticket",map.get("ticket"));
+					cookie.setPath("/");
+					if(rememberMe)
+					{
+						cookie.setMaxAge(configService.getLoginTicket_EXPIRED_TIME());
+					}
+					response.addCookie(cookie);
+					if(next!=null)
+						return "redirect:"+next;
+					else
+						return "redirect:/";
+				
+				}
+				else if(map.containsKey("error"))
+				{
+					model.addAttribute("error", map.get("error"));
+					return "login";
+				}
+				return "redirect:/";
+				}
+				else {
+				logger.error("登录验证错误 ");
 				return "login";
 			}
-			return "redirect:/";
-		}catch(Exception e)
+		}
+		catch(Exception e)
 		{
 			logger.error("登录错误 "+e.getMessage());
 			return "login";
